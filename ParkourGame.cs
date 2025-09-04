@@ -113,7 +113,7 @@ namespace Parkour2D360
                 gamePadState.Buttons.Y == ButtonState.Pressed &&
                 gamePadState.Buttons.LeftStick == ButtonState.Pressed
                 ) || (
-                keyboardState.IsKeyDown(Keys.Q) &&y
+                keyboardState.IsKeyDown(Keys.Q) &&
                 keyboardState.IsKeyDown(Keys.W) &&
                 keyboardState.IsKeyDown(Keys.E) &&
                 keyboardState.IsKeyDown(Keys.R) &&
