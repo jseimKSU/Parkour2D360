@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Parkour2D360.Collisions
 {
-    public static class CollisionCalculator
+    public static class CollisionCalculator // may need to separate horizontal collision to vertical collision
     {
         public static bool ItemsCollide(BoundingRectangle rectangleA, BoundingRectangle rectangleB)
         {

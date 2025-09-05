@@ -30,8 +30,9 @@ namespace Parkour2D360.Sprites
         private int _previousIdleState;
         private int _currentIdleState;
         private bool _isMoving;
+        private bool _isColliding;
 
-        private Vector2 _position = new Vector2(-130, 651);
+        private Vector2 _position;
         private bool _flipped;
         private BoundingRectangle _hitbox;
         private double _animationTimer;
@@ -41,6 +42,9 @@ namespace Parkour2D360.Sprites
         {
             _currentRunningState = 0;
             _currentIdleState = 0;
+            _position = new Vector2(-130, 651);
+            _hitbox.ChangePositionTo(_position);
+            _hitbox.ChangeDimentions((float)(512 * .75), (float)(512 * .75));
         }
 
         public void LoadContent(ContentManager content)
@@ -56,12 +60,19 @@ namespace Parkour2D360.Sprites
             }
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, List<BoundingRectangle> _hitboxes)
         {
             _gamePadState = GamePad.GetState(0);
             _keyboardState = Keyboard.GetState();
 
-            _position += _gamePadState.ThumbSticks.Left * new Vector2(PLAYER_SPEED, -PLAYER_SPEED);
+            _isColliding = false;
+            foreach (BoundingRectangle hitbox in _hitboxes)
+            {
+                if (!Hitbox.Equals(hitbox) && CollisionCalculator.ItemsCollide(Hitbox, hitbox)) _isColliding = true; // can't stop colliding
+            }
+
+
+            if (!_isColliding) _position += _gamePadState.ThumbSticks.Left * new Vector2(PLAYER_SPEED, -PLAYER_SPEED);
 
             if (IsntMoving())
             {
@@ -77,19 +88,22 @@ namespace Parkour2D360.Sprites
             if (_gamePadState.ThumbSticks.Left.X < 0) _flipped = true;
             else if (_gamePadState.ThumbSticks.Left.X > 0) _flipped = false;
 
-            if (_keyboardState.IsKeyDown(Keys.Up) || _keyboardState.IsKeyDown(Keys.W)) _position += new Vector2(0, -PLAYER_SPEED);
-            if (_keyboardState.IsKeyDown(Keys.Down) || _keyboardState.IsKeyDown(Keys.S)) _position += new Vector2(0, PLAYER_SPEED);
-            if (_keyboardState.IsKeyDown(Keys.Left) || _keyboardState.IsKeyDown(Keys.A))
+            if (!_isColliding)
             {
-                _position += new Vector2(-PLAYER_SPEED, 0);
-                _flipped = true;
+                if (_keyboardState.IsKeyDown(Keys.Up) || _keyboardState.IsKeyDown(Keys.W)) _position += new Vector2(0, -PLAYER_SPEED);
+                if (_keyboardState.IsKeyDown(Keys.Down) || _keyboardState.IsKeyDown(Keys.S)) _position += new Vector2(0, PLAYER_SPEED);
+                if (_keyboardState.IsKeyDown(Keys.Left) || _keyboardState.IsKeyDown(Keys.A))
+                {
+                    _position += new Vector2(-PLAYER_SPEED, 0);
+                    _flipped = true;
+                }
+                if (_keyboardState.IsKeyDown(Keys.Right) || _keyboardState.IsKeyDown(Keys.D))
+                {
+                    _position += new Vector2(PLAYER_SPEED, 0);
+                    _flipped = false;
+                }
+                _hitbox.ChangePositionTo(new Vector2(_position.X, _position.Y));
             }
-            if (_keyboardState.IsKeyDown(Keys.Right) || _keyboardState.IsKeyDown(Keys.D))
-            {
-                _position += new Vector2(PLAYER_SPEED, 0);
-                _flipped = false;
-            }
-            _hitbox.PositionIs(new Vector2(_position.X, _position.Y));
         }
 
         private bool IsntMoving()

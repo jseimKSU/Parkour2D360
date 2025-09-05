@@ -40,7 +40,7 @@ namespace Parkour2D360.Collisions
             return CollisionCalculator.ItemsCollide(this, otherRectangle);
         }
 
-        public void PositionIs(Vector2 position)
+        public void ChangePositionTo(Vector2 position)
         {
             X = position.X;
             Y = position.Y;
@@ -50,6 +50,12 @@ namespace Parkour2D360.Collisions
         {
             X += position.X;
             Y += position.Y;
+        }
+
+        public void ChangeDimentions(float width, float height)
+        {
+            Width = width;
+            Height = height;
         }
     }
 }

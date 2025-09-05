@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Parkour2D360.Collisions;
 using Parkour2D360.Sprites;
+using System.Collections.Generic;
 using System.Runtime.InteropServices.Marshalling;
 
 namespace Parkour2D360
@@ -17,6 +19,7 @@ namespace Parkour2D360
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private Texture2D _hitboxOutlineTexture;
 
         private GamePadState _gamePadState;
         private KeyboardState _keyboardState;
@@ -27,6 +30,7 @@ namespace Parkour2D360
         private SpriteFont _360Font;
         private SpriteFont _parkourFont;
         private SpriteFont _exitInstructionsFont;
+        private List<BoundingRectangle> _itemsWithHitboxes = [];
 
         public ParkourGame()
         {
@@ -46,7 +50,10 @@ namespace Parkour2D360
 
             _2DText = new Font2DSprite();
             _stickFigureSprite = new StickFigureSprite();
+            _stickFigureSprite.Initalize();
             _grassSprite = new(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
+
+            _itemsWithHitboxes.Add(_2DText.Hitbox);
             
             base.Initialize();
         }
@@ -59,6 +66,9 @@ namespace Parkour2D360
             _2DText.LoadContent(Content);
             _stickFigureSprite.LoadContent(Content);
             _grassSprite.LoadContent(Content);
+
+            _hitboxOutlineTexture = new Texture2D(GraphicsDevice, 1, 1);
+            _hitboxOutlineTexture.SetData(new[] { Color.White });
 
             _360Font = Content.Load<SpriteFont>("Font3D");
             _parkourFont = Content.Load<SpriteFont>("Orbitron100");
@@ -96,7 +106,7 @@ namespace Parkour2D360
                 LongComboWasPressed(_gamePadState, _keyboardState)
                 )
                 Exit();
-            _stickFigureSprite.Update(gameTime);
+            _stickFigureSprite.Update(gameTime, _itemsWithHitboxes);
 
             // TODO: Add your update logic here
 
@@ -143,8 +153,12 @@ namespace Parkour2D360
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
             _2DText.Draw(_spriteBatch);
+            DrawHitboxHelper.DrawHitbox(_spriteBatch, _2DText.Hitbox, _hitboxOutlineTexture);
             _stickFigureSprite.Draw(gameTime, _spriteBatch);
+            DrawHitboxHelper.DrawHitbox(_spriteBatch, _stickFigureSprite.Hitbox, _hitboxOutlineTexture);
             _grassSprite.Draw(_spriteBatch);
+            _spriteBatch.DrawString(_exitInstructionsFont, $"X: {_2DText.Hitbox.X}, Y: {_2DText.Hitbox.Y}, Width: {_2DText.Hitbox.Width}, Height: {_2DText.Hitbox.Height}", new Vector2(0, 0), Color.Black);
+            _spriteBatch.DrawString(_exitInstructionsFont, $"X: {_stickFigureSprite.Hitbox.X}, Y: {_stickFigureSprite.Hitbox.Y}, Width: {_stickFigureSprite.Hitbox.Width}, Height: {_stickFigureSprite.Hitbox.Height}", new Vector2(0,20), Color.Black);
             _spriteBatch.DrawString(_360Font, "360", new Vector2(540, 235), Color.Black);
             _spriteBatch.DrawString(_parkourFont, "PARKOUR", new Vector2(840, 215), Color.Black);
             _spriteBatch.DrawString(_exitInstructionsFont, $"Do {exitInstructions.Item1.exitCombo} to Exit or {exitInstructions.Item1.simpleExit}", (exitInstructions.isKeyboard) ? new Vector2(1635,20) : new Vector2(1380, 20), Color.Black);
