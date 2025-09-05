@@ -7,3 +7,6 @@ sprFont - Free use, no credit
 Orbitron -  SIL Open Font License, Version 1.1
 	https://fonts.google.com/specimen/Orbitron/license
 
+Stick Figure Character Sprites 2D - CCO/Public Domain
+	https://opengameart.org/content/animated-stick-figure-character-2d-free-cc0
+	

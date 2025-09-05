@@ -22,6 +22,8 @@ namespace Parkour2D360
         private KeyboardState _keyboardState;
 
         private Font2DSprite _2DText;
+        private StickFigureSprite _stickFigureSprite;
+        private GrassSprite _grassSprite;
         private SpriteFont _360Font;
         private SpriteFont _parkourFont;
         private SpriteFont _exitInstructionsFont;
@@ -35,14 +37,16 @@ namespace Parkour2D360
 
         protected override void Initialize()
         {
+            _graphics.PreferredBackBufferWidth = 1920;
+            _graphics.PreferredBackBufferHeight = 1080;
+            _graphics.ApplyChanges();
+
             // TODO: Add your initialization logic here
             // create sprites
 
             _2DText = new Font2DSprite();
-
-            _graphics.PreferredBackBufferWidth = 1920;
-            _graphics.PreferredBackBufferHeight = 1080;
-            _graphics.ApplyChanges();
+            _stickFigureSprite = new StickFigureSprite();
+            _grassSprite = new(_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
             
             base.Initialize();
         }
@@ -53,6 +57,9 @@ namespace Parkour2D360
             // TODO: use this.Content to load your game content here
 
             _2DText.LoadContent(Content);
+            _stickFigureSprite.LoadContent(Content);
+            _grassSprite.LoadContent(Content);
+
             _360Font = Content.Load<SpriteFont>("Font3D");
             _parkourFont = Content.Load<SpriteFont>("Orbitron100");
             _exitInstructionsFont = Content.Load<SpriteFont>("OrbitronSmall");
@@ -89,6 +96,7 @@ namespace Parkour2D360
                 LongComboWasPressed(_gamePadState, _keyboardState)
                 )
                 Exit();
+            _stickFigureSprite.Update(gameTime);
 
             // TODO: Add your update logic here
 
@@ -126,18 +134,20 @@ namespace Parkour2D360
 
         protected override void Draw(GameTime gameTime)
         {
-            (string, string) exitInstructions = (_currentInputIsKeyboard) ?
-                (EXIT_COMBO_STRING_KEYBOARD, EXIT_SIMPLE_KEYBOARD) :
-            (EXIT_COMBO_STRING_GAMEPAD, EXIT_SIMPLE_GAMEPAD);
+            ((string exitCombo,string simpleExit), bool isKeyboard) exitInstructions = (_currentInputIsKeyboard) ?
+                ((EXIT_COMBO_STRING_KEYBOARD, EXIT_SIMPLE_KEYBOARD), true) :
+            ((EXIT_COMBO_STRING_GAMEPAD, EXIT_SIMPLE_GAMEPAD), false);
 
             GraphicsDevice.Clear(Color.Wheat);
 
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
             _2DText.Draw(_spriteBatch);
+            _stickFigureSprite.Draw(gameTime, _spriteBatch);
+            _grassSprite.Draw(_spriteBatch);
             _spriteBatch.DrawString(_360Font, "360", new Vector2(540, 235), Color.Black);
             _spriteBatch.DrawString(_parkourFont, "PARKOUR", new Vector2(840, 215), Color.Black);
-            _spriteBatch.DrawString(_exitInstructionsFont, $"Do {exitInstructions.Item1} to Exit or {exitInstructions.Item2}", new Vector2(1350, 20), Color.Black);
+            _spriteBatch.DrawString(_exitInstructionsFont, $"Do {exitInstructions.Item1.exitCombo} to Exit or {exitInstructions.Item1.simpleExit}", (exitInstructions.isKeyboard) ? new Vector2(1635,20) : new Vector2(1380, 20), Color.Black);
             
 
             _spriteBatch.End();
