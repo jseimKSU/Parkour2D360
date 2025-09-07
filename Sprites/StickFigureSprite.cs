@@ -46,7 +46,7 @@ namespace Parkour2D360.Sprites
         public void Initalize()
         {
             _currentRunningState = 0;
-            _currentIdleState = 0;w
+            _currentIdleState = 0;
             _position = new Vector2(0, 811);
             _hitbox.ChangePositionTo(_position);
 
