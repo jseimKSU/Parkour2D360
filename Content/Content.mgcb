@@ -70,7 +70,7 @@
 /processorParam:TextureFormat=Color
 /build:SpriteTextures/StickFigureCharacterSprites2D/Extras/ground.png
 
-#begin SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Idle/idle0.png
+#begin SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/CombinedSprites/idle.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -80,9 +80,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Idle/idle0.png
+/build:SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/CombinedSprites/idle.png
 
-#begin SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Idle/idle1.png
+#begin SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/CombinedSprites/run.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -92,173 +92,5 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Idle/idle1.png
-
-#begin SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Idle/idle2.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Idle/idle2.png
-
-#begin SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Idle/idle3.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Idle/idle3.png
-
-#begin SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Idle/idle4.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Idle/idle4.png
-
-#begin SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Idle/idle5.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Idle/idle5.png
-
-#begin SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Idle/idle6.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Idle/idle6.png
-
-#begin SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Idle/idle7.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Idle/idle7.png
-
-#begin SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Run/run1.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Run/run1.png
-
-#begin SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Run/run2.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Run/run2.png
-
-#begin SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Run/run3.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Run/run3.png
-
-#begin SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Run/run4.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Run/run4.png
-
-#begin SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Run/run5.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Run/run5.png
-
-#begin SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Run/run6.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Run/run6.png
-
-#begin SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Run/run7.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Run/run7.png
-
-#begin SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Run/run8.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Run/run8.png
+/build:SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/CombinedSprites/run.png
 
