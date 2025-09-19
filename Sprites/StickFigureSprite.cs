@@ -96,10 +96,16 @@ namespace Parkour2D360.Sprites
             _gamePadState = GamePad.GetState(0);
             _keyboardState = Keyboard.GetState();
 
+            Vector2 moveFromColliding = new Vector2(0, 0);
+
             _isColliding = false;
             foreach (BoundingRectangle hitbox in _hitboxes)
             {
-                if (!Hitbox.Equals(hitbox) && CollisionCalculator.ItemsCollide(Hitbox, hitbox)) _isColliding = true; // can't stop colliding
+                if (!Hitbox.Equals(hitbox) && CollisionHelper.ItemsCollide(Hitbox, hitbox))
+                {
+                    _isColliding = true;
+                    moveFromColliding = CollisionHelper.MoveEntityAOutOfEntityB(Hitbox, hitbox);
+                }
             }
 
 
@@ -133,7 +139,12 @@ namespace Parkour2D360.Sprites
                     _position += new Vector2(PLAYER_SPEED, 0);
                     _flipped = false;
                 }
-                _hitbox.ChangePositionTo(new Vector2(_position.X, _position.Y));
+                _hitbox.ChangePositionTo(_position);
+            }
+            else
+            {
+                _position += moveFromColliding;
+                _hitbox.ChangePositionTo(_position);
             }
         }
 

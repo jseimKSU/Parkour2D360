@@ -37,9 +37,9 @@ namespace Parkour2D360.Collisions
 
         public bool CollidesWith (BoundingRectangle otherRectangle)
         {
-            return CollisionCalculator.ItemsCollide(this, otherRectangle);
+            return CollisionHelper.ItemsCollide(this, otherRectangle);
         }
-
+            
         public void ChangePositionTo(Vector2 position)
         {
             X = position.X;
