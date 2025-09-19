@@ -108,9 +108,6 @@ namespace Parkour2D360.Sprites
                 }
             }
 
-
-            if (!_isColliding) _position += _gamePadState.ThumbSticks.Left * new Vector2(PLAYER_SPEED, -PLAYER_SPEED);
-
             if (IsntMoving())
             {
                 _isMoving = false;
@@ -122,11 +119,12 @@ namespace Parkour2D360.Sprites
                 _currentIdleState = 0;
             }
 
-            if (_gamePadState.ThumbSticks.Left.X < 0) _flipped = true;
-            else if (_gamePadState.ThumbSticks.Left.X > 0) _flipped = false;
-
             if (!_isColliding)
             {
+                _position += _gamePadState.ThumbSticks.Left * new Vector2(PLAYER_SPEED, -PLAYER_SPEED);
+                if (_gamePadState.ThumbSticks.Left.X < 0) _flipped = true;
+                else if (_gamePadState.ThumbSticks.Left.X > 0) _flipped = false;
+
                 if (_keyboardState.IsKeyDown(Keys.Up) || _keyboardState.IsKeyDown(Keys.W)) _position += new Vector2(0, -PLAYER_SPEED);
                 if (_keyboardState.IsKeyDown(Keys.Down) || _keyboardState.IsKeyDown(Keys.S)) _position += new Vector2(0, PLAYER_SPEED);
                 if (_keyboardState.IsKeyDown(Keys.Left) || _keyboardState.IsKeyDown(Keys.A))
