@@ -18,7 +18,7 @@ namespace Parkour2D360.Sprites
         private const int IDLE_ANIMATION_FRAMES_NUMBER = 8;
         private const string SPRITE_FILES_RELATIVE_PATH = "SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/CombinedSprites";
         private const int PLAYER_SPEED = 6;
-        private const double ANIMATION_SPEED = .1;
+        private const double PLAYER_ANIMATION_SPEED = .1;
 
         private GamePadState _gamePadState;
         private KeyboardState _keyboardState;
@@ -165,25 +165,25 @@ namespace Parkour2D360.Sprites
 
             if (_isMoving)
             {
-                if (_animationTimer > ANIMATION_SPEED)
+                if (_animationTimer > PLAYER_ANIMATION_SPEED)
                 {
                     Rectangle runningState = _runningAnimationFrameSourceRectangles[_currentRunningState];
                     _previousRunningState = _currentRunningState;
                     _currentRunningState = (_previousRunningState < RUNNING_ANIMATION_FRAMES_NUMBER-1) ? _currentRunningState + 1 : 0;
                     _hitbox.ChangeDimentions((float)(runningState.Width * 0.75), (float)(runningState.Height * 0.75));
-                    _animationTimer -= ANIMATION_SPEED;
+                    _animationTimer -= PLAYER_ANIMATION_SPEED;
                 }
                 spriteBatch.Draw(_runningTextures, _position, _runningAnimationFrameSourceRectangles[_currentRunningState], Color.Black, 0, new Vector2(0, 0), .75f, spriteEffects, 0);
             }
             else
             {
-                if (_animationTimer > ANIMATION_SPEED)
+                if (_animationTimer > PLAYER_ANIMATION_SPEED)
                 {
                     Rectangle idleState = _idleAnimationFrameSourceRectangles[_currentIdleState];
                     _previousIdleState = _currentIdleState;
                     _currentIdleState = (_previousIdleState < IDLE_ANIMATION_FRAMES_NUMBER-1) ? _currentIdleState + 1 : 0;
                     _hitbox.ChangeDimentions((float)(idleState.Width * 0.75), (float)(idleState.Height * 0.75));
-                    _animationTimer -= ANIMATION_SPEED;
+                    _animationTimer -= PLAYER_ANIMATION_SPEED;
                 }
                 spriteBatch.Draw(_idleTextures, _position, _idleAnimationFrameSourceRectangles[_currentIdleState], Color.Black, 0, new Vector2(0, 0), .75f, spriteEffects, 0);
             }
