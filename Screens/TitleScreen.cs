@@ -12,6 +12,7 @@ namespace Parkour2D360.Screens
     {
         private int _titleScreenId = 0;
         private Font2DSprite _2DText;
+        private BoundingRectangle _titleTextHitbox;
         private StickFigureSprite _stickFigureSprite;
         private GrassSprite _grassSprite;
         private List<BoundingRectangle> _itemsWithHitboxes = [];
@@ -35,9 +36,11 @@ namespace Parkour2D360.Screens
             _2DText = new Font2DSprite();
             _stickFigureSprite = new StickFigureSprite();
             _stickFigureSprite.Initalize();
-            _grassSprite = new(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT);
+            _grassSprite = new();
+            _titleTextHitbox = new BoundingRectangle(x:300, y:250, width:1288, height:120);
 
-            _itemsWithHitboxes.Add(_2DText.Hitbox);
+            _itemsWithHitboxes.Add(_grassSprite.Hitbox);
+            _itemsWithHitboxes.Add(_titleTextHitbox);
         }
 
         public void LoadContent(ContentManager content)

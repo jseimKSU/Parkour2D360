@@ -19,17 +19,13 @@ namespace Parkour2D360.Sprites
         private Texture2D _texture;
         private Vector2 _position;
         private BoundingRectangle _hitbox;
-        private int _viewWidth;
-        private int _viewHeight;
         
         public BoundingRectangle Hitbox => _hitbox;
 
-        public GrassSprite(int viewWidth, int viewHeight)
+        public GrassSprite()
         {
-            _viewWidth = viewWidth;
-            _viewHeight = viewHeight;
-            _position = new Vector2(0, _viewHeight - SPRITE_HEIGHT);
-            _hitbox = new BoundingRectangle(_position, _viewWidth, SPRITE_HEIGHT);
+            _position = new Vector2(0, Constants.SCREEN_HEIGHT - SPRITE_HEIGHT);
+            _hitbox = new BoundingRectangle(_position.X, _position.Y+20, Constants.SCREEN_WIDTH, SPRITE_HEIGHT);
         }
 
         public void LoadContent(ContentManager content)
@@ -44,9 +40,9 @@ namespace Parkour2D360.Sprites
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            for(int i = 0; i < _viewWidth; i += SPRITE_WIDTH-2)
+            for(int i = 0; i < Constants.SCREEN_WIDTH; i += SPRITE_WIDTH-2)
             {
-                spriteBatch.Draw(_texture, new Vector2(i, _viewHeight - SPRITE_HEIGHT), null, Color.Green, 0, new Vector2(0, 0), 1f, SpriteEffects.None, 0);
+                spriteBatch.Draw(_texture, new Vector2(i, Constants.SCREEN_HEIGHT - SPRITE_HEIGHT), null, Color.Green, 0, new Vector2(0, 0), 1f, SpriteEffects.None, 0);
             }
         }
     }

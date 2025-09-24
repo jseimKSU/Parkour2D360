@@ -38,6 +38,8 @@ namespace Parkour2D360.Sprites
         private bool _isMoving;
         private bool _isColliding;
 
+        private int _fallingSpeed = 5;
+
         private Vector2 _position;
         private bool _flipped;
         private BoundingRectangle _hitbox;
@@ -47,7 +49,7 @@ namespace Parkour2D360.Sprites
         {
             _currentRunningState = 0;
             _currentIdleState = 0;
-            _position = new Vector2(0, 811);
+            _position = new Vector2(0, 500);//811
             _hitbox.ChangePositionTo(_position);
 
         }
@@ -144,6 +146,15 @@ namespace Parkour2D360.Sprites
                 _position += moveFromColliding;
                 _hitbox.ChangePositionTo(_position);
             }
+            bool falling = true;
+            foreach(BoundingRectangle hitbox in _hitboxes)
+            {
+                if (CollisionHelper.IsCharacterStandingOnAnEntity(_hitbox, hitbox))
+                {
+                    falling = false; break;
+                }
+            }
+            if (falling) _position.Y += _fallingSpeed;
         }
 
         private bool IsntMoving()

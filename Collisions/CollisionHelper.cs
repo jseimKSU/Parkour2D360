@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -10,7 +10,7 @@ namespace Parkour2D360.Collisions
 {
     public static class CollisionHelper
     {
-        public const int COLLIDING_BUFFER = 1;
+        public const int COLLIDING_BUFFER = 3;
         public static bool ItemsCollide(BoundingRectangle rectangleA, BoundingRectangle rectangleB)
         {
             return !(
@@ -54,5 +54,14 @@ namespace Parkour2D360.Collisions
 
             return moveFromColliding;
         }
+
+        public static bool IsCharacterStandingOnAnEntity(BoundingRectangle character, BoundingRectangle entity)
+        {
+            float hitboxDistance = Math.Abs(entity.Top - character.Bottom);
+
+            if (hitboxDistance > COLLIDING_BUFFER) return false;
+
+            return true;
+        } 
     }
 }

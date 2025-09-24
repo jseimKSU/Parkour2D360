@@ -31,7 +31,7 @@ namespace Parkour2D360
         {
             _graphics.PreferredBackBufferWidth = Constants.SCREEN_WIDTH;
             _graphics.PreferredBackBufferHeight = Constants.SCREEN_HEIGHT;
-            _graphics.IsFullScreen = true;
+            //_graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
 
             AddAllGameScreens();
@@ -130,6 +130,7 @@ namespace Parkour2D360
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
             _currentGameScreen.Draw(_spriteBatch, gameTime);
+            //_spriteBatch.Draw(_hitboxOutlineTexture, new Rectangle(1588, 250, 1, 120), Color.Black);
 
             _spriteBatch.End();
 
