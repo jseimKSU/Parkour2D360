@@ -4,13 +4,14 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Parkour2D360.Collisions;
 using Parkour2D360.Sprites;
+using Parkour2D360.StateManagment;
+using System;
 using System.Collections.Generic;
 
 namespace Parkour2D360.Screens
 {
-    public class TitleScreen : IGameScreen
+    public class TitleScreen : GameScreen
     {
-        private int _titleScreenId = 0;
         private Font2DSprite _2DText;
         private BoundingRectangle _titleTextHitbox;
         private StickFigureSprite _stickFigureSprite;
@@ -20,87 +21,80 @@ namespace Parkour2D360.Screens
         private SpriteFont _360Font;
         private SpriteFont _parkourFont;
 
-        private GamePadState _gamePadState;
-        private KeyboardState _keyboardState;
+        private InputState _inputState;
         private ContentManager ContentManager;
 
         private bool _currentInputIsKeyboard;
 
-        public int GetId()
-        {
-            return _titleScreenId;
-        }
-
-        public void Initialize()
+        public TitleScreen()
         {
             _2DText = new Font2DSprite();
             _stickFigureSprite = new StickFigureSprite();
             _stickFigureSprite.Initalize();
             _grassSprite = new();
             _titleTextHitbox = new BoundingRectangle(x:300, y:250, width:1288, height:120);
+            _inputState = new InputState();
 
             _itemsWithHitboxes.Add(_grassSprite.Hitbox);
             _itemsWithHitboxes.Add(_titleTextHitbox);
         }
 
-        public void LoadContent(ContentManager content)
+        public override void Activate()
         {
-            ContentManager = content;
-            _2DText.LoadContent(content);
-            _stickFigureSprite.LoadContent(content);
-            _grassSprite.LoadContent(content);
+            base.Activate();
 
-            _360Font = content.Load<SpriteFont>("Font3D");
-            _parkourFont = content.Load<SpriteFont>("Orbitron100");
+            if (ContentManager == null)
+            {
+                ContentManager = new ContentManager(ScreenManager.Game.Services, "Content");
+            }
+            _2DText.LoadContent(ContentManager);
+            _stickFigureSprite.LoadContent(ContentManager);
+            _grassSprite.LoadContent(ContentManager);
 
+            _360Font = ContentManager.Load<SpriteFont>("Font3D");
+            _parkourFont = ContentManager.Load<SpriteFont>("Orbitron100");
         }
 
-        public void Update(GameTime gameTime)
+        public override void Deactivate()
         {
-            _gamePadState = GamePad.GetState(0);
-            _keyboardState = Keyboard.GetState();
+            base.Deactivate();
+        }
 
-            CheckForCurrentInputType();
+        public override void Unload()
+        {
+            base.Unload();
+        }
+
+        public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
+        {
+            base.Update(gameTime, otherScreenHasFocus, false);
+
+            _inputState.Update();
+
+            _currentInputIsKeyboard = _inputState.CurrentInputIsKeyboard[0];
 
             _stickFigureSprite.Update(gameTime, _itemsWithHitboxes);
 
         }
 
-        #region Update Helper Methods
-        private void CheckForCurrentInputType()
+        public override void HandleInput(GameTime gameTime, InputState input)
         {
-            if (_keyboardState.GetPressedKeyCount() > 0) _currentInputIsKeyboard = true;
-            else if (
-                _gamePadState.IsButtonDown(Buttons.A) ||
-                _gamePadState.IsButtonDown(Buttons.B) ||
-                _gamePadState.IsButtonDown(Buttons.X) ||
-                _gamePadState.IsButtonDown(Buttons.Y) ||
-                _gamePadState.IsButtonDown(Buttons.Start) ||
-                _gamePadState.IsButtonDown(Buttons.DPadUp) ||
-                _gamePadState.IsButtonDown(Buttons.DPadDown) ||
-                _gamePadState.IsButtonDown(Buttons.DPadLeft) ||
-                _gamePadState.IsButtonDown(Buttons.DPadRight) ||
-                _gamePadState.IsButtonDown(Buttons.LeftTrigger) ||
-                _gamePadState.IsButtonDown(Buttons.RightTrigger) ||
-                _gamePadState.IsButtonDown(Buttons.LeftStick) ||
-                _gamePadState.IsButtonDown(Buttons.RightStick) ||
-                _gamePadState.IsButtonDown(Buttons.LeftShoulder) ||
-                _gamePadState.IsButtonDown(Buttons.RightShoulder) ||
-                _gamePadState.ThumbSticks.Left != Vector2.Zero ||
-                _gamePadState.ThumbSticks.Right != Vector2.Zero
-                ) _currentInputIsKeyboard = false;
+            base.HandleInput(gameTime, input);
         }
 
-        #endregion
-
-        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
+        public override void Draw(GameTime gameTime)
         {
+            SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
+
+            spriteBatch.Begin();
             DrawGameScreenExitInstructions.DrawExitInstructions(ContentManager, spriteBatch, _currentInputIsKeyboard);
             _2DText.Draw(spriteBatch);
             _stickFigureSprite.Draw(gameTime, spriteBatch);
             _grassSprite.Draw(spriteBatch);
             spriteBatch.DrawString(_360Font, "360", new Vector2(540, 235), Color.Black);
             spriteBatch.DrawString(_parkourFont, "PARKOUR", new Vector2(840, 215), Color.Black);
+            spriteBatch.End();
+
 
         }
     }

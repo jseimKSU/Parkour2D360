@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using Parkour2D360.Collisions;
 using Parkour2D360.Screens;
 using Parkour2D360.Sprites;
+using Parkour2D360.StateManagment;
 using System.Collections.Generic;
 
 namespace Parkour2D360
@@ -11,20 +12,39 @@ namespace Parkour2D360
     public class ParkourGame : Game
     {
         private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
+        private readonly ScreenManager _screenManager;
+
         private Texture2D _hitboxOutlineTexture;
 
-        private GamePadState _gamePadState;
-        private KeyboardState _keyboardState;
+        private InputAction _exitGameAwesomeVersion;
+        private InputAction _exitGameSimpleVersion;
 
-        private List<IGameScreen> _gameScreens = [];
-        private IGameScreen _currentGameScreen; // make as index?
+        private InputState _inputState;
 
         public ParkourGame()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
+            ScreenFactory screenFactory = new ScreenFactory();
+            Services.AddService(typeof(IScreenFactory), screenFactory);
+
+            _screenManager = new ScreenManager(this);
+            Components.Add(_screenManager);
+
+            _exitGameAwesomeVersion = new InputAction(
+                [Buttons.LeftShoulder, Buttons.RightShoulder, Buttons.A, Buttons.B, Buttons.X, Buttons.Y, Buttons.LeftStick], 
+                [Keys.Q, Keys.W, Keys.E, Keys.R, Keys.T, Keys.Y], 
+                false);
+            _exitGameSimpleVersion = new InputAction(
+                [Buttons.Back], 
+                [Keys.Escape], 
+                false);
+
+            _inputState = new InputState();
+
+            AddAllGameScreens();
         }
 
         protected override void Initialize()
@@ -33,52 +53,26 @@ namespace Parkour2D360
             _graphics.PreferredBackBufferHeight = Constants.SCREEN_HEIGHT;
             //_graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
-
-            AddAllGameScreens();
-
-            foreach (IGameScreen screen in _gameScreens)
-            {
-                screen.Initialize();
-                if (screen.GetId() == 0)
-                {
-                    _currentGameScreen = screen;
-                }
-            }
             
             base.Initialize();
         }
 
         private void AddAllGameScreens()
         {
-            _gameScreens.Add(new TitleScreen());
+            _screenManager.AddScreen(new TitleScreen(), null);
         }
 
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-            // Load all content in all gamescreens?
-
-            foreach(IGameScreen screen in _gameScreens)
-            {
-                screen.LoadContent(Content);
-            }
-
-
             _hitboxOutlineTexture = new Texture2D(GraphicsDevice, 1, 1);
             _hitboxOutlineTexture.SetData(new[] { Color.White });
-
         }
 
         protected override void Update(GameTime gameTime)
         {
-            _gamePadState = GamePad.GetState(0);
-            _keyboardState = Keyboard.GetState();
+            _inputState.Update();
 
             CheckForExit();
-
-            // Check for change in gameScreen
-
-            _currentGameScreen.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -88,8 +82,8 @@ namespace Parkour2D360
         {
 
             if (
-                EscapeOrBackPressed() ||
-                LongComboWasPressed()
+                _exitGameSimpleVersion.AllInputsOccured(_inputState, PlayerIndex.One, out PlayerIndex player) ||
+                _exitGameAwesomeVersion.AllInputsOccured(_inputState, PlayerIndex.One, out player)
                 )
                 Exit();
         }
@@ -98,11 +92,13 @@ namespace Parkour2D360
 
         private bool EscapeOrBackPressed()
         {
-            return (_gamePadState.Buttons.Back == ButtonState.Pressed || _keyboardState.IsKeyDown(Keys.Escape));
+            return (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape));
         }
 
         private bool LongComboWasPressed()
         {
+            GamePadState _gamePadState = GamePad.GetState(PlayerIndex.One);
+            KeyboardState _keyboardState = Keyboard.GetState();
             return (
                 _gamePadState.Buttons.LeftShoulder == ButtonState.Pressed &&
                 _gamePadState.Buttons.RightShoulder == ButtonState.Pressed &&
@@ -126,13 +122,6 @@ namespace Parkour2D360
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Wheat);
-
-            _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-
-            _currentGameScreen.Draw(_spriteBatch, gameTime);
-            //_spriteBatch.Draw(_hitboxOutlineTexture, new Rectangle(1588, 250, 1, 120), Color.Black);
-
-            _spriteBatch.End();
 
             base.Draw(gameTime);
         }
