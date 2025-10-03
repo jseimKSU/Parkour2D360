@@ -88,35 +88,6 @@ namespace Parkour2D360
                 Exit();
         }
 
-
-
-        private bool EscapeOrBackPressed()
-        {
-            return (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape));
-        }
-
-        private bool LongComboWasPressed()
-        {
-            GamePadState _gamePadState = GamePad.GetState(PlayerIndex.One);
-            KeyboardState _keyboardState = Keyboard.GetState();
-            return (
-                _gamePadState.Buttons.LeftShoulder == ButtonState.Pressed &&
-                _gamePadState.Buttons.RightShoulder == ButtonState.Pressed &&
-                _gamePadState.Buttons.A == ButtonState.Pressed &&
-                _gamePadState.Buttons.B == ButtonState.Pressed &&
-                _gamePadState.Buttons.X == ButtonState.Pressed &&
-                _gamePadState.Buttons.Y == ButtonState.Pressed &&
-                _gamePadState.Buttons.LeftStick == ButtonState.Pressed
-                ) || (
-                _keyboardState.IsKeyDown(Keys.Q) &&
-                _keyboardState.IsKeyDown(Keys.W) &&
-                _keyboardState.IsKeyDown(Keys.E) &&
-                _keyboardState.IsKeyDown(Keys.R) &&
-                _keyboardState.IsKeyDown(Keys.T) &&
-                _keyboardState.IsKeyDown(Keys.Y)
-                );
-        }
-
         #endregion
 
         protected override void Draw(GameTime gameTime)

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using Parkour2D360.Collisions;
 using Parkour2D360.Sprites;
 using Parkour2D360.StateManagment;
@@ -20,8 +21,11 @@ namespace Parkour2D360.Screens
 
         private SpriteFont _360Font;
         private SpriteFont _parkourFont;
+        private Song _backgroundMusic;
 
+        private InputAction _level1;
         private InputState _inputState;
+
         private ContentManager ContentManager;
 
         private bool _currentInputIsKeyboard;
@@ -37,6 +41,8 @@ namespace Parkour2D360.Screens
 
             _itemsWithHitboxes.Add(_grassSprite.Hitbox);
             _itemsWithHitboxes.Add(_titleTextHitbox);
+
+            _level1 = new InputAction([Buttons.DPadUp], [Keys.D1], false);
         }
 
         public override void Activate()
@@ -51,6 +57,10 @@ namespace Parkour2D360.Screens
             _stickFigureSprite.LoadContent(ContentManager);
             _grassSprite.LoadContent(ContentManager);
 
+            _backgroundMusic = ContentManager.Load<Song>("StruttinWithSomeBBQ");
+            MediaPlayer.Play(_backgroundMusic);
+            MediaPlayer.Volume = .1f;
+
             _360Font = ContentManager.Load<SpriteFont>("Font3D");
             _parkourFont = ContentManager.Load<SpriteFont>("Orbitron100");
         }
@@ -58,11 +68,13 @@ namespace Parkour2D360.Screens
         public override void Deactivate()
         {
             base.Deactivate();
+            MediaPlayer.Stop();
         }
 
         public override void Unload()
         {
             base.Unload();
+            MediaPlayer.Stop();
         }
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
@@ -80,6 +92,11 @@ namespace Parkour2D360.Screens
         public override void HandleInput(GameTime gameTime, InputState input)
         {
             base.HandleInput(gameTime, input);
+
+            if (_level1.Occurred(_inputState, PlayerIndex.One, out PlayerIndex player))
+            {
+                LoadingScreen.Load(ScreenManager, true, player, new Level1Screen());
+            }
         }
 
         public override void Draw(GameTime gameTime)

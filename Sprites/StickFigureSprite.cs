@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using Parkour2D360.Collisions;
 using System;
 using System.Collections.Generic;
@@ -24,6 +26,8 @@ namespace Parkour2D360.Sprites
         private KeyboardState _keyboardState;
 
         private Texture2D _runningTextures;
+        private SoundEffect _runningSoundEffect;
+        private SoundEffectInstance _runningSoundEffectInstance;
         private int _previousRunningState;
         private int _currentRunningState;
         private Rectangle[] _runningAnimationFrameSourceRectangles;
@@ -58,6 +62,10 @@ namespace Parkour2D360.Sprites
         {
             _idleTextures = content.Load<Texture2D>($"{SPRITE_FILES_RELATIVE_PATH}/idle");
             _runningTextures = content.Load<Texture2D>($"{SPRITE_FILES_RELATIVE_PATH}/run");
+
+            _runningSoundEffect = content.Load<SoundEffect>("runningEffect");
+            _runningSoundEffectInstance = _runningSoundEffect.CreateInstance();
+            _runningSoundEffectInstance.IsLooped = true;
 
             FillIdleAnimationFrameSourceRectangles();
             FillRunningAnimationFrameSourceRectangles();
@@ -113,11 +121,19 @@ namespace Parkour2D360.Sprites
             if (IsntMoving())
             {
                 _isMoving = false;
+                if (_runningSoundEffectInstance.State == SoundState.Playing)
+                {
+                    _runningSoundEffectInstance.Stop();
+                }
                 _currentRunningState = 0;
             }
             else
             {
                 _isMoving = true;
+                if (_runningSoundEffectInstance.State != SoundState.Playing)
+                {
+                    _runningSoundEffectInstance.Play();
+                }
                 _currentIdleState = 0;
             }
 
@@ -157,7 +173,7 @@ namespace Parkour2D360.Sprites
             if (falling) _position.Y += _fallingSpeed;
         }
 
-        private bool IsntMoving()
+        private bool IsntMoving() // change to inputaction
         {
             return (_gamePadState.ThumbSticks.Left.X == 0 && _gamePadState.ThumbSticks.Left.Y == 0) &&
                 (

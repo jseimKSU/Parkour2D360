@@ -39,6 +39,7 @@ namespace Parkour2D360.StateManagment
         protected override void LoadContent()
         {
             SpriteBatch = new SpriteBatch(GraphicsDevice);
+            Font = _content.Load<SpriteFont>("OrbitronSmall");
 
             foreach (var screen in _screens)
             {

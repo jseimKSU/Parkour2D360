@@ -34,6 +34,12 @@
 /processorParam:TextureFormat=Compressed
 /build:OrbitronSmall.spritefont
 
+#begin runningEffect.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:runningEffect.wav
+
 #begin SpriteTextures/sprFont.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -93,4 +99,10 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/CombinedSprites/run.png
+
+#begin StruttinWithSomeBBQ.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:StruttinWithSomeBBQ.mp3
 
