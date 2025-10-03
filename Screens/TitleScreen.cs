@@ -53,6 +53,7 @@ namespace Parkour2D360.Screens
             {
                 ContentManager = new ContentManager(ScreenManager.Game.Services, "Content");
             }
+
             _2DText.LoadContent(ContentManager);
             _stickFigureSprite.LoadContent(ContentManager);
             _grassSprite.LoadContent(ContentManager);

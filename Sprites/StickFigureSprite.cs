@@ -3,14 +3,9 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 using Parkour2D360.Collisions;
-using System;
+using Parkour2D360.StateManagment;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Parkour2D360.Sprites
 {
@@ -21,9 +16,17 @@ namespace Parkour2D360.Sprites
         private const string SPRITE_FILES_RELATIVE_PATH = "SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/CombinedSprites";
         private const int PLAYER_SPEED = 6;
         private const double PLAYER_ANIMATION_SPEED = .1;
+        private const float JUMPING_TIME = .5f;
+        private const float JUMPING_VELOCITY = 400;
+        private const float FALLING_SPEED = 250;
 
         private GamePadState _gamePadState;
         private KeyboardState _keyboardState;
+
+        private InputState _inputState;
+        private InputAction _moveLeft;
+        private InputAction _moveRight;
+        private InputAction _jump;
 
         private Texture2D _runningTextures;
         private SoundEffect _runningSoundEffect;
@@ -40,13 +43,14 @@ namespace Parkour2D360.Sprites
         private double _animationTimer;
 
         private bool _isMoving;
-        private bool _isColliding;
+        private bool _isJumping;
+        private float _timeSinceJumpInput;
 
-        private int _fallingSpeed = 5;
 
         private Vector2 _position;
         private bool _flipped;
         private BoundingRectangle _hitbox;
+        private List<BoundingRectangle> _hitboxes;
         public BoundingRectangle Hitbox => _hitbox;
 
         public void Initalize()
@@ -55,6 +59,11 @@ namespace Parkour2D360.Sprites
             _currentIdleState = 0;
             _position = new Vector2(0, 500);//811
             _hitbox.ChangePositionTo(_position);
+            _inputState = new();
+            _moveLeft = new InputAction([], [Keys.Left, Keys.A], false);
+            _moveRight = new InputAction([], [Keys.Right, Keys.D], false);
+            _jump = new InputAction([Buttons.A], [Keys.Space], true);
+            _timeSinceJumpInput = 0;
 
         }
 
@@ -101,23 +110,21 @@ namespace Parkour2D360.Sprites
             _runningAnimationFrameSourceRectangles[7] = new Rectangle(330, 167, 109, 173);
         }
 
-        public void Update(GameTime gameTime, List<BoundingRectangle> _hitboxes)
+        public void Update(GameTime gameTime, List<BoundingRectangle> hitboxes)
         {
-            _gamePadState = GamePad.GetState(0);
-            _keyboardState = Keyboard.GetState();
+            _inputState.Update();
+            _hitboxes = hitboxes;
 
-            Vector2 moveFromColliding = new Vector2(0, 0);
+            HandleRunningSoundEffect();
 
-            _isColliding = false;
-            foreach (BoundingRectangle hitbox in _hitboxes)
-            {
-                if (!Hitbox.Equals(hitbox) && CollisionHelper.ItemsCollide(Hitbox, hitbox))
-                {
-                    _isColliding = true;
-                    moveFromColliding = CollisionHelper.MoveEntityAOutOfEntityB(Hitbox, hitbox);
-                }
-            }
+            MoveSprite(gameTime);
+            
+        }
 
+        #region Update Helper Methods
+
+        private void HandleRunningSoundEffect()
+        {
             if (IsntMoving())
             {
                 _isMoving = false;
@@ -136,53 +143,86 @@ namespace Parkour2D360.Sprites
                 }
                 _currentIdleState = 0;
             }
+        }
 
-            if (!_isColliding)
-            {
-                _position += _gamePadState.ThumbSticks.Left * new Vector2(PLAYER_SPEED, -PLAYER_SPEED);
-                if (_gamePadState.ThumbSticks.Left.X < 0) _flipped = true;
-                else if (_gamePadState.ThumbSticks.Left.X > 0) _flipped = false;
+        private void MoveSprite(GameTime gameTime)
+        {
+            Vector2 moveFromColliding = HowFarToMoveOutOfColliding();
 
-                if (_keyboardState.IsKeyDown(Keys.Up) || _keyboardState.IsKeyDown(Keys.W)) _position += new Vector2(0, -PLAYER_SPEED);
-                if (_keyboardState.IsKeyDown(Keys.Down) || _keyboardState.IsKeyDown(Keys.S)) _position += new Vector2(0, PLAYER_SPEED);
-                if (_keyboardState.IsKeyDown(Keys.Left) || _keyboardState.IsKeyDown(Keys.A))
-                {
-                    _position += new Vector2(-PLAYER_SPEED, 0);
-                    _flipped = true;
-                }
-                if (_keyboardState.IsKeyDown(Keys.Right) || _keyboardState.IsKeyDown(Keys.D))
-                {
-                    _position += new Vector2(PLAYER_SPEED, 0);
-                    _flipped = false;
-                }
-                _hitbox.ChangePositionTo(_position);
-            }
-            else
+            _position += _gamePadState.ThumbSticks.Left * new Vector2(PLAYER_SPEED, 0);
+            if (_gamePadState.ThumbSticks.Left.X < 0) _flipped = true;
+            else if (_gamePadState.ThumbSticks.Left.X > 0) _flipped = false;
+
+            if (_moveLeft.Occurred(_inputState, PlayerIndex.One, out PlayerIndex player))
             {
-                _position += moveFromColliding;
-                _hitbox.ChangePositionTo(_position);
+                _position += new Vector2(-PLAYER_SPEED, 0);
+                _flipped = true;
             }
-            bool falling = true;
-            foreach(BoundingRectangle hitbox in _hitboxes)
+            if (_moveRight.Occurred(_inputState, PlayerIndex.One, out player))
+            {
+                _position += new Vector2(PLAYER_SPEED, 0);
+                _flipped = false;
+            }
+            bool isFalling = IsFalling();
+
+            if (!_isJumping && !isFalling && _jump.Occurred(_inputState, PlayerIndex.One, out player))
+            {
+                _isJumping = true;
+            }
+
+            if(_isJumping)
+            {
+                _timeSinceJumpInput += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                _position.Y -= JUMPING_VELOCITY * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (_timeSinceJumpInput > JUMPING_TIME)
+                {
+                    _isJumping = false;
+                    _timeSinceJumpInput = 0;
+                }
+            }
+
+            _position += moveFromColliding;
+            _hitbox.ChangePositionTo(_position);
+
+            if (isFalling) _position.Y += FALLING_SPEED * (float)gameTime.ElapsedGameTime.TotalSeconds;
+        }
+
+        private bool IsFalling()
+        {
+            foreach (BoundingRectangle hitbox in _hitboxes)
             {
                 if (CollisionHelper.IsCharacterStandingOnAnEntity(_hitbox, hitbox))
                 {
-                    falling = false; break;
+                    return false;
                 }
             }
-            if (falling) _position.Y += _fallingSpeed;
+
+            return true;
         }
 
-        private bool IsntMoving() // change to inputaction
+        private Vector2 HowFarToMoveOutOfColliding()
+        {
+            foreach (BoundingRectangle hitbox in _hitboxes)
+            {
+                if (!Hitbox.Equals(hitbox) && CollisionHelper.ItemsCollide(Hitbox, hitbox))
+                {
+                    return CollisionHelper.MoveEntityAOutOfEntityB(Hitbox, hitbox);
+                }
+            }
+
+            return Vector2.Zero;
+        }
+
+        private bool IsntMoving()
         {
             return (_gamePadState.ThumbSticks.Left.X == 0 && _gamePadState.ThumbSticks.Left.Y == 0) &&
                 (
-                _keyboardState.IsKeyUp(Keys.Up) && _keyboardState.IsKeyUp(Keys.W) &&
-                _keyboardState.IsKeyUp(Keys.Down) && _keyboardState.IsKeyUp(Keys.S) &&
-                _keyboardState.IsKeyUp(Keys.Left) && _keyboardState.IsKeyUp(Keys.A) &&
-                _keyboardState.IsKeyUp(Keys.Right) && _keyboardState.IsKeyUp(Keys.D)
+                !_moveLeft.Occurred(_inputState, PlayerIndex.One, out PlayerIndex player) &&
+                !_moveRight.Occurred(_inputState, PlayerIndex.One, out player)
                 );
         }
+
+        #endregion
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {

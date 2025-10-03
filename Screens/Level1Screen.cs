@@ -5,11 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using Parkour2D360.Collisions;
 using Parkour2D360.Sprites;
 using Parkour2D360.StateManagment;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Parkour2D360.Screens
 {
@@ -17,10 +13,13 @@ namespace Parkour2D360.Screens
     {
         private StickFigureSprite _stickFigureSprite;
         private List<BoundingRectangle> _itemsWithHitboxes = [];
+        private List<BoundingRectangle> _platforms = [];
 
         private ContentManager _content;
 
         private bool _currentInputIsKeyboard;
+
+        private Texture2D _platformTexture;
 
         public Level1Screen()
         {
@@ -35,6 +34,18 @@ namespace Parkour2D360.Screens
                 _content = new ContentManager(ScreenManager.Game.Services, "Content");
             }
             _stickFigureSprite.LoadContent(_content);
+            _platformTexture = new Texture2D(ScreenManager.GraphicsDevice, 1, 1);
+            _platformTexture.SetData(new[] { Color.White });
+            
+            _platforms.Add(new BoundingRectangle(0, Constants.SCREEN_HEIGHT-100, Constants.SCREEN_WIDTH, 10));
+
+            _platforms.Add(new BoundingRectangle(200, Constants.SCREEN_HEIGHT-100-70, 70, 70));
+            _platforms.Add(new BoundingRectangle(400, Constants.SCREEN_HEIGHT-100-70, 70, 70));
+            _platforms.Add(new BoundingRectangle(600, Constants.SCREEN_HEIGHT-100-70, 70, 70));
+            _platforms.Add(new BoundingRectangle(800, Constants.SCREEN_HEIGHT-100-70, 70, 70));
+            _platforms.Add(new BoundingRectangle(1000, Constants.SCREEN_HEIGHT-100-70, 70, 70));
+
+            _itemsWithHitboxes.AddRange(_platforms);
         }
 
         public override void Deactivate()
@@ -93,8 +104,18 @@ namespace Parkour2D360.Screens
 
             spriteBatch.Begin();
             DrawGameScreenExitInstructions.DrawExitInstructions(_content, spriteBatch, _currentInputIsKeyboard);
+            DrawLevelPlatforms();
             _stickFigureSprite.Draw(gameTime, spriteBatch);
             spriteBatch.End();
+        }
+
+        private void DrawLevelPlatforms()
+        {
+            SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
+            foreach(BoundingRectangle platform in _platforms)
+            {
+                spriteBatch.Draw(_platformTexture, new Rectangle((int)platform.X, (int)platform.Y, (int)platform.Width, (int)platform.Height), Color.Black);
+            }
         }
     }
 }

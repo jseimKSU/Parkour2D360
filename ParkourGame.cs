@@ -94,6 +94,11 @@ namespace Parkour2D360
         {
             GraphicsDevice.Clear(Color.Wheat);
 
+            //SpriteBatch spriteBatch = new SpriteBatch(GraphicsDevice);
+            //spriteBatch.Begin();
+            //spriteBatch.Draw(_hitboxOutlineTexture, new Rectangle(_graphics.PreferredBackBufferWidth/2, _graphics.PreferredBackBufferHeight/2, 10,10), Color.Black);
+            //spriteBatch.End();
+
             base.Draw(gameTime);
         }
     }
