@@ -148,6 +148,7 @@ namespace Parkour2D360.Sprites
         private void MoveSprite(GameTime gameTime)
         {
             Vector2 moveFromColliding = HowFarToMoveOutOfColliding();
+            _gamePadState = GamePad.GetState(0);
 
             _position += _gamePadState.ThumbSticks.Left * new Vector2(PLAYER_SPEED, 0);
             if (_gamePadState.ThumbSticks.Left.X < 0) _flipped = true;
