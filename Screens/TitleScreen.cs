@@ -14,7 +14,6 @@ namespace Parkour2D360.Screens
         private Font2DSprite _2DText;
         private BoundingRectangle _titleTextHitbox;
         private GrassSprite _grassSprite;
-        private BoundingRectangle _testRec;
 
         private SpriteFont _360Font;
         private SpriteFont _parkourFont;
@@ -28,8 +27,8 @@ namespace Parkour2D360.Screens
             base.Initialize();
             _grassSprite = new();
             _titleTextHitbox = new BoundingRectangle(x:300, y:250, width:1288, height:120);
-            _testRec = new BoundingRectangle(new Vector2(100, Constants.SCREEN_HEIGHT - 167 + 20), new Vector2(500, 500), 10);
             
+            _platforms.Add(new BoundingRectangle(new Vector2(100, Constants.SCREEN_HEIGHT - 167 + 20), new Vector2(500, 500), 10));
 
             _itemsWithHitboxes.Add(_grassSprite.Hitbox);
             _itemsWithHitboxes.Add(_titleTextHitbox);
@@ -84,7 +83,10 @@ namespace Parkour2D360.Screens
             _spriteBatch.Begin();
             _2DText.Draw(_spriteBatch);
             _grassSprite.Draw(_spriteBatch);
-            DrawDiagonalPlatform(_testRec, Color.Black);
+            foreach(BoundingRectangle platform in _platforms)
+            {
+                DrawPlatform(platform, Color.Black);
+            }
             _spriteBatch.DrawString(_360Font, "360", new Vector2(540, 235), Color.Black);
             _spriteBatch.DrawString(_parkourFont, "PARKOUR", new Vector2(840, 215), Color.Black);
 

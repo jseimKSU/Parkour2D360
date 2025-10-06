@@ -4,7 +4,7 @@ using System;
 
 namespace Parkour2D360.Collisions
 {
-    public class BoundingRectangle
+    public struct BoundingRectangle
     {
         public float X { get; private set; }
         public float Y { get; private set; }
@@ -79,5 +79,10 @@ namespace Parkour2D360.Collisions
         {
             return new Rectangle((int)X, (int)Y, (int)Width, (int)Height);
         }
+
+        //public (Vector2, Vector2) ToTwoPoints()
+        //{
+
+        //}
     }
 }

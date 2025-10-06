@@ -16,9 +16,10 @@ namespace Parkour2D360.Collisions
             return !(
                 rectangleA.Right < rectangleB.Left || // Right of A colliding
                 rectangleA.Left > rectangleB.Right || // Left of A colliding
-                rectangleA.Top > rectangleB.Bottom || // Top of A colliding
+                ((rectangleA.Angle > 0) ? GetYFromXPosition(new Vector2(rectangleA.X, rectangleA.Y), rectangleB.X, rectangleA.Angle) : rectangleA.Top) > rectangleB.Bottom || // Top of A colliding
                 rectangleA.Bottom < rectangleB.Top // Bottom of A colliding
                 );
+            
         }
 
         public static Vector2 MoveEntityAOutOfEntityB(BoundingRectangle A, BoundingRectangle B)
@@ -62,6 +63,18 @@ namespace Parkour2D360.Collisions
             if (hitboxDistance > COLLIDING_BUFFER) return false;
 
             return true;
-        } 
+        }
+
+        /// <summary>
+        /// Finds the difference between the Y point on the vertex and the Y position that correlates with a given X on a triangle
+        /// </summary>
+        /// <param name="startPoint">The vertex of the triangle</param>
+        /// <param name="x">The X point on the triangle</param>
+        /// <param name="angle">The angle of the vertex</param>
+        /// <returns>The difference between the Y point on the vertex and the Y position that correlates with a given X on a triangle</returns>
+        public static float GetYFromXPosition(Vector2 startPoint, float x, float angle)
+        {
+            return (float)((startPoint.X - x) * Math.Tan(angle));
+        }
     }
 }

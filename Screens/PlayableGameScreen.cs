@@ -84,13 +84,7 @@ namespace Parkour2D360.Screens
             _spriteBatch.End();
         }
 
-        /// <summary>
-        /// startPoint is assumed to be the lower left point on the diagonal
-        /// </summary>
-        /// <param name="startPoint"></param>
-        /// <param name="endPoint"></param>
-        /// <param name="color"></param>
-        protected void DrawDiagonalPlatform(BoundingRectangle platform, Color color)
+        protected void DrawPlatform(BoundingRectangle platform, Color color)
         {
             _spriteBatch.Draw(
                 _platformTexture,
