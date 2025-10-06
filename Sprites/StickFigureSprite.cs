@@ -20,9 +20,6 @@ namespace Parkour2D360.Sprites
         private const float JUMPING_VELOCITY = 400;
         private const float FALLING_SPEED = 250;
 
-        private GamePadState _gamePadState;
-        private KeyboardState _keyboardState;
-
         private InputState _inputState;
         private InputAction _moveLeft;
         private InputAction _moveRight;
@@ -45,10 +42,10 @@ namespace Parkour2D360.Sprites
         private bool _isMoving;
         private bool _isJumping;
         private float _timeSinceJumpInput;
-
+        private bool _flipped;
 
         private Vector2 _position;
-        private bool _flipped;
+
         private BoundingRectangle _hitbox;
         private List<BoundingRectangle> _hitboxes;
         public BoundingRectangle Hitbox => _hitbox;
@@ -74,6 +71,7 @@ namespace Parkour2D360.Sprites
 
             _runningSoundEffect = content.Load<SoundEffect>("runningEffect");
             _runningSoundEffectInstance = _runningSoundEffect.CreateInstance();
+            _runningSoundEffectInstance.Volume = .25f;
             _runningSoundEffectInstance.IsLooped = true;
 
             FillIdleAnimationFrameSourceRectangles();
@@ -148,11 +146,12 @@ namespace Parkour2D360.Sprites
         private void MoveSprite(GameTime gameTime)
         {
             Vector2 moveFromColliding = HowFarToMoveOutOfColliding();
-            _gamePadState = GamePad.GetState(0);
 
-            _position += _gamePadState.ThumbSticks.Left * new Vector2(PLAYER_SPEED, 0);
-            if (_gamePadState.ThumbSticks.Left.X < 0) _flipped = true;
-            else if (_gamePadState.ThumbSticks.Left.X > 0) _flipped = false;
+            Vector2 controllerMovement = _inputState.HowMuchDidLeftStickMove(PlayerIndex.One);
+
+            _position += controllerMovement * new Vector2(PLAYER_SPEED, 0);
+            if (controllerMovement.X < 0) _flipped = true;
+            else if (controllerMovement.X > 0) _flipped = false;
 
             if (_moveLeft.Occurred(_inputState, PlayerIndex.One, out PlayerIndex player))
             {
@@ -216,7 +215,8 @@ namespace Parkour2D360.Sprites
 
         private bool IsntMoving()
         {
-            return (_gamePadState.ThumbSticks.Left.X == 0 && _gamePadState.ThumbSticks.Left.Y == 0) &&
+            Vector2 controllerMovement = _inputState.HowMuchDidLeftStickMove(PlayerIndex.One);
+            return (controllerMovement.X == 0 && controllerMovement.Y == 0) &&
                 (
                 !_moveLeft.Occurred(_inputState, PlayerIndex.One, out PlayerIndex player) &&
                 !_moveRight.Occurred(_inputState, PlayerIndex.One, out player)

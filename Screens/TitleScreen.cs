@@ -6,38 +6,30 @@ using Microsoft.Xna.Framework.Media;
 using Parkour2D360.Collisions;
 using Parkour2D360.Sprites;
 using Parkour2D360.StateManagment;
-using System;
-using System.Collections.Generic;
 
 namespace Parkour2D360.Screens
 {
-    public class TitleScreen : GameScreen
+    public class TitleScreen : PlayableGameScreen
     {
         private Font2DSprite _2DText;
         private BoundingRectangle _titleTextHitbox;
-        private StickFigureSprite _stickFigureSprite;
         private GrassSprite _grassSprite;
-        private List<BoundingRectangle> _itemsWithHitboxes = [];
+        private BoundingRectangle _testRec;
 
         private SpriteFont _360Font;
         private SpriteFont _parkourFont;
         private Song _backgroundMusic;
 
         private InputAction _level1;
-        private InputState _inputState;
-
-        private ContentManager ContentManager;
-
-        private bool _currentInputIsKeyboard;
 
         public TitleScreen()
         {
             _2DText = new Font2DSprite();
-            _stickFigureSprite = new StickFigureSprite();
-            _stickFigureSprite.Initalize();
+            base.Initialize();
             _grassSprite = new();
             _titleTextHitbox = new BoundingRectangle(x:300, y:250, width:1288, height:120);
-            _inputState = new InputState();
+            _testRec = new BoundingRectangle(new Vector2(100, Constants.SCREEN_HEIGHT - 167 + 20), new Vector2(500, 500), 10);
+            
 
             _itemsWithHitboxes.Add(_grassSprite.Hitbox);
             _itemsWithHitboxes.Add(_titleTextHitbox);
@@ -49,13 +41,7 @@ namespace Parkour2D360.Screens
         {
             base.Activate();
 
-            if (ContentManager == null)
-            {
-                ContentManager = new ContentManager(ScreenManager.Game.Services, "Content");
-            }
-
             _2DText.LoadContent(ContentManager);
-            _stickFigureSprite.LoadContent(ContentManager);
             _grassSprite.LoadContent(ContentManager);
 
             _backgroundMusic = ContentManager.Load<Song>("StruttinWithSomeBBQ");
@@ -80,14 +66,7 @@ namespace Parkour2D360.Screens
 
         public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
-            base.Update(gameTime, otherScreenHasFocus, false);
-
-            _inputState.Update();
-
-            _currentInputIsKeyboard = _inputState.CurrentInputIsKeyboard[0];
-
-            _stickFigureSprite.Update(gameTime, _itemsWithHitboxes);
-
+            base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
 
         public override void HandleInput(GameTime gameTime, InputState input)
@@ -96,22 +75,22 @@ namespace Parkour2D360.Screens
 
             if (_level1.Occurred(_inputState, PlayerIndex.One, out PlayerIndex player))
             {
-                LoadingScreen.Load(ScreenManager, true, player, new Level1Screen());
+                LoadingScreen.Load(ScreenManager, false, player, new Level1Screen());
             }
         }
 
         public override void Draw(GameTime gameTime)
         {
-            SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
+            _spriteBatch.Begin();
+            _2DText.Draw(_spriteBatch);
+            _grassSprite.Draw(_spriteBatch);
+            DrawDiagonalPlatform(_testRec, Color.Black);
+            _spriteBatch.DrawString(_360Font, "360", new Vector2(540, 235), Color.Black);
+            _spriteBatch.DrawString(_parkourFont, "PARKOUR", new Vector2(840, 215), Color.Black);
 
-            spriteBatch.Begin();
-            DrawGameScreenExitInstructions.DrawExitInstructions(ContentManager, spriteBatch, _currentInputIsKeyboard);
-            _2DText.Draw(spriteBatch);
-            _stickFigureSprite.Draw(gameTime, spriteBatch);
-            _grassSprite.Draw(spriteBatch);
-            spriteBatch.DrawString(_360Font, "360", new Vector2(540, 235), Color.Black);
-            spriteBatch.DrawString(_parkourFont, "PARKOUR", new Vector2(840, 215), Color.Black);
-            spriteBatch.End();
+            _spriteBatch.End();
+
+            base.Draw(gameTime);
 
 
         }

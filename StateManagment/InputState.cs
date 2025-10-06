@@ -44,9 +44,9 @@ namespace Parkour2D360.StateManagment
 
                 CurrentKeyboardStates[i] = Keyboard.GetState();
                 CurrentGamePadStates[i] = GamePad.GetState((PlayerIndex)i);
-
+                
                 if (CurrentKeyboardStates[i].GetPressedKeyCount() > 0) CurrentInputIsKeyboard[i] = true;
-                else if (CurrentGamePadStates[i] == new GamePadState()) CurrentInputIsKeyboard[i] = false;
+                else if (CurrentGamePadStates[i] != new GamePadState()) CurrentInputIsKeyboard[i] = false; //doesn't properly work if controller is on
 
                 if (CurrentGamePadStates[i].IsConnected)
                     GamePadWasConnected[i] = true;
@@ -121,6 +121,16 @@ namespace Parkour2D360.StateManagment
                     IsNewButtonPress(button, PlayerIndex.Two, out playerIndex) ||
                     IsNewButtonPress(button, PlayerIndex.Three, out playerIndex) ||
                     IsNewButtonPress(button, PlayerIndex.Four, out playerIndex);
+        }
+
+        public Vector2 HowMuchDidLeftStickMove(PlayerIndex controllingPlayer)
+        {
+            return CurrentGamePadStates[(int)controllingPlayer].ThumbSticks.Left;
+        }
+
+        public Vector2 HowMuchDidRightStickMove(PlayerIndex controllingPlayer)
+        {
+            return CurrentGamePadStates[(int)controllingPlayer].ThumbSticks.Right;
         }
     }
 }
