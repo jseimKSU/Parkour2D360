@@ -28,7 +28,7 @@ namespace Parkour2D360.Screens
             _grassSprite = new();
             _titleTextHitbox = new BoundingRectangle(x:300, y:250, width:1288, height:120);
             
-            _platforms.Add(new BoundingRectangle(new Vector2(100, Constants.SCREEN_HEIGHT - 167 + 20), new Vector2(500, 500), 10));
+            _platforms.Add(new BoundingRectangle(new Vector2(100, Constants.SCREEN_HEIGHT - 167 + 20), new Vector2(500, 800), 10));
 
             _itemsWithHitboxes.Add(_grassSprite.Hitbox);
             _itemsWithHitboxes.Add(_titleTextHitbox);

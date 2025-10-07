@@ -1,33 +1,39 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Parkour2D360.Collisions
 {
     public static class CollisionHelper
     {
         public const int COLLIDING_BUFFER = 3;
-        public static bool ItemsCollide(BoundingRectangle rectangleA, BoundingRectangle rectangleB)
+        public static bool ItemsCollide(BoundingRectangle a, BoundingRectangle b)
         {
+            float differenceInYIf_A_IsAngled = GetYFromXPosition(new Vector2(a.X, a.Y), b.X, a.Angle);
+            float differenceInYIf_B_IsAngled = GetYFromXPosition(new Vector2(b.X, b.Y), a.X, b.Angle);
+
             return !(
-                rectangleA.Right < rectangleB.Left || // Right of A colliding
-                rectangleA.Left > rectangleB.Right || // Left of A colliding
-                ((rectangleA.Angle > 0) ? GetYFromXPosition(new Vector2(rectangleA.X, rectangleA.Y), rectangleB.X, rectangleA.Angle) : rectangleA.Top) > rectangleB.Bottom || // Top of A colliding
-                rectangleA.Bottom < rectangleB.Top // Bottom of A colliding
+                a.Right < b.Left || // Right of A colliding
+                a.Left > b.Right || // Left of A colliding
+                a.Top + differenceInYIf_A_IsAngled 
+                > 
+                b.Bottom + differenceInYIf_B_IsAngled // Top of A colliding
+                || 
+                a.Bottom + differenceInYIf_B_IsAngled 
+                < 
+                b.Top + differenceInYIf_A_IsAngled // Bottom of A colliding
                 );
             
         }
 
-        public static Vector2 MoveEntityAOutOfEntityB(BoundingRectangle A, BoundingRectangle B)
+        public static Vector2 MoveEntityAOutOfEntityB(BoundingRectangle a, BoundingRectangle b)
         {
-            float leftOverlap = A.Right - B.Left;
-            float rightOverlap = B.Right - A.Left;
-            float topOverlap = A.Bottom - B.Top;
-            float bottomOverlap = B.Bottom - A.Top;
+            float differenceInYIf_A_IsAngled = GetYFromXPosition(new Vector2(a.X, a.Y), b.X, a.Angle);
+            float differenceInYIf_B_IsAngled = GetYFromXPosition(new Vector2(b.X, b.Y), a.X, b.Angle);
+
+            float leftOverlap = a.Right - b.Left;
+            float rightOverlap = b.Right - a.Left;
+            float topOverlap = (a.Bottom + differenceInYIf_A_IsAngled) - (b.Top + differenceInYIf_B_IsAngled);
+            float bottomOverlap = (b.Bottom + differenceInYIf_B_IsAngled) - (a.Top + differenceInYIf_A_IsAngled);
 
             float min = float.MaxValue;
             Vector2 moveFromColliding = Vector2.Zero;
@@ -58,7 +64,7 @@ namespace Parkour2D360.Collisions
 
         public static bool IsCharacterStandingOnAnEntity(BoundingRectangle character, BoundingRectangle entity)
         {
-            float hitboxDistance = Math.Abs(entity.Top - character.Bottom);
+            float hitboxDistance = Math.Abs((entity.Top + GetYFromXPosition(new Vector2(entity.X, entity.Y), character.X, entity.Angle)) - character.Bottom);
 
             if (hitboxDistance > COLLIDING_BUFFER) return false;
 
@@ -68,13 +74,13 @@ namespace Parkour2D360.Collisions
         /// <summary>
         /// Finds the difference between the Y point on the vertex and the Y position that correlates with a given X on a triangle
         /// </summary>
-        /// <param name="startPoint">The vertex of the triangle</param>
-        /// <param name="x">The X point on the triangle</param>
-        /// <param name="angle">The angle of the vertex</param>
-        /// <returns>The difference between the Y point on the vertex and the Y position that correlates with a given X on a triangle</returns>
-        public static float GetYFromXPosition(Vector2 startPoint, float x, float angle)
+        /// <param name="platformStartingVertex">The vertex of the triangle</param>
+        /// <param name="otherHitboxXPosition">The X point on the triangle</param>
+        /// <param name="vertexAngle">The angle of the vertex</param>
+        /// <returns>The difference between the Y point on the vertex and the Y position that correlates with a given X on a triangle, if angle = 0 returns 0</returns>
+        public static float GetYFromXPosition(Vector2 platformStartingVertex, float otherHitboxXPosition, float vertexAngle)
         {
-            return (float)((startPoint.X - x) * Math.Tan(angle));
+            return (float)((platformStartingVertex.X - otherHitboxXPosition) * Math.Tan(vertexAngle));
         }
     }
 }
