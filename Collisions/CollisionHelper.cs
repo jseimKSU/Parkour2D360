@@ -5,35 +5,24 @@ namespace Parkour2D360.Collisions
 {
     public static class CollisionHelper
     {
-        public const int COLLIDING_BUFFER = 3;
+        public const int COLLIDING_BUFFER = 5;
         public static bool ItemsCollide(BoundingRectangle a, BoundingRectangle b)
         {
-            float differenceInYIf_A_IsAngled = GetYFromXPosition(new Vector2(a.X, a.Y), b.X, a.Angle);
-            float differenceInYIf_B_IsAngled = GetYFromXPosition(new Vector2(b.X, b.Y), a.X, b.Angle);
-
             return !(
                 a.Right < b.Left || // Right of A colliding
                 a.Left > b.Right || // Left of A colliding
-                a.Top + differenceInYIf_A_IsAngled 
-                > 
-                b.Bottom + differenceInYIf_B_IsAngled // Top of A colliding
-                || 
-                a.Bottom + differenceInYIf_B_IsAngled 
-                < 
-                b.Top + differenceInYIf_A_IsAngled // Bottom of A colliding
+                a.Top > b.Bottom ||// Top of A colliding
+                a.Bottom < b.Top // Bottom of A colliding
                 );
             
         }
 
         public static Vector2 MoveEntityAOutOfEntityB(BoundingRectangle a, BoundingRectangle b)
         {
-            float differenceInYIf_A_IsAngled = GetYFromXPosition(new Vector2(a.X, a.Y), b.X, a.Angle);
-            float differenceInYIf_B_IsAngled = GetYFromXPosition(new Vector2(b.X, b.Y), a.X, b.Angle);
-
             float leftOverlap = a.Right - b.Left;
             float rightOverlap = b.Right - a.Left;
-            float topOverlap = (a.Bottom + differenceInYIf_A_IsAngled) - (b.Top + differenceInYIf_B_IsAngled);
-            float bottomOverlap = (b.Bottom + differenceInYIf_B_IsAngled) - (a.Top + differenceInYIf_A_IsAngled);
+            float topOverlap = a.Bottom - b.Top;
+            float bottomOverlap = b.Bottom - a.Top;
 
             float min = float.MaxValue;
             Vector2 moveFromColliding = Vector2.Zero;
@@ -64,11 +53,27 @@ namespace Parkour2D360.Collisions
 
         public static bool IsCharacterStandingOnAnEntity(BoundingRectangle character, BoundingRectangle entity)
         {
-            float hitboxDistance = Math.Abs((entity.Top + GetYFromXPosition(new Vector2(entity.X, entity.Y), character.X, entity.Angle)) - character.Bottom);
-
-            if (hitboxDistance > COLLIDING_BUFFER) return false;
+            if (
+                CharacterIsTooHigh(character.Bottom, entity.Top) || 
+                CharacterIsTooFarToTheRight(character.Left, entity.Right) || 
+                CharacterIsTooFarToTheLeft(character.Right, entity.Left)
+                ) return false;
 
             return true;
+        }
+        private static bool CharacterIsTooHigh(float bottomOfCharacter, float topOfEntity)
+        {
+            return ((topOfEntity > bottomOfCharacter) ? (topOfEntity - bottomOfCharacter) : COLLIDING_BUFFER + 1) > COLLIDING_BUFFER;
+        }
+
+        private static bool CharacterIsTooFarToTheLeft(float rightSideOfCharacter, float leftSideOfEntity)
+        {
+            return (leftSideOfEntity - rightSideOfCharacter) > COLLIDING_BUFFER;
+        }
+
+        private static bool CharacterIsTooFarToTheRight(float leftSideOfCharacter, float rightSideOfEntity)
+        {
+            return (leftSideOfCharacter - rightSideOfEntity) > COLLIDING_BUFFER;
         }
 
         /// <summary>

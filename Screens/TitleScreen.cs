@@ -27,8 +27,18 @@ namespace Parkour2D360.Screens
             base.Initialize();
             _grassSprite = new();
             _titleTextHitbox = new BoundingRectangle(x:300, y:250, width:1288, height:120);
-            
-            _platforms.Add(new BoundingRectangle(new Vector2(100, Constants.SCREEN_HEIGHT - 167 + 20), new Vector2(500, 800), 10));
+
+            //_platforms.Add(new BoundingRectangle(new Vector2(100, Constants.SCREEN_HEIGHT - 167 + 20), new Vector2(500, 800), 10));
+            _platforms.Add(new BoundingRectangle(0, Constants.SCREEN_HEIGHT - 167 - 00, 50, 10));
+            _platforms.Add(new BoundingRectangle(100, Constants.SCREEN_HEIGHT - 167 - 70, 50, 10));
+            _platforms.Add(new BoundingRectangle(200, Constants.SCREEN_HEIGHT - 167 - 140, 50, 10));
+            _platforms.Add(new BoundingRectangle(300, Constants.SCREEN_HEIGHT - 167 - 210, 50, 10));
+            _platforms.Add(new BoundingRectangle(400, Constants.SCREEN_HEIGHT - 167 - 280, 50, 10));
+            _platforms.Add(new BoundingRectangle(250, Constants.SCREEN_HEIGHT - 167 - 350, 50, 10));
+            _platforms.Add(new BoundingRectangle(150, Constants.SCREEN_HEIGHT - 167 - 420, 50, 10));
+            _platforms.Add(new BoundingRectangle(50, Constants.SCREEN_HEIGHT - 167 - 490, 50, 10));
+            _platforms.Add(new BoundingRectangle(200, Constants.SCREEN_HEIGHT - 167 - 560, 50, 10));
+            _platforms.Add(new BoundingRectangle(250, Constants.SCREEN_HEIGHT - 167 - 630, 50, 10));
 
             _itemsWithHitboxes.Add(_grassSprite.Hitbox);
             _itemsWithHitboxes.Add(_titleTextHitbox);

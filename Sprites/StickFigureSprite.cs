@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Parkour2D360.Collisions;
 using Parkour2D360.StateManagment;
+using System;
 using System.Collections.Generic;
 
 namespace Parkour2D360.Sprites
@@ -54,8 +55,7 @@ namespace Parkour2D360.Sprites
         {
             _currentRunningState = 0;
             _currentIdleState = 0;
-            _position = new Vector2(0, 500);//811
-            _hitbox.ChangePositionTo(_position);
+            _position = new Vector2(Constants.SCREEN_WIDTH/2, 811);
             _inputState = new();
             _moveLeft = new InputAction([], [Keys.Left, Keys.A], false);
             _moveRight = new InputAction([], [Keys.Right, Keys.D], false);
@@ -77,6 +77,8 @@ namespace Parkour2D360.Sprites
             FillIdleAnimationFrameSourceRectangles();
             FillRunningAnimationFrameSourceRectangles();
 
+            _position.X -= _idleAnimationFrameSourceRectangles[0].Width / 2;
+            _hitbox.ChangePositionTo(_position);
             _hitbox.ChangeDimentions(_idleAnimationFrameSourceRectangles[0].Width, _idleAnimationFrameSourceRectangles[0].Height);
         }
 
@@ -165,6 +167,7 @@ namespace Parkour2D360.Sprites
             }
             bool isFalling = IsFalling();
 
+            
             if (!_isJumping && !isFalling && _jump.Occurred(_inputState, PlayerIndex.One, out player))
             {
                 _isJumping = true;
@@ -184,10 +187,11 @@ namespace Parkour2D360.Sprites
             _position += moveFromColliding;
             _hitbox.ChangePositionTo(_position);
 
+            
             if (isFalling) _position.Y += FALLING_SPEED * (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
 
-        private bool IsFalling()
+        private bool IsFalling() // fix so checks all hitboxes not just stops at false
         {
             foreach (BoundingRectangle hitbox in _hitboxes)
             {
