@@ -17,7 +17,7 @@ namespace Parkour2D360.Collisions
             
         }
 
-        public static Vector2 MoveEntityAOutOfEntityB(BoundingRectangle a, BoundingRectangle b)
+        public static Vector2 MoveEntityAOutOfEntityB(BoundingRectangle a, BoundingRectangle b) //if jumping into gap smaller than player causes it to get moved down out of surface into bottom surface then back into the top and so on to amounts as large as 50px
         {
             float leftOverlap = a.Right - b.Left;
             float rightOverlap = b.Right - a.Left;
