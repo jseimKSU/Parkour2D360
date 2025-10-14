@@ -1,11 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Parkour2D360.StateManagment
 {
@@ -27,7 +27,8 @@ namespace Parkour2D360.StateManagment
 
         public Settings.Settings Settings { get; set; } = new Settings.Settings();
 
-        public ScreenManager(Game game) : base(game)
+        public ScreenManager(Game game)
+            : base(game)
         {
             _content = new ContentManager(game.Services, "Content");
         }
@@ -74,7 +75,10 @@ namespace Parkour2D360.StateManagment
 
                 screen.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
-                if (screen.ScreenState == ScreenState.TransitionOn || screen.ScreenState == ScreenState.Active)
+                if (
+                    screen.ScreenState == ScreenState.TransitionOn
+                    || screen.ScreenState == ScreenState.Active
+                )
                 {
                     if (!otherScreenHasFocus)
                     {
@@ -82,7 +86,8 @@ namespace Parkour2D360.StateManagment
                         otherScreenHasFocus = true;
                     }
 
-                    if (!screen.IsPopup) coveredByOtherScreen = true;
+                    if (!screen.IsPopup)
+                        coveredByOtherScreen = true;
                 }
             }
         }
@@ -91,7 +96,8 @@ namespace Parkour2D360.StateManagment
         {
             foreach (var screen in _screens)
             {
-                if (screen.ScreenState == ScreenState.Hidden) continue;
+                if (screen.ScreenState == ScreenState.Hidden)
+                    continue;
 
                 screen.Draw(gameTime);
             }
@@ -103,14 +109,16 @@ namespace Parkour2D360.StateManagment
             screen.ScreenManager = this;
             screen.IsExiting = false;
 
-            if (_isInitialized) screen.Activate();
+            if (_isInitialized)
+                screen.Activate();
 
             _screens.Add(screen);
         }
 
         public void RemoveScreen(GameScreen screen)
         {
-            if (_isInitialized) screen.Unload();
+            if (_isInitialized)
+                screen.Unload();
 
             _screens.Remove(screen);
             _tmpScreensList.Remove(screen);
@@ -128,9 +136,7 @@ namespace Parkour2D360.StateManagment
             SpriteBatch.End();
         }
 
-        public void Deactivate()
-        {
-        }
+        public void Deactivate() { }
 
         public bool Activate()
         {

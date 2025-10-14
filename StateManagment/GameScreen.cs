@@ -1,9 +1,9 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 
 namespace Parkour2D360.StateManagment
 {
@@ -13,7 +13,7 @@ namespace Parkour2D360.StateManagment
 
         protected TimeSpan TransitionOnTime { get; set; } = TimeSpan.Zero;
 
-        protected TimeSpan TransitionOffTime { get; set;} = TimeSpan.Zero;
+        protected TimeSpan TransitionOffTime { get; set; } = TimeSpan.Zero;
 
         protected float TransitionPosition { get; set; } = 1f;
 
@@ -23,21 +23,25 @@ namespace Parkour2D360.StateManagment
 
         public bool IsExiting { get; protected internal set; }
 
-        public bool IsActive => !_otherScreenHasFocus && (
-            ScreenState == ScreenState.TransitionOn ||
-            ScreenState == ScreenState.Active);
+        public bool IsActive =>
+            !_otherScreenHasFocus
+            && (ScreenState == ScreenState.TransitionOn || ScreenState == ScreenState.Active);
 
         private bool _otherScreenHasFocus;
         public ScreenManager ScreenManager { get; internal set; }
         public PlayerIndex? ControllingPlayer { protected get; set; }
 
         public virtual void Activate() { }
-        
+
         public virtual void Deactivate() { }
 
         public virtual void Unload() { }
 
-        public virtual void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
+        public virtual void Update(
+            GameTime gameTime,
+            bool otherScreenHasFocus,
+            bool coveredByOtherScreen
+        )
         {
             _otherScreenHasFocus = otherScreenHasFocus;
 
@@ -64,13 +68,17 @@ namespace Parkour2D360.StateManagment
 
         private bool UpdateTransitionPosition(GameTime gameTime, TimeSpan time, int direction)
         {
-            float transitionDelta = (time == TimeSpan.Zero)
-                ? 1
-                : (float)(gameTime.ElapsedGameTime.TotalMilliseconds / time.TotalMilliseconds);
+            float transitionDelta =
+                (time == TimeSpan.Zero)
+                    ? 1
+                    : (float)(gameTime.ElapsedGameTime.TotalMilliseconds / time.TotalMilliseconds);
 
             TransitionPosition += transitionDelta * direction;
 
-            if (direction < 0 && TransitionPosition <= 0 || direction > 0 && TransitionPosition >= 0)
+            if (
+                direction < 0 && TransitionPosition <= 0
+                || direction > 0 && TransitionPosition >= 0
+            )
             {
                 TransitionPosition = MathHelper.Clamp(TransitionPosition, 0, 1);
                 return false;

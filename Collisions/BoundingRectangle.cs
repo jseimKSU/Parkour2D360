@@ -1,6 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using SharpDX.Direct3D9;
-using System;
 
 namespace Parkour2D360.Collisions
 {
@@ -10,6 +10,7 @@ namespace Parkour2D360.Collisions
         public float Y { get; private set; }
         public float Width { get; private set; }
         public float Height { get; private set; }
+
         /// <summary>
         /// The angle of the object in radians
         /// </summary>
@@ -37,6 +38,7 @@ namespace Parkour2D360.Collisions
             Height = height;
             Angle = angle;
         }
+
         /// <summary>
         /// Constructor meant to create a diagonal BoundingRectangle
         /// </summary>
@@ -52,11 +54,11 @@ namespace Parkour2D360.Collisions
             Angle = (float)Math.Atan((startPoint.Y - endPoint.Y) / (startPoint.X - endPoint.X));
         }
 
-        public bool CollidesWith (BoundingRectangle otherRectangle)
+        public bool CollidesWith(BoundingRectangle otherRectangle)
         {
             return CollisionHelper.ItemsCollide(this, otherRectangle);
         }
-            
+
         public void ChangePositionTo(Vector2 position)
         {
             X = position.X;

@@ -9,6 +9,6 @@ namespace Parkour2D360.Settings
     public enum KeyboardOptions
     {
         MovementOnAWSD,
-        MovementOnArrows
+        MovementOnArrows,
     }
 }

@@ -1,11 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Parkour2D360.Collisions;
 using Parkour2D360.Screens;
-using Parkour2D360.Sprites;
 using Parkour2D360.StateManagment;
-using System.Collections.Generic;
 
 namespace Parkour2D360
 {
@@ -34,13 +31,19 @@ namespace Parkour2D360
             Components.Add(_screenManager);
 
             _exitGameAwesomeVersion = new InputAction(
-                [Buttons.LeftShoulder, Buttons.RightShoulder, Buttons.A, Buttons.B, Buttons.X, Buttons.Y, Buttons.LeftStick], 
-                [Keys.Q, Keys.W, Keys.E, Keys.R, Keys.T, Keys.Y], 
-                false);
-            _exitGameSimpleVersion = new InputAction(
-                [Buttons.Back], 
-                [Keys.Escape], 
-                false);
+                [
+                    Buttons.LeftShoulder,
+                    Buttons.RightShoulder,
+                    Buttons.A,
+                    Buttons.B,
+                    Buttons.X,
+                    Buttons.Y,
+                    Buttons.LeftStick,
+                ],
+                [Keys.Q, Keys.W, Keys.E, Keys.R, Keys.T, Keys.Y],
+                false
+            );
+            _exitGameSimpleVersion = new InputAction([Buttons.Back], [Keys.Escape], false);
 
             _inputState = new InputState();
 
@@ -53,7 +56,7 @@ namespace Parkour2D360
             _graphics.PreferredBackBufferHeight = Constants.SCREEN_HEIGHT;
             //_graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
-            
+
             base.Initialize();
         }
 
@@ -76,15 +79,23 @@ namespace Parkour2D360
 
             base.Update(gameTime);
         }
+
         #region Update Helper Methods
 
         private void CheckForExit()
         {
-
             if (
-                _exitGameSimpleVersion.AllInputsOccured(_inputState, PlayerIndex.One, out PlayerIndex player) ||
-                _exitGameAwesomeVersion.AllInputsOccured(_inputState, PlayerIndex.One, out player)
+                _exitGameSimpleVersion.AllInputsOccured(
+                    _inputState,
+                    PlayerIndex.One,
+                    out PlayerIndex player
                 )
+                || _exitGameAwesomeVersion.AllInputsOccured(
+                    _inputState,
+                    PlayerIndex.One,
+                    out player
+                )
+            )
                 Exit();
         }
 
