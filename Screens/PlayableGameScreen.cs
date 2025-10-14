@@ -1,11 +1,12 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Parkour2D360.Collisions;
+using Parkour2D360.Settings;
 using Parkour2D360.Sprites;
 using Parkour2D360.StateManagment;
-using System;
-using System.Collections.Generic;
 
 namespace Parkour2D360.Screens
 {
@@ -13,12 +14,20 @@ namespace Parkour2D360.Screens
     {
         protected StickFigureSprite _stickFigureSprite;
 
-        protected List<BoundingRectangle> _itemsWithHitboxes = [];
-        protected List<BoundingRectangle> _platforms = [];
+        protected List<BoundingRectangle> _nonPlatformHitboxes = [];
+
+        protected List<RotatableGameScreenSide> _gamescreenSides = [];
+        protected int _currentGameScreenSide = 0;
+
+        protected List<BoundingRectangle> _allHitboxes =>
+            [.. _nonPlatformHitboxes, .. _gamescreenSides[_currentGameScreenSide].Platforms];
 
         protected ContentManager ContentManager;
         protected SpriteBatch _spriteBatch;
         protected InputState _inputState;
+
+        protected InputAction _rotateLeft;
+        protected InputAction _rotateRight;
 
         protected Texture2D _platformTexture;
 
@@ -27,7 +36,6 @@ namespace Parkour2D360.Screens
         protected void Initialize()
         {
             _stickFigureSprite = new StickFigureSprite();
-            _stickFigureSprite.Initalize();
             _inputState = new InputState();
         }
 
@@ -41,12 +49,27 @@ namespace Parkour2D360.Screens
                 ContentManager = new ContentManager(ScreenManager.Game.Services, "Content");
             }
 
+            _stickFigureSprite.Initalize(ScreenManager.Settings);
+
+            bool movementOnAWSD = (
+                ScreenManager.Settings.KeyboardOptions == KeyboardOptions.MovementOnAWSD
+            );
+
+            _rotateLeft = new InputAction(
+                [Buttons.DPadLeft],
+                [(movementOnAWSD) ? Keys.Left : Keys.A],
+                true
+            );
+            _rotateRight = new InputAction(
+                [Buttons.DPadRight],
+                [(movementOnAWSD) ? Keys.Right : Keys.D],
+                true
+            );
+
             _stickFigureSprite.LoadContent(ContentManager);
 
             _platformTexture = new Texture2D(ScreenManager.GraphicsDevice, 1, 1);
             _platformTexture.SetData(new[] { Color.White });
-
-            _itemsWithHitboxes.AddRange(_platforms);
         }
 
         public override void Deactivate()
@@ -59,14 +82,35 @@ namespace Parkour2D360.Screens
             base.Unload();
         }
 
-        public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
+        public override void Update(
+            GameTime gameTime,
+            bool otherScreenHasFocus,
+            bool coveredByOtherScreen
+        )
         {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
             _inputState.Update();
             _currentInputIsKeyboard = _inputState.CurrentInputIsKeyboard[0];
 
-            _stickFigureSprite.Update(gameTime, _itemsWithHitboxes);
+            _stickFigureSprite.Update(gameTime, _allHitboxes);
+
+            if (_rotateLeft.Occurred(_inputState, PlayerIndex.One, out PlayerIndex player))
+            {
+                if (_currentGameScreenSide > 0)
+                    _currentGameScreenSide--;
+                else if (_currentGameScreenSide == 0)
+                    _currentGameScreenSide = _gamescreenSides.Count - 1;
+            }
+            if (_rotateRight.Occurred(_inputState, PlayerIndex.One, out player))
+            {
+                if (_currentGameScreenSide < _gamescreenSides.Count - 1)
+                    _currentGameScreenSide++;
+                else if (_currentGameScreenSide == _gamescreenSides.Count - 1)
+                    _currentGameScreenSide = 0;
+            }
+            if (_currentGameScreenSide < 0 || _currentGameScreenSide >= _gamescreenSides.Count)
+                throw new System.IndexOutOfRangeException();
         }
 
         public override void HandleInput(GameTime gameTime, InputState input)
@@ -79,7 +123,11 @@ namespace Parkour2D360.Screens
             base.Draw(gameTime);
 
             _spriteBatch.Begin();
-            DrawGameScreenExitInstructions.DrawExitInstructions(ContentManager, _spriteBatch, _currentInputIsKeyboard);
+            DrawGameScreenExitInstructions.DrawExitInstructions(
+                ContentManager,
+                _spriteBatch,
+                _currentInputIsKeyboard
+            );
             _stickFigureSprite.Draw(gameTime, _spriteBatch);
             _spriteBatch.End();
         }
@@ -88,14 +136,19 @@ namespace Parkour2D360.Screens
         {
             _spriteBatch.Draw(
                 _platformTexture,
-                new Rectangle((int)platform.X, (int)platform.Y, (int)platform.Width, (int)platform.Height),
+                new Rectangle(
+                    (int)platform.X,
+                    (int)platform.Y,
+                    (int)platform.Width,
+                    (int)platform.Height
+                ),
                 null,
                 color,
                 platform.Angle,
                 new Vector2(0, 0),
                 SpriteEffects.None,
-                0);
+                0
+            );
         }
     }
-
 }

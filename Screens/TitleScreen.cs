@@ -32,16 +32,19 @@ namespace Parkour2D360.Screens
             _2DText = new Font2DSprite();
             base.Initialize();
             _grassSprite = new();
-            _titleTextHitbox = new BoundingRectangle(x:300, y:250, width:1288, height:120);
+            _titleTextHitbox = new BoundingRectangle(x: 300, y: 250, width: 1288, height: 120);
 
-            _itemsWithHitboxes.Add(_grassSprite.Hitbox);
-            _itemsWithHitboxes.Add(_titleTextHitbox);
+            _nonPlatformHitboxes.Add(_grassSprite.Hitbox);
+            _nonPlatformHitboxes.Add(_titleTextHitbox);
 
             _level1 = new InputAction([Buttons.DPadUp], [Keys.D1], false);
         }
 
         public override void Activate()
         {
+            RotatableGameScreenSide _first = new() { Platforms = [] };
+            _gamescreenSides.Add(_first);
+
             base.Activate();
 
             _2DText.LoadContent(ContentManager);
@@ -67,7 +70,11 @@ namespace Parkour2D360.Screens
             MediaPlayer.Stop();
         }
 
-        public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
+        public override void Update(
+            GameTime gameTime,
+            bool otherScreenHasFocus,
+            bool coveredByOtherScreen
+        )
         {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
@@ -78,7 +85,7 @@ namespace Parkour2D360.Screens
 
             if (_level1.Occurred(_inputState, PlayerIndex.One, out PlayerIndex player))
             {
-                LoadingScreen.Load(ScreenManager, false, player, new Level1Screen());
+                LoadingScreen.Load(ScreenManager, true, player, new Level1Screen());
             }
         }
 
@@ -87,7 +94,9 @@ namespace Parkour2D360.Screens
             _spriteBatch.Begin();
             _2DText.Draw(_spriteBatch);
             _grassSprite.Draw(_spriteBatch);
-            foreach(BoundingRectangle platform in _platforms)
+            foreach (
+                BoundingRectangle platform in _gamescreenSides[_currentGameScreenSide].Platforms
+            )
             {
                 DrawPlatform(platform, Color.Black);
             }
@@ -97,8 +106,6 @@ namespace Parkour2D360.Screens
             _spriteBatch.End();
 
             base.Draw(gameTime);
-
-
         }
     }
 }

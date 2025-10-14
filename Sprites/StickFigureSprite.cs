@@ -4,8 +4,8 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Parkour2D360.Collisions;
+using Parkour2D360.Settings;
 using Parkour2D360.StateManagment;
-using System;
 using System.Collections.Generic;
 
 namespace Parkour2D360.Sprites
@@ -51,16 +51,18 @@ namespace Parkour2D360.Sprites
         private List<BoundingRectangle> _hitboxes;
         public BoundingRectangle Hitbox => _hitbox;
 
-        public void Initalize()
+        public void Initalize(Settings.Settings settings)
         {
             _currentRunningState = 0;
             _currentIdleState = 0;
             _position = new Vector2(Constants.SCREEN_WIDTH/2, 811);
             _inputState = new();
-            _moveLeft = new InputAction([], [Keys.Left, Keys.A], false);
-            _moveRight = new InputAction([], [Keys.Right, Keys.D], false);
-            _jump = new InputAction([Buttons.A], [Keys.Space], true);
             _timeSinceJumpInput = 0;
+
+            bool movementOnAWSD = (settings.KeyboardOptions == KeyboardOptions.MovementOnAWSD);
+            _moveLeft = new InputAction([], [(movementOnAWSD) ? Keys.A : Keys.Left], false);
+            _moveRight = new InputAction([], [(movementOnAWSD) ? Keys.D : Keys.Right], false);
+            _jump = new InputAction([Buttons.A], [Keys.Space], true);
 
         }
 

@@ -25,6 +25,8 @@ namespace Parkour2D360.StateManagment
 
         public Texture2D BlankTexture { get; private set; }
 
+        public Settings.Settings Settings { get; set; } = new Settings.Settings();
+
         public ScreenManager(Game game) : base(game)
         {
             _content = new ContentManager(game.Services, "Content");

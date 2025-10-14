@@ -1,12 +1,12 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Parkour2D360.Collisions;
 using Parkour2D360.Sprites;
 using Parkour2D360.StateManagment;
-using System;
-using System.Collections.Generic;
 
 namespace Parkour2D360.Screens
 {
@@ -19,17 +19,68 @@ namespace Parkour2D360.Screens
 
         public override void Activate()
         {
+            RotatableGameScreenSide _first = new()
+            {
+                Platforms =
+                [
+                    new BoundingRectangle(
+                        0,
+                        Constants.SCREEN_HEIGHT - 100,
+                        Constants.SCREEN_WIDTH,
+                        10
+                    ),
+                    new BoundingRectangle(200, Constants.SCREEN_HEIGHT - 100 - 70, 70, 70),
+                    new BoundingRectangle(400, Constants.SCREEN_HEIGHT - 100 - 70, 70, 70),
+                    new BoundingRectangle(600, Constants.SCREEN_HEIGHT - 100 - 70, 70, 70),
+                    new BoundingRectangle(800, Constants.SCREEN_HEIGHT - 100 - 70, 70, 70),
+                    new BoundingRectangle(1000, Constants.SCREEN_HEIGHT - 100 - 70, 70, 70),
+                ],
+            };
+            RotatableGameScreenSide _second = new()
+            {
+                Platforms =
+                [
+                    new BoundingRectangle(
+                        0,
+                        Constants.SCREEN_HEIGHT - 100,
+                        Constants.SCREEN_WIDTH,
+                        10
+                    ),
+                    new BoundingRectangle(0, Constants.SCREEN_HEIGHT - 100 - 70, 70, 70),
+                ],
+            };
+            RotatableGameScreenSide _third = new()
+            {
+                Platforms =
+                [
+                    new BoundingRectangle(
+                        0,
+                        Constants.SCREEN_HEIGHT - 100,
+                        Constants.SCREEN_WIDTH,
+                        10
+                    ),
+                    new BoundingRectangle(70, Constants.SCREEN_HEIGHT - 100 - 70, 70, 70),
+                ],
+            };
+            RotatableGameScreenSide _fourth = new()
+            {
+                Platforms =
+                [
+                    new BoundingRectangle(
+                        0,
+                        Constants.SCREEN_HEIGHT - 100,
+                        Constants.SCREEN_WIDTH,
+                        10
+                    ),
+                    new BoundingRectangle(140, Constants.SCREEN_HEIGHT - 100 - 70, 70, 70),
+                ],
+            };
+            _gamescreenSides.Add(_first);
+            _gamescreenSides.Add(_second);
+            _gamescreenSides.Add(_third);
+            _gamescreenSides.Add(_fourth);
+
             base.Activate();
-            
-            _platforms.Add(new BoundingRectangle(0, Constants.SCREEN_HEIGHT-100, Constants.SCREEN_WIDTH, 10));
-
-            _platforms.Add(new BoundingRectangle(200, Constants.SCREEN_HEIGHT-100-70, 70, 70));
-            _platforms.Add(new BoundingRectangle(400, Constants.SCREEN_HEIGHT-100-70, 70, 70));
-            _platforms.Add(new BoundingRectangle(600, Constants.SCREEN_HEIGHT-100-70, 70, 70));
-            _platforms.Add(new BoundingRectangle(800, Constants.SCREEN_HEIGHT-100-70, 70, 70));
-            _platforms.Add(new BoundingRectangle(1000, Constants.SCREEN_HEIGHT-100-70, 70, 70));
-
-            _itemsWithHitboxes.AddRange(_platforms);
         }
 
         public override void Deactivate()
@@ -42,7 +93,11 @@ namespace Parkour2D360.Screens
             base.Unload();
         }
 
-        public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
+        public override void Update(
+            GameTime gameTime,
+            bool otherScreenHasFocus,
+            bool coveredByOtherScreen
+        )
         {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
         }
@@ -63,9 +118,20 @@ namespace Parkour2D360.Screens
 
         private void DrawLevelPlatforms()
         {
-            foreach(BoundingRectangle platform in _platforms)
+            foreach (
+                BoundingRectangle platform in _gamescreenSides[_currentGameScreenSide].Platforms
+            )
             {
-                _spriteBatch.Draw(_platformTexture, new Rectangle((int)platform.X, (int)platform.Y, (int)platform.Width, (int)platform.Height), Color.Black);
+                _spriteBatch.Draw(
+                    _platformTexture,
+                    new Rectangle(
+                        (int)platform.X,
+                        (int)platform.Y,
+                        (int)platform.Width,
+                        (int)platform.Height
+                    ),
+                    Color.Black
+                );
             }
         }
     }
