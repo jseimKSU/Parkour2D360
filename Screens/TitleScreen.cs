@@ -95,10 +95,12 @@ namespace Parkour2D360.Screens
             _2DText.Draw(_spriteBatch);
             _grassSprite.Draw(_spriteBatch);
             foreach (
-                BoundingRectangle platform in _gamescreenSides[_currentGameScreenSide].Platforms
+                (BoundingRectangle, Color) platform in _gamescreenSides[
+                    _currentGameScreenSide
+                ].Platforms
             )
             {
-                DrawPlatform(platform, Color.Black);
+                DrawPlatform(platform.Item1, platform.Item2);
             }
             _spriteBatch.DrawString(_360Font, "360", new Vector2(540, 235), Color.Black);
             _spriteBatch.DrawString(_parkourFont, "PARKOUR", new Vector2(840, 215), Color.Black);

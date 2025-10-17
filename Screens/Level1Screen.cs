@@ -23,56 +23,138 @@ namespace Parkour2D360.Screens
             {
                 Platforms =
                 [
-                    new BoundingRectangle(
-                        0,
-                        Constants.SCREEN_HEIGHT - 100,
-                        Constants.SCREEN_WIDTH,
-                        10
+                    (
+                        new BoundingRectangle(
+                            0,
+                            Constants.SCREEN_HEIGHT - 100,
+                            Constants.SCREEN_WIDTH,
+                            10
+                        ),
+                        Color.Black
                     ),
-                    new BoundingRectangle(200, Constants.SCREEN_HEIGHT - 100 - 70, 70, 70),
-                    new BoundingRectangle(400, Constants.SCREEN_HEIGHT - 100 - 70, 70, 70),
-                    new BoundingRectangle(600, Constants.SCREEN_HEIGHT - 100 - 70, 70, 70),
-                    new BoundingRectangle(800, Constants.SCREEN_HEIGHT - 100 - 70, 70, 70),
-                    new BoundingRectangle(1000, Constants.SCREEN_HEIGHT - 100 - 70, 70, 70),
+                    (
+                        new BoundingRectangle(200, Constants.SCREEN_HEIGHT - 100 - 70, 70, 70),
+                        Color.Red
+                    ),
+                    (
+                        new BoundingRectangle(400, Constants.SCREEN_HEIGHT - 100 - 70, 70, 70),
+                        Color.Orange
+                    ),
+                    (
+                        new BoundingRectangle(600, Constants.SCREEN_HEIGHT - 100 - 70, 70, 70),
+                        Color.Green
+                    ),
+                    (
+                        new BoundingRectangle(800, Constants.SCREEN_HEIGHT - 100 - 70, 70, 70),
+                        Color.Blue
+                    ),
+                    (
+                        new BoundingRectangle(1000, Constants.SCREEN_HEIGHT - 100 - 70, 70, 70),
+                        Color.Violet
+                    ),
                 ],
             };
             RotatableGameScreenSide _second = new()
             {
                 Platforms =
                 [
-                    new BoundingRectangle(
-                        0,
-                        Constants.SCREEN_HEIGHT - 100,
-                        Constants.SCREEN_WIDTH,
-                        10
+                    (
+                        new BoundingRectangle(
+                            0,
+                            Constants.SCREEN_HEIGHT - 100,
+                            Constants.SCREEN_WIDTH,
+                            10
+                        ),
+                        Color.Black
                     ),
-                    new BoundingRectangle(0, Constants.SCREEN_HEIGHT - 100 - 70, 70, 70),
+                    (
+                        new BoundingRectangle(0, Constants.SCREEN_HEIGHT - 100 - 70, 70, 70),
+                        Color.Violet
+                    ),
                 ],
             };
             RotatableGameScreenSide _third = new()
             {
                 Platforms =
                 [
-                    new BoundingRectangle(
-                        0,
-                        Constants.SCREEN_HEIGHT - 100,
-                        Constants.SCREEN_WIDTH,
-                        10
+                    (
+                        new BoundingRectangle(
+                            0,
+                            Constants.SCREEN_HEIGHT - 100,
+                            Constants.SCREEN_WIDTH,
+                            10
+                        ),
+                        Color.Black
                     ),
-                    new BoundingRectangle(70, Constants.SCREEN_HEIGHT - 100 - 70, 70, 70),
+                    (
+                        new BoundingRectangle(
+                            Constants.SCREEN_WIDTH - 200,
+                            Constants.SCREEN_HEIGHT - 100 - 70,
+                            70,
+                            70
+                        ),
+                        Color.Red
+                    ),
+                    (
+                        new BoundingRectangle(
+                            Constants.SCREEN_WIDTH - 400,
+                            Constants.SCREEN_HEIGHT - 100 - 70,
+                            70,
+                            70
+                        ),
+                        Color.Orange
+                    ),
+                    (
+                        new BoundingRectangle(
+                            Constants.SCREEN_WIDTH - 600,
+                            Constants.SCREEN_HEIGHT - 100 - 70,
+                            70,
+                            70
+                        ),
+                        Color.Green
+                    ),
+                    (
+                        new BoundingRectangle(
+                            Constants.SCREEN_WIDTH - 800,
+                            Constants.SCREEN_HEIGHT - 100 - 70,
+                            70,
+                            70
+                        ),
+                        Color.Blue
+                    ),
+                    (
+                        new BoundingRectangle(
+                            Constants.SCREEN_WIDTH - 1000,
+                            Constants.SCREEN_HEIGHT - 100 - 70,
+                            70,
+                            70
+                        ),
+                        Color.Violet
+                    ),
                 ],
             };
             RotatableGameScreenSide _fourth = new()
             {
                 Platforms =
                 [
-                    new BoundingRectangle(
-                        0,
-                        Constants.SCREEN_HEIGHT - 100,
-                        Constants.SCREEN_WIDTH,
-                        10
+                    (
+                        new BoundingRectangle(
+                            0,
+                            Constants.SCREEN_HEIGHT - 100,
+                            Constants.SCREEN_WIDTH,
+                            10
+                        ),
+                        Color.Black
                     ),
-                    new BoundingRectangle(140, Constants.SCREEN_HEIGHT - 100 - 70, 70, 70),
+                    (
+                        new BoundingRectangle(
+                            Constants.SCREEN_WIDTH - 70,
+                            Constants.SCREEN_HEIGHT - 100 - 70,
+                            70,
+                            70
+                        ),
+                        Color.Red
+                    ),
                 ],
             };
             _gamescreenSides.Add(_first);
@@ -119,18 +201,20 @@ namespace Parkour2D360.Screens
         private void DrawLevelPlatforms()
         {
             foreach (
-                BoundingRectangle platform in _gamescreenSides[_currentGameScreenSide].Platforms
+                (BoundingRectangle, Color) platform in _gamescreenSides[
+                    _currentGameScreenSide
+                ].Platforms
             )
             {
                 _spriteBatch.Draw(
                     _platformTexture,
                     new Rectangle(
-                        (int)platform.X,
-                        (int)platform.Y,
-                        (int)platform.Width,
-                        (int)platform.Height
+                        (int)platform.Item1.X,
+                        (int)platform.Item1.Y,
+                        (int)platform.Item1.Width,
+                        (int)platform.Item1.Height
                     ),
-                    Color.Black
+                    platform.Item2
                 );
             }
         }

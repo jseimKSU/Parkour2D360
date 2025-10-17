@@ -1,17 +1,21 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Parkour2D360.Collisions
 {
     public static class DrawHitboxHelper
     {
-        public static void DrawHitbox(SpriteBatch spriteBatch, BoundingRectangle hitbox, Texture2D texture)
+        public static void DrawHitbox(
+            SpriteBatch spriteBatch,
+            BoundingRectangle hitbox,
+            Texture2D texture
+        )
         {
             int x = (int)hitbox.X;
             int y = (int)hitbox.Y;

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -20,7 +22,12 @@ namespace Parkour2D360.Screens
         protected int _currentGameScreenSide = 0;
 
         protected List<BoundingRectangle> _allHitboxes =>
-            [.. _nonPlatformHitboxes, .. _gamescreenSides[_currentGameScreenSide].Platforms];
+            [
+                .. _nonPlatformHitboxes,
+                .. _gamescreenSides[_currentGameScreenSide]
+                    .Platforms.Select(tuple => tuple.Item1)
+                    .ToList(),
+            ];
 
         protected ContentManager ContentManager;
         protected SpriteBatch _spriteBatch;
@@ -28,6 +35,8 @@ namespace Parkour2D360.Screens
 
         protected InputAction _rotateLeft;
         protected InputAction _rotateRight;
+        private InputAction _pauseGameAwesomeVersion;
+        private InputAction _pauseGameSimpleVersion;
 
         protected Texture2D _platformTexture;
 
@@ -37,6 +46,24 @@ namespace Parkour2D360.Screens
         {
             _stickFigureSprite = new StickFigureSprite();
             _inputState = new InputState();
+
+            TransitionOnTime = TimeSpan.FromSeconds(1);
+            TransitionOffTime = TimeSpan.FromSeconds(1);
+
+            _pauseGameAwesomeVersion = new InputAction(
+                [
+                    Buttons.LeftShoulder,
+                    Buttons.RightShoulder,
+                    Buttons.A,
+                    Buttons.B,
+                    Buttons.X,
+                    Buttons.Y,
+                    Buttons.LeftStick,
+                ],
+                [Keys.Q, Keys.W, Keys.E, Keys.R, Keys.T, Keys.Y],
+                false
+            );
+            _pauseGameSimpleVersion = new InputAction([Buttons.Back], [Keys.Escape], false);
         }
 
         public override void Activate()
@@ -116,6 +143,15 @@ namespace Parkour2D360.Screens
         public override void HandleInput(GameTime gameTime, InputState input)
         {
             base.HandleInput(gameTime, input);
+
+            if (
+                _pauseGameAwesomeVersion.Occurred(
+                    _inputState,
+                    ControllingPlayer,
+                    out PlayerIndex player
+                ) || _pauseGameSimpleVersion.Occurred(_inputState, ControllingPlayer, out player)
+            )
+                ScreenManager.AddScreen(new PauseMenuScreen(), ControllingPlayer);
         }
 
         public override void Draw(GameTime gameTime)

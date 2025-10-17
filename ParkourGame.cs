@@ -13,9 +13,6 @@ namespace Parkour2D360
 
         private Texture2D _hitboxOutlineTexture;
 
-        private InputAction _exitGameAwesomeVersion;
-        private InputAction _exitGameSimpleVersion;
-
         private InputState _inputState;
 
         public ParkourGame()
@@ -29,21 +26,6 @@ namespace Parkour2D360
 
             _screenManager = new ScreenManager(this);
             Components.Add(_screenManager);
-
-            _exitGameAwesomeVersion = new InputAction(
-                [
-                    Buttons.LeftShoulder,
-                    Buttons.RightShoulder,
-                    Buttons.A,
-                    Buttons.B,
-                    Buttons.X,
-                    Buttons.Y,
-                    Buttons.LeftStick,
-                ],
-                [Keys.Q, Keys.W, Keys.E, Keys.R, Keys.T, Keys.Y],
-                false
-            );
-            _exitGameSimpleVersion = new InputAction([Buttons.Back], [Keys.Escape], false);
 
             _inputState = new InputState();
 
@@ -75,31 +57,8 @@ namespace Parkour2D360
         {
             _inputState.Update();
 
-            CheckForExit();
-
             base.Update(gameTime);
         }
-
-        #region Update Helper Methods
-
-        private void CheckForExit()
-        {
-            if (
-                _exitGameSimpleVersion.AllInputsOccured(
-                    _inputState,
-                    PlayerIndex.One,
-                    out PlayerIndex player
-                )
-                || _exitGameAwesomeVersion.AllInputsOccured(
-                    _inputState,
-                    PlayerIndex.One,
-                    out player
-                )
-            )
-                Exit();
-        }
-
-        #endregion
 
         protected override void Draw(GameTime gameTime)
         {
