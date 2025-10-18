@@ -38,7 +38,7 @@ namespace Parkour2D360.Screens
             _text = text;
         }
 
-        public virtual void Update(MenuScreen screen, bool isSelected, GameTime gameTime)
+        public virtual void Update(TextMenuScreen screen, bool isSelected, GameTime gameTime)
         {
             // When the menu selection changes, entries gradually fade between
             // their selected and deselected appearance, rather than instantly
@@ -52,7 +52,7 @@ namespace Parkour2D360.Screens
         }
 
         // This can be overridden to customize the appearance.
-        public virtual void Draw(MenuScreen screen, bool isSelected, GameTime gameTime)
+        public virtual void Draw(TextMenuScreen screen, bool isSelected, GameTime gameTime)
         {
             var color = isSelected ? Color.Blue : Color.Black;
 
@@ -84,12 +84,12 @@ namespace Parkour2D360.Screens
             );
         }
 
-        public virtual int GetHeight(MenuScreen screen)
+        public virtual int GetHeight(TextMenuScreen screen)
         {
             return screen.ScreenManager.Font.LineSpacing;
         }
 
-        public virtual int GetWidth(MenuScreen screen)
+        public virtual int GetWidth(TextMenuScreen screen)
         {
             return (int)screen.ScreenManager.Font.MeasureString(Text).X;
         }

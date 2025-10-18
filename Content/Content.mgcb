@@ -27,13 +27,6 @@
 /processorParam:TextureFormat=Compressed
 /build:Orbitron100.spritefont
 
-#begin Orbitron100.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:Orbitron100.spritefont
-
 #begin Orbitron30.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -53,6 +46,30 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:runningEffect.wav
+
+#begin SpriteTextures/glow.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:SpriteTextures/glow.png
+
+#begin SpriteTextures/LevelSelectSprite.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:SpriteTextures/LevelSelectSprite.png
 
 #begin SpriteTextures/sprFont.png
 /importer:TextureImporter
@@ -113,6 +130,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/CombinedSprites/run.png
+
+#begin SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Idle/idle1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Idle/idle1.png;SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Idle/idle1
 
 #begin StruttinWithSomeBBQ.mp3
 /importer:Mp3Importer

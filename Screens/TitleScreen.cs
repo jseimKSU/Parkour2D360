@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -20,6 +21,7 @@ namespace Parkour2D360.Screens
         private Font2DSprite _2DText;
         private BoundingRectangle _titleTextHitbox;
         private GrassSprite _grassSprite;
+        private LevelSelectSprite _levelSelectSprite;
 
         private SpriteFont _360Font;
         private SpriteFont _parkourFont;
@@ -32,23 +34,67 @@ namespace Parkour2D360.Screens
             _2DText = new Font2DSprite();
             base.Initialize();
             _grassSprite = new();
+            _levelSelectSprite = new();
             _titleTextHitbox = new BoundingRectangle(x: 300, y: 250, width: 1288, height: 120);
 
             _nonPlatformHitboxes.Add(_grassSprite.Hitbox);
             _nonPlatformHitboxes.Add(_titleTextHitbox);
+            _nonPlatformHitboxes.Add(_levelSelectSprite.Hitbox);
 
             _level1 = new InputAction([Buttons.DPadUp], [Keys.D1], false);
         }
 
         public override void Activate()
         {
-            RotatableGameScreenSide _first = new() { Platforms = [] };
+            RotatableGameScreenSide _first = new()
+            {
+                Platforms =
+                [
+                    (
+                        new BoundingRectangle(
+                            (Constants.SCREEN_WIDTH / 2) - 300,
+                            Constants.SCREEN_HEIGHT - 400,
+                            100,
+                            10
+                        ),
+                        Color.Black
+                    ),
+                    (
+                        new BoundingRectangle(
+                            (Constants.SCREEN_WIDTH / 2) - 300 - 140,
+                            Constants.SCREEN_HEIGHT - 400 + 70,
+                            50,
+                            10
+                        ),
+                        Color.Black
+                    ),
+                    (
+                        new BoundingRectangle(
+                            (Constants.SCREEN_WIDTH / 2) - 300 - 210,
+                            Constants.SCREEN_HEIGHT - 400 + 140,
+                            50,
+                            10
+                        ),
+                        Color.Black
+                    ),
+                    (
+                        new BoundingRectangle(
+                            (Constants.SCREEN_WIDTH / 2) - 300 - 280,
+                            Constants.SCREEN_HEIGHT - 400 + 210,
+                            50,
+                            10
+                        ),
+                        Color.Black
+                    ),
+                ],
+            };
             _gamescreenSides.Add(_first);
 
             base.Activate();
 
             _2DText.LoadContent(ContentManager);
             _grassSprite.LoadContent(ContentManager);
+            _levelSelectSprite.LoadContent(ContentManager);
 
             _backgroundMusic = ContentManager.Load<Song>("StruttinWithSomeBBQ");
             MediaPlayer.Play(_backgroundMusic);
@@ -77,6 +123,18 @@ namespace Parkour2D360.Screens
         )
         {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
+
+            if (
+                CollisionHelper.IsCharacterStandingOnAnEntity(
+                    _stickFigureSprite.Hitbox,
+                    _levelSelectSprite.Hitbox
+                )
+            )
+            {
+                LoadingScreen.Load(ScreenManager, true, ControllingPlayer, new Level1Screen());
+            }
+
+            _levelSelectSprite.Update(gameTime);
         }
 
         public override void HandleInput(GameTime gameTime, InputState input)
@@ -85,7 +143,7 @@ namespace Parkour2D360.Screens
 
             if (_level1.Occurred(_inputState, PlayerIndex.One, out PlayerIndex player))
             {
-                LoadingScreen.Load(ScreenManager, true, player, new Level1Screen());
+                LoadingScreen.Load(ScreenManager, true, ControllingPlayer, new Level1Screen());
             }
         }
 
@@ -106,6 +164,8 @@ namespace Parkour2D360.Screens
             _spriteBatch.DrawString(_parkourFont, "PARKOUR", new Vector2(840, 215), Color.Black);
 
             _spriteBatch.End();
+
+            _levelSelectSprite.Draw(_spriteBatch);
 
             base.Draw(gameTime);
         }

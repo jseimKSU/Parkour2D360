@@ -56,7 +56,7 @@ namespace Parkour2D360.Sprites
         {
             _currentRunningState = 0;
             _currentIdleState = 0;
-            _position = new Vector2(Constants.SCREEN_WIDTH / 2, 811);
+            _position = new Vector2(60, 811);
             _inputState = new();
             _timeSinceJumpInput = 0;
 

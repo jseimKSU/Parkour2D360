@@ -32,24 +32,15 @@ namespace Parkour2D360.Screens
                         ),
                         Color.Black
                     ),
+                    (new BoundingRectangle(200, 0, 70, Constants.SCREEN_HEIGHT - 100), Color.Red),
                     (
-                        new BoundingRectangle(200, Constants.SCREEN_HEIGHT - 100 - 70, 70, 70),
-                        Color.Red
-                    ),
-                    (
-                        new BoundingRectangle(400, Constants.SCREEN_HEIGHT - 100 - 70, 70, 70),
+                        new BoundingRectangle(400, 0, 70, Constants.SCREEN_HEIGHT - 100),
                         Color.Orange
                     ),
+                    (new BoundingRectangle(600, 0, 70, Constants.SCREEN_HEIGHT - 100), Color.Green),
+                    (new BoundingRectangle(800, 0, 70, Constants.SCREEN_HEIGHT - 100), Color.Blue),
                     (
-                        new BoundingRectangle(600, Constants.SCREEN_HEIGHT - 100 - 70, 70, 70),
-                        Color.Green
-                    ),
-                    (
-                        new BoundingRectangle(800, Constants.SCREEN_HEIGHT - 100 - 70, 70, 70),
-                        Color.Blue
-                    ),
-                    (
-                        new BoundingRectangle(1000, Constants.SCREEN_HEIGHT - 100 - 70, 70, 70),
+                        new BoundingRectangle(1000, 0, 70, Constants.SCREEN_HEIGHT - 100),
                         Color.Violet
                     ),
                 ],
@@ -67,10 +58,7 @@ namespace Parkour2D360.Screens
                         ),
                         Color.Black
                     ),
-                    (
-                        new BoundingRectangle(0, Constants.SCREEN_HEIGHT - 100 - 70, 70, 70),
-                        Color.Violet
-                    ),
+                    (new BoundingRectangle(0, 0, 70, Constants.SCREEN_HEIGHT - 100), Color.Violet),
                 ],
             };
             RotatableGameScreenSide _third = new()
@@ -89,45 +77,45 @@ namespace Parkour2D360.Screens
                     (
                         new BoundingRectangle(
                             Constants.SCREEN_WIDTH - 200,
-                            Constants.SCREEN_HEIGHT - 100 - 70,
+                            0,
                             70,
-                            70
+                            Constants.SCREEN_HEIGHT - 100
                         ),
                         Color.Red
                     ),
                     (
                         new BoundingRectangle(
                             Constants.SCREEN_WIDTH - 400,
-                            Constants.SCREEN_HEIGHT - 100 - 70,
+                            0,
                             70,
-                            70
+                            Constants.SCREEN_HEIGHT - 100
                         ),
                         Color.Orange
                     ),
                     (
                         new BoundingRectangle(
                             Constants.SCREEN_WIDTH - 600,
-                            Constants.SCREEN_HEIGHT - 100 - 70,
+                            0,
                             70,
-                            70
+                            Constants.SCREEN_HEIGHT - 100
                         ),
                         Color.Green
                     ),
                     (
                         new BoundingRectangle(
                             Constants.SCREEN_WIDTH - 800,
-                            Constants.SCREEN_HEIGHT - 100 - 70,
+                            0,
                             70,
-                            70
+                            Constants.SCREEN_HEIGHT - 100
                         ),
                         Color.Blue
                     ),
                     (
                         new BoundingRectangle(
                             Constants.SCREEN_WIDTH - 1000,
-                            Constants.SCREEN_HEIGHT - 100 - 70,
+                            0,
                             70,
-                            70
+                            Constants.SCREEN_HEIGHT - 100
                         ),
                         Color.Violet
                     ),
@@ -149,9 +137,9 @@ namespace Parkour2D360.Screens
                     (
                         new BoundingRectangle(
                             Constants.SCREEN_WIDTH - 70,
-                            Constants.SCREEN_HEIGHT - 100 - 70,
+                            0,
                             70,
-                            70
+                            Constants.SCREEN_HEIGHT - 100
                         ),
                         Color.Red
                     ),

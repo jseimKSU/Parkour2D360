@@ -145,11 +145,16 @@ namespace Parkour2D360.Screens
             base.HandleInput(gameTime, input);
 
             if (
-                _pauseGameAwesomeVersion.Occurred(
+                _pauseGameAwesomeVersion.AllInputsOccured(
                     _inputState,
                     ControllingPlayer,
                     out PlayerIndex player
-                ) || _pauseGameSimpleVersion.Occurred(_inputState, ControllingPlayer, out player)
+                )
+                || _pauseGameSimpleVersion.AllInputsOccured(
+                    _inputState,
+                    ControllingPlayer,
+                    out player
+                )
             )
                 ScreenManager.AddScreen(new PauseMenuScreen(), ControllingPlayer);
         }

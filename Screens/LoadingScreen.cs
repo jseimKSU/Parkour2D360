@@ -1,32 +1,54 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using Parkour2D360.StateManagment;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.TimeZoneInfo;
 
 namespace Parkour2D360.Screens
 {
     public class LoadingScreen : GameScreen
     {
+        private const string SPRITE_FILES_RELATIVE_PATH =
+            "SpriteTextures/StickFigureCharacterSprites2D/Fighter sprites/Idle";
         private readonly bool _loadingIsSlow;
         private bool _otherScreensAreGone;
         private readonly GameScreen[] _screensToLoad;
+        private ContentManager ContentManager;
+
+        private Texture2D _loadingTexture;
 
         // Constructor is private: loading screens should be activated via the static Load method instead.
-        private LoadingScreen(ScreenManager screenManager, bool loadingIsSlow, GameScreen[] screensToLoad)
+        private LoadingScreen(
+            ScreenManager screenManager,
+            bool loadingIsSlow,
+            GameScreen[] screensToLoad
+        )
         {
             _loadingIsSlow = loadingIsSlow;
             _screensToLoad = screensToLoad;
 
-            TransitionOnTime = TimeSpan.FromSeconds(0.5);
+            TransitionOnTime = TimeSpan.FromSeconds(2);
+        }
+
+        public override void Activate()
+        {
+            base.Activate();
+
+            if (ContentManager == null)
+            {
+                ContentManager = new ContentManager(ScreenManager.Game.Services, "Content");
+            }
+
+            _loadingTexture = ContentManager.Load<Texture2D>($"{SPRITE_FILES_RELATIVE_PATH}/idle1");
         }
 
         // Activates the loading screen.
-        public static void Load(ScreenManager screenManager, bool loadingIsSlow,
-                                PlayerIndex? controllingPlayer, params GameScreen[] screensToLoad)
+        public static void Load(
+            ScreenManager screenManager,
+            bool loadingIsSlow,
+            PlayerIndex? controllingPlayer,
+            params GameScreen[] screensToLoad
+        )
         {
             // Tell all the current screens to transition off.
             foreach (var screen in screenManager.GetScreens())
@@ -38,7 +60,11 @@ namespace Parkour2D360.Screens
             screenManager.AddScreen(loadingScreen, controllingPlayer);
         }
 
-        public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
+        public override void Update(
+            GameTime gameTime,
+            bool otherScreenHasFocus,
+            bool coveredByOtherScreen
+        )
         {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
@@ -63,38 +89,29 @@ namespace Parkour2D360.Screens
 
         public override void Draw(GameTime gameTime)
         {
-            // If we are the only active screen, that means all the previous screens
-            // must have finished transitioning off. We check for this in the Draw
-            // method, rather than in Update, because it isn't enough just for the
-            // screens to be gone: in order for the transition to look good we must
-            // have actually drawn a frame without them before we perform the load.
             if (ScreenState == ScreenState.Active && ScreenManager.GetScreens().Length == 1)
                 _otherScreensAreGone = true;
 
-            // The gameplay screen takes a while to load, so we display a loading
-            // message while that is going on, but the menus load very quickly, and
-            // it would look silly if we flashed this up for just a fraction of a
-            // second while returning from the game to the menus. This parameter
-            // tells us how long the loading is going to take, so we know whether
-            // to bother drawing the message.
             if (_loadingIsSlow)
             {
                 var spriteBatch = ScreenManager.SpriteBatch;
-                var font = ScreenManager.Font;
 
-                const string message = "Loading...";
-
-                // Center the text in the viewport.
-                var viewport = ScreenManager.GraphicsDevice.Viewport;
-                var viewportSize = new Vector2(viewport.Width, viewport.Height);
-                var textSize = font.MeasureString(message);
-                var textPosition = (viewportSize - textSize) / 2;
-
-                var color = Color.White * TransitionAlpha;
-
+                float rotateSpeed = 4f;
+                float angle =
+                    (float)(gameTime.TotalGameTime.TotalSeconds * rotateSpeed) % MathHelper.TwoPi;
                 // Draw the text.
                 spriteBatch.Begin();
-                spriteBatch.DrawString(font, message, textPosition, color);
+                spriteBatch.Draw(
+                    _loadingTexture,
+                    new Vector2(Constants.SCREEN_WIDTH / 2, Constants.SCREEN_HEIGHT / 2),
+                    null,
+                    Color.Black,
+                    angle,
+                    new Vector2(_loadingTexture.Width / 2, _loadingTexture.Height / 2),
+                    1f,
+                    SpriteEffects.None,
+                    0
+                );
                 spriteBatch.End();
             }
         }
