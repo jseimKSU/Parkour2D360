@@ -23,6 +23,7 @@
 
         private void QuitGameMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
+            ScreenManager.Game.Exit();
             LoadingScreen.Load(ScreenManager, false, null, new TitleScreen());
         }
     }
