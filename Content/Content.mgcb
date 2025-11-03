@@ -10,6 +10,7 @@
 
 #-------------------------------- References --------------------------------#
 
+/reference:..\bin\Debug\net8.0-windows\TilemapPipeline.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -19,6 +20,11 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Font3D.spritefont
+
+#begin Level2.tmap
+/importer:
+/processor:
+/build:Level2.tmap
 
 #begin Orbitron100.spritefont
 /importer:FontDescriptionImporter

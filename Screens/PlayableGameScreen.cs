@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Parkour2D360.Collisions;
-using Parkour2D360.Settings;
+using Parkour2D360.SettingsFolder;
 using Parkour2D360.Sprites;
 using Parkour2D360.StateManagment;
 

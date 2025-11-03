@@ -8,13 +8,13 @@ using Parkour2D360.Collisions;
 using Parkour2D360.Sprites;
 using Parkour2D360.StateManagment;
 
-namespace Parkour2D360.Screens
+namespace Parkour2D360.Screens.LevelScreens
 {
     public class Level1Screen : PlayableGameScreen
     {
         public Level1Screen()
         {
-            base.Initialize();
+            Initialize();
         }
 
         public override void Activate()

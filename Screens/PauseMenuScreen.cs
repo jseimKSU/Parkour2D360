@@ -1,4 +1,6 @@
-﻿namespace Parkour2D360.Screens
+﻿using Parkour2D360.Saving;
+
+namespace Parkour2D360.Screens
 {
     // The pause menu comes up over the top of the game,
     // giving the player options to resume or quit.
@@ -23,6 +25,12 @@
 
         private void QuitGameMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
+            GameState state = new GameState
+            {
+                HighestLevelCompleted = 1,
+                CurrentSettings = ScreenManager.Settings,
+            };
+            SaveGame.Save(state);
             ScreenManager.Game.Exit();
             LoadingScreen.Load(ScreenManager, false, null, new TitleScreen());
         }

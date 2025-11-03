@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Parkour2D360.SettingsFolder;
 
 namespace Parkour2D360.StateManagment
 {
@@ -25,7 +22,7 @@ namespace Parkour2D360.StateManagment
 
         public Texture2D BlankTexture { get; private set; }
 
-        public Settings.Settings Settings { get; set; } = new Settings.Settings();
+        public Settings Settings { get; set; } = new Settings();
 
         public ScreenManager(Game game)
             : base(game)

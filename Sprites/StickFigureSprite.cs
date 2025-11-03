@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Parkour2D360.Collisions;
-using Parkour2D360.Settings;
+using Parkour2D360.SettingsFolder;
 using Parkour2D360.StateManagment;
 
 namespace Parkour2D360.Sprites
@@ -52,7 +52,7 @@ namespace Parkour2D360.Sprites
         private List<BoundingRectangle> _hitboxes;
         public BoundingRectangle Hitbox => _hitbox;
 
-        public void Initalize(Settings.Settings settings)
+        public void Initalize(Settings settings)
         {
             _currentRunningState = 0;
             _currentIdleState = 0;

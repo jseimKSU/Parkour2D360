@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Parkour2D360.Settings;
+using Parkour2D360.SettingsFolder;
 using Parkour2D360.StateManagment;
 
 namespace Parkour2D360.Screens

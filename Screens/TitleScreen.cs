@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Parkour2D360.Collisions;
+using Parkour2D360.Saving;
+using Parkour2D360.Screens.LevelScreens;
 using Parkour2D360.Sprites;
 using Parkour2D360.StateManagment;
 
@@ -28,6 +30,7 @@ namespace Parkour2D360.Screens
         private Song _backgroundMusic;
 
         private InputAction _level1;
+        private InputAction _level2;
 
         public TitleScreen()
         {
@@ -42,6 +45,7 @@ namespace Parkour2D360.Screens
             _nonPlatformHitboxes.Add(_levelSelectSprite.Hitbox);
 
             _level1 = new InputAction([Buttons.DPadUp], [Keys.D1], false);
+            _level2 = new InputAction([], [Keys.D2], false);
         }
 
         public override void Activate()
@@ -102,6 +106,16 @@ namespace Parkour2D360.Screens
 
             _360Font = ContentManager.Load<SpriteFont>("Font3D");
             _parkourFont = ContentManager.Load<SpriteFont>("Orbitron100");
+
+            ProcessSaveData();
+        }
+
+        private void ProcessSaveData()
+        {
+            var previousState = SaveGame.Load();
+
+            if (previousState != null)
+                ScreenManager.Settings = previousState.CurrentSettings;
         }
 
         public override void Deactivate()
@@ -144,6 +158,10 @@ namespace Parkour2D360.Screens
             if (_level1.Occurred(_inputState, PlayerIndex.One, out PlayerIndex player))
             {
                 LoadingScreen.Load(ScreenManager, true, ControllingPlayer, new Level1Screen());
+            }
+            if (_level2.Occurred(_inputState, PlayerIndex.One, out player))
+            {
+                LoadingScreen.Load(ScreenManager, true, ControllingPlayer, new Level2Screen());
             }
         }
 
