@@ -6,6 +6,6 @@ namespace Parkour2D360.Screens
 {
     public class RotatableGameScreenSide
     {
-        public List<(BoundingRectangle, Color)> Platforms { get; set; }
+        public List<Platform> Platforms { get; set; }
     }
 }

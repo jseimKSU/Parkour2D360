@@ -20,14 +20,15 @@ namespace Parkour2D360.Screens.LevelScreens
             {
                 Platforms =
                 [
-                    (
+                    new Platform(
                         new BoundingRectangle(
                             0,
                             Constants.SCREEN_HEIGHT - 100,
                             Constants.SCREEN_WIDTH,
                             10
                         ),
-                        Color.White
+                        Color.White,
+                        true
                     ),
                 ],
             };
@@ -55,30 +56,26 @@ namespace Parkour2D360.Screens.LevelScreens
 
         public override void Draw(GameTime gameTime)
         {
-            base.Draw(gameTime);
             _spriteBatch.Begin();
             level.Draw(gameTime, _spriteBatch);
             DrawLevelPlatforms();
             _spriteBatch.End();
+            base.Draw(gameTime);
         }
 
         private void DrawLevelPlatforms()
         {
-            foreach (
-                (BoundingRectangle, Color) platform in _gamescreenSides[
-                    _currentGameScreenSide
-                ].Platforms
-            )
+            foreach (Platform platform in _gamescreenSides[_currentGameScreenSide].Platforms)
             {
                 _spriteBatch.Draw(
                     _platformTexture,
                     new Rectangle(
-                        (int)platform.Item1.X,
-                        (int)platform.Item1.Y,
-                        (int)platform.Item1.Width,
-                        (int)platform.Item1.Height
+                        (int)platform.Location.X,
+                        (int)platform.Location.Y,
+                        (int)platform.Location.Width,
+                        (int)platform.Location.Height
                     ),
-                    platform.Item2
+                    platform.Color
                 );
             }
         }

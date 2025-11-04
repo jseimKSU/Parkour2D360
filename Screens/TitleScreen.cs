@@ -54,41 +54,45 @@ namespace Parkour2D360.Screens
             {
                 Platforms =
                 [
-                    (
+                    new Platform(
                         new BoundingRectangle(
                             (Constants.SCREEN_WIDTH / 2) - 300,
                             Constants.SCREEN_HEIGHT - 400,
                             100,
                             10
                         ),
-                        Color.Black
+                        Color.Black,
+                        true
                     ),
-                    (
+                    new Platform(
                         new BoundingRectangle(
                             (Constants.SCREEN_WIDTH / 2) - 300 - 140,
                             Constants.SCREEN_HEIGHT - 400 + 70,
                             50,
                             10
                         ),
-                        Color.Black
+                        Color.Black,
+                        true
                     ),
-                    (
+                    new Platform(
                         new BoundingRectangle(
                             (Constants.SCREEN_WIDTH / 2) - 300 - 210,
                             Constants.SCREEN_HEIGHT - 400 + 140,
                             50,
                             10
                         ),
-                        Color.Black
+                        Color.Black,
+                        true
                     ),
-                    (
+                    new Platform(
                         new BoundingRectangle(
                             (Constants.SCREEN_WIDTH / 2) - 300 - 280,
                             Constants.SCREEN_HEIGHT - 400 + 210,
                             50,
                             10
                         ),
-                        Color.Black
+                        Color.Black,
+                        true
                     ),
                 ],
             };
@@ -170,13 +174,9 @@ namespace Parkour2D360.Screens
             _spriteBatch.Begin();
             _2DText.Draw(_spriteBatch);
             _grassSprite.Draw(_spriteBatch);
-            foreach (
-                (BoundingRectangle, Color) platform in _gamescreenSides[
-                    _currentGameScreenSide
-                ].Platforms
-            )
+            foreach (Platform platform in _gamescreenSides[_currentGameScreenSide].Platforms)
             {
-                DrawPlatform(platform.Item1, platform.Item2);
+                DrawPlatform(platform.Location, platform.Color);
             }
             _spriteBatch.DrawString(_360Font, "360", new Vector2(540, 235), Color.Black);
             _spriteBatch.DrawString(_parkourFont, "PARKOUR", new Vector2(840, 215), Color.Black);

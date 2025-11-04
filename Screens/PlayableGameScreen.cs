@@ -25,7 +25,8 @@ namespace Parkour2D360.Screens
             [
                 .. _nonPlatformHitboxes,
                 .. _gamescreenSides[_currentGameScreenSide]
-                    .Platforms.Select(tuple => tuple.Item1)
+                    .Platforms.Where(plat => plat.IsCollidable == true)
+                    .Select(plat => plat.Location)
                     .ToList(),
             ];
 
@@ -39,6 +40,7 @@ namespace Parkour2D360.Screens
         private InputAction _pauseGameSimpleVersion;
 
         protected Texture2D _platformTexture;
+        protected Texture2D _tempTriangleTexture;
 
         protected bool _currentInputIsKeyboard;
 
@@ -75,6 +77,8 @@ namespace Parkour2D360.Screens
             {
                 ContentManager = new ContentManager(ScreenManager.Game.Services, "Content");
             }
+
+            _tempTriangleTexture = ContentManager.Load<Texture2D>("tempTriangle");
 
             _stickFigureSprite.Initalize(ScreenManager.Settings);
 
@@ -138,6 +142,10 @@ namespace Parkour2D360.Screens
             }
             if (_currentGameScreenSide < 0 || _currentGameScreenSide >= _gamescreenSides.Count)
                 throw new System.IndexOutOfRangeException();
+            if (_stickFigureSprite.Hitbox.Y > Constants.SCREEN_HEIGHT)
+            {
+                LoadingScreen.Load(ScreenManager, true, null, new TitleScreen()); // switch to fail screen
+            }
         }
 
         public override void HandleInput(GameTime gameTime, InputState input)

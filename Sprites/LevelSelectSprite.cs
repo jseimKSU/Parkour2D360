@@ -57,24 +57,7 @@ namespace Parkour2D360.Sprites
 
             Matrix shakeTransform = Matrix.CreateTranslation(offsetX, offsetY, 0);
 
-            if (_shakeTimer < 3)
-            {
-                spriteBatch.Begin(transformMatrix: shakeTransform, blendState: BlendState.Additive);
-                spriteBatch.Draw(
-                    _glowTexture,
-                    _position + new Vector2(-25, -150),
-                    null,
-                    Color.Blue,
-                    0f,
-                    Vector2.Zero,
-                    (SPRITE_SCALE_FACTOR * 5f),
-                    SpriteEffects.None,
-                    0
-                );
-                spriteBatch.End();
-            }
-
-            spriteBatch.Begin(transformMatrix: shakeTransform, blendState: BlendState.AlphaBlend);
+            spriteBatch.Begin(transformMatrix: shakeTransform);
 
             spriteBatch.Draw(
                 _mainTexture,

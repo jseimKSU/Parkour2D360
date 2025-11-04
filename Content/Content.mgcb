@@ -22,8 +22,9 @@
 /build:Font3D.spritefont
 
 #begin Level2.tmap
-/importer:
-/processor:
+/importer:TilemapImporter
+/processor:TilemapProcessor
+/processorParam:Scale=1
 /build:Level2.tmap
 
 #begin Orbitron100.spritefont
@@ -154,4 +155,16 @@
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:StruttinWithSomeBBQ.mp3
+
+#begin tempTriangle.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:tempTriangle.png
 

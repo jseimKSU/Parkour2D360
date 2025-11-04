@@ -12,6 +12,17 @@ namespace Parkour2D360.Screens.LevelScreens
 {
     public class Level1Screen : PlayableGameScreen
     {
+        private const int BASE_PLATFORM_Y = Constants.SCREEN_HEIGHT - 100;
+        private Platform BASE_PLATFORM = new Platform(
+            new BoundingRectangle(0, Constants.SCREEN_HEIGHT - 100, Constants.SCREEN_WIDTH, 10),
+            Color.Black,
+            true
+        );
+        private Color COLLIDABLE_COLOR = Color.DarkRed;
+        private Color NON_COLLIDABLE_COLOR = Color.PaleVioletRed;
+
+        List<(Vector2, int, bool)> _collectables;
+
         public Level1Screen()
         {
             Initialize();
@@ -23,25 +34,21 @@ namespace Parkour2D360.Screens.LevelScreens
             {
                 Platforms =
                 [
-                    (
+                    BASE_PLATFORM,
+                    new Platform(
+                        new BoundingRectangle(300, BASE_PLATFORM_Y - 140, 70, 140),
+                        COLLIDABLE_COLOR,
+                        true
+                    ),
+                    new Platform(
                         new BoundingRectangle(
-                            0,
-                            Constants.SCREEN_HEIGHT - 100,
-                            Constants.SCREEN_WIDTH,
-                            10
+                            Constants.SCREEN_WIDTH - 210,
+                            BASE_PLATFORM_Y - 140,
+                            210,
+                            140
                         ),
-                        Color.Black
-                    ),
-                    (new BoundingRectangle(200, 0, 70, Constants.SCREEN_HEIGHT - 100), Color.Red),
-                    (
-                        new BoundingRectangle(400, 0, 70, Constants.SCREEN_HEIGHT - 100),
-                        Color.Orange
-                    ),
-                    (new BoundingRectangle(600, 0, 70, Constants.SCREEN_HEIGHT - 100), Color.Green),
-                    (new BoundingRectangle(800, 0, 70, Constants.SCREEN_HEIGHT - 100), Color.Blue),
-                    (
-                        new BoundingRectangle(1000, 0, 70, Constants.SCREEN_HEIGHT - 100),
-                        Color.Violet
+                        NON_COLLIDABLE_COLOR,
+                        false
                     ),
                 ],
             };
@@ -49,75 +56,38 @@ namespace Parkour2D360.Screens.LevelScreens
             {
                 Platforms =
                 [
-                    (
-                        new BoundingRectangle(
-                            0,
-                            Constants.SCREEN_HEIGHT - 100,
-                            Constants.SCREEN_WIDTH,
-                            10
-                        ),
-                        Color.Black
+                    BASE_PLATFORM,
+                    new Platform(
+                        new BoundingRectangle(0, BASE_PLATFORM_Y - 140, 140, 140),
+                        NON_COLLIDABLE_COLOR,
+                        false
                     ),
-                    (new BoundingRectangle(0, 0, 70, Constants.SCREEN_HEIGHT - 100), Color.Violet),
+                    new Platform(
+                        new BoundingRectangle(1000, BASE_PLATFORM_Y - 140, 210, 140),
+                        COLLIDABLE_COLOR,
+                        true
+                    ),
                 ],
             };
             RotatableGameScreenSide _third = new()
             {
                 Platforms =
                 [
-                    (
-                        new BoundingRectangle(
-                            0,
-                            Constants.SCREEN_HEIGHT - 100,
-                            Constants.SCREEN_WIDTH,
-                            10
-                        ),
-                        Color.Black
+                    BASE_PLATFORM,
+                    new Platform(
+                        new BoundingRectangle(0, BASE_PLATFORM_Y - 140, 140, 140),
+                        NON_COLLIDABLE_COLOR,
+                        false
                     ),
-                    (
+                    new Platform(
                         new BoundingRectangle(
-                            Constants.SCREEN_WIDTH - 200,
-                            0,
+                            Constants.SCREEN_WIDTH - 370,
+                            BASE_PLATFORM_Y - 140,
                             70,
-                            Constants.SCREEN_HEIGHT - 100
+                            140
                         ),
-                        Color.Red
-                    ),
-                    (
-                        new BoundingRectangle(
-                            Constants.SCREEN_WIDTH - 400,
-                            0,
-                            70,
-                            Constants.SCREEN_HEIGHT - 100
-                        ),
-                        Color.Orange
-                    ),
-                    (
-                        new BoundingRectangle(
-                            Constants.SCREEN_WIDTH - 600,
-                            0,
-                            70,
-                            Constants.SCREEN_HEIGHT - 100
-                        ),
-                        Color.Green
-                    ),
-                    (
-                        new BoundingRectangle(
-                            Constants.SCREEN_WIDTH - 800,
-                            0,
-                            70,
-                            Constants.SCREEN_HEIGHT - 100
-                        ),
-                        Color.Blue
-                    ),
-                    (
-                        new BoundingRectangle(
-                            Constants.SCREEN_WIDTH - 1000,
-                            0,
-                            70,
-                            Constants.SCREEN_HEIGHT - 100
-                        ),
-                        Color.Violet
+                        NON_COLLIDABLE_COLOR,
+                        false
                     ),
                 ],
             };
@@ -125,23 +95,30 @@ namespace Parkour2D360.Screens.LevelScreens
             {
                 Platforms =
                 [
-                    (
+                    new Platform(
+                        new BoundingRectangle(0, Constants.SCREEN_HEIGHT - 100, 900, 10),
+                        Color.Black,
+                        true
+                    ),
+                    new Platform(
                         new BoundingRectangle(
-                            0,
+                            1350,
                             Constants.SCREEN_HEIGHT - 100,
-                            Constants.SCREEN_WIDTH,
+                            Constants.SCREEN_WIDTH - 1350,
                             10
                         ),
-                        Color.Black
+                        Color.Black,
+                        true
                     ),
-                    (
+                    new Platform(
                         new BoundingRectangle(
                             Constants.SCREEN_WIDTH - 70,
-                            0,
+                            BASE_PLATFORM_Y - 140,
                             70,
-                            Constants.SCREEN_HEIGHT - 100
+                            140
                         ),
-                        Color.Red
+                        NON_COLLIDABLE_COLOR,
+                        false
                     ),
                 ],
             };
@@ -149,6 +126,53 @@ namespace Parkour2D360.Screens.LevelScreens
             _gamescreenSides.Add(_second);
             _gamescreenSides.Add(_third);
             _gamescreenSides.Add(_fourth);
+
+            (Vector2, int, bool) collectableItem1_1 = (
+                new Vector2(50, BASE_PLATFORM_Y - 100),
+                1,
+                false
+            );
+            (Vector2, int, bool) collectableItem1_2 = (
+                new Vector2(Constants.SCREEN_WIDTH - 50, BASE_PLATFORM_Y - 100),
+                1,
+                true
+            );
+            (Vector2, int, bool) collectableItem2_1 = (
+                new Vector2(50, BASE_PLATFORM_Y - 100),
+                2,
+                true
+            );
+            (Vector2, int, bool) collectableItem2_2 = (
+                new Vector2(Constants.SCREEN_WIDTH - 50, BASE_PLATFORM_Y - 100),
+                2,
+                true
+            );
+            (Vector2, int, bool) collectableItem3_1 = (
+                new Vector2(50, BASE_PLATFORM_Y - 100),
+                3,
+                true
+            );
+            (Vector2, int, bool) collectableItem3_2 = (
+                new Vector2(Constants.SCREEN_WIDTH - 50, BASE_PLATFORM_Y - 100),
+                3,
+                true
+            );
+            (Vector2, int, bool) collectableItem4_1 = (
+                new Vector2(50, BASE_PLATFORM_Y - 100),
+                4,
+                true
+            );
+
+            _collectables = new List<(Vector2, int, bool)>
+            {
+                collectableItem1_1,
+                collectableItem1_2,
+                collectableItem2_1,
+                collectableItem2_2,
+                collectableItem3_1,
+                collectableItem3_2,
+                collectableItem4_1,
+            };
 
             base.Activate();
         }
@@ -181,28 +205,40 @@ namespace Parkour2D360.Screens.LevelScreens
         {
             _spriteBatch.Begin();
             DrawLevelPlatforms();
+            DrawCollectables();
             _spriteBatch.End();
 
             base.Draw(gameTime);
         }
 
+        private void DrawCollectables()
+        {
+            foreach ((Vector2, int, bool) collectable in _collectables)
+            {
+                if (collectable.Item2 - 1 == _currentGameScreenSide)
+                {
+                    _spriteBatch.Draw(
+                        _tempTriangleTexture,
+                        collectable.Item1,
+                        (collectable.Item3) ? Color.DeepSkyBlue : Color.LightSteelBlue
+                    );
+                }
+            }
+        }
+
         private void DrawLevelPlatforms()
         {
-            foreach (
-                (BoundingRectangle, Color) platform in _gamescreenSides[
-                    _currentGameScreenSide
-                ].Platforms
-            )
+            foreach (Platform platform in _gamescreenSides[_currentGameScreenSide].Platforms)
             {
                 _spriteBatch.Draw(
                     _platformTexture,
                     new Rectangle(
-                        (int)platform.Item1.X,
-                        (int)platform.Item1.Y,
-                        (int)platform.Item1.Width,
-                        (int)platform.Item1.Height
+                        (int)platform.Location.X,
+                        (int)platform.Location.Y,
+                        (int)platform.Location.Width,
+                        (int)platform.Location.Height
                     ),
-                    platform.Item2
+                    platform.Color
                 );
             }
         }

@@ -12,14 +12,17 @@ namespace Parkour2D360.Screens
             MenuEntry resumeGameMenuEntry = new MenuEntry("Resume Game");
             MenuEntry levelSelectGameMenuEntry = new MenuEntry("Level Select"); // add when level select screen is started
             MenuEntry settingsGameMenuEntry = new MenuEntry("Settings"); // need to fully implement
+            MenuEntry returnToMainMenuEntry = new MenuEntry("Return To Main Menu");
             MenuEntry quitGameMenuEntry = new MenuEntry("Quit Game");
 
             resumeGameMenuEntry.Selected += OnCancel;
             settingsGameMenuEntry.Selected += OnSettings;
+            returnToMainMenuEntry.Selected += ReturnToMainMenuSelected;
             quitGameMenuEntry.Selected += QuitGameMenuEntrySelected;
 
             MenuEntries.Add(resumeGameMenuEntry);
             MenuEntries.Add(settingsGameMenuEntry);
+            MenuEntries.Add(returnToMainMenuEntry);
             MenuEntries.Add(quitGameMenuEntry);
         }
 
@@ -32,7 +35,11 @@ namespace Parkour2D360.Screens
             };
             SaveGame.Save(state);
             ScreenManager.Game.Exit();
-            LoadingScreen.Load(ScreenManager, false, null, new TitleScreen());
+        }
+
+        private void ReturnToMainMenuSelected(object sender, PlayerIndexEventArgs e)
+        {
+            LoadingScreen.Load(ScreenManager, true, null, new TitleScreen());
         }
     }
 }
