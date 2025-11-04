@@ -45,7 +45,7 @@ namespace Parkour2D360.Screens
             _nonPlatformHitboxes.Add(_levelSelectSprite.Hitbox);
 
             _level1 = new InputAction([Buttons.DPadUp], [Keys.D1], false);
-            _level2 = new InputAction([], [Keys.D2], false);
+            _level2 = new InputAction([Buttons.DPadRight], [Keys.D2], false);
         }
 
         public override void Activate()
