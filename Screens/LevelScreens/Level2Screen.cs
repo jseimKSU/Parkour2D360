@@ -5,8 +5,12 @@ namespace Parkour2D360.Screens.LevelScreens
 {
     public class Level2Screen : PlayableGameScreen
     {
-        private Tilemap level;
-
+        private const int BASE_PLATFORM_Y = Constants.SCREEN_HEIGHT - 100;
+        private Platform BASE_PLATFORM = new Platform(
+            new BoundingRectangle(0, Constants.SCREEN_HEIGHT - 100, Constants.SCREEN_WIDTH, 10),
+            Color.Black,
+            true
+        );
         public Level2Screen()
         {
             Initialize();
@@ -15,21 +19,11 @@ namespace Parkour2D360.Screens.LevelScreens
         public override void Activate()
         {
             base.Activate();
-            level = ContentManager.Load<Tilemap>("Level2");
             RotatableGameScreenSide _first = new()
             {
                 Platforms =
                 [
-                    new Platform(
-                        new BoundingRectangle(
-                            0,
-                            Constants.SCREEN_HEIGHT - 100,
-                            Constants.SCREEN_WIDTH,
-                            10
-                        ),
-                        Color.White,
-                        true
-                    ),
+                    BASE_PLATFORM,
                 ],
             };
             _gamescreenSides.Add(_first);
@@ -57,7 +51,6 @@ namespace Parkour2D360.Screens.LevelScreens
         public override void Draw(GameTime gameTime)
         {
             _spriteBatch.Begin();
-            level.Draw(gameTime, _spriteBatch);
             DrawLevelPlatforms();
             _spriteBatch.End();
             base.Draw(gameTime);

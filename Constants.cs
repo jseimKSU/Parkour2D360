@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,5 +16,10 @@ namespace Parkour2D360
         public const string EXIT_COMBO_STRING_KEYBOARD = "Q + W + E + R + T + Y";
         public const string EXIT_SIMPLE_GAMEPAD = "Back";
         public const string EXIT_SIMPLE_KEYBOARD = "Esc";
+
+        public static Color COLLIDABLE_COLOR = Color.DarkRed;
+        public static Color NON_COLLIDABLE_COLOR = Color.PaleVioletRed;
+        public static Color COLLIDABLE_COLLECTABLE_COLOR = Color.DarkBlue;
+        public static Color NON_COLLIDABLE_COLLECTABLE_COLOR = Color.LightBlue;
     }
 }

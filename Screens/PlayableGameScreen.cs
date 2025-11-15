@@ -40,7 +40,6 @@ namespace Parkour2D360.Screens
         private InputAction _pauseGameSimpleVersion;
 
         protected Texture2D _platformTexture;
-        protected Texture2D _tempTriangleTexture;
 
         protected bool _currentInputIsKeyboard;
 
@@ -77,8 +76,6 @@ namespace Parkour2D360.Screens
             {
                 ContentManager = new ContentManager(ScreenManager.Game.Services, "Content");
             }
-
-            _tempTriangleTexture = ContentManager.Load<Texture2D>("tempTriangle");
 
             _stickFigureSprite.Initalize(ScreenManager.Settings);
 
