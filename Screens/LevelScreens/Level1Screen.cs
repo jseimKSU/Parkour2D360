@@ -14,6 +14,14 @@ namespace Parkour2D360.Screens.LevelScreens
             true
         );
 
+        private float _currentCollectableTipMessageTime = 0;
+        private const float MAX_COLLECTABLE_TIP_MESSAGE_TIME = 3;
+
+        private float _currentRotateScreenTipMessageTime = 0;
+        private const float MAX_ROTATE_SCREEN_TIP_MESSAGE_TIME = 5;
+        private bool _hasRotatedScreen = false;
+        private bool _ranIntoFirstBlock = false;
+
         private bool levelCompleted 
         {
             get
@@ -228,7 +236,18 @@ namespace Parkour2D360.Screens.LevelScreens
         {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
 
+            if (!_hasRotatedScreen && _currentGameScreenSide != 0)
+            {
+                _hasRotatedScreen = true;
+            }
+            if (_stickFigureSprite.Hitbox.Right >= 295)
+            {
+                _ranIntoFirstBlock = true;
+            }
+
             UpdateCollectables(gameTime);
+            UpdateCollectableTipMessage(gameTime);
+            UpdateRotateScreenTipMessage(gameTime);
             foreach (
                 CollectableTriangle collectable in _gamescreenSides[
                     _currentGameScreenSide
@@ -260,11 +279,53 @@ namespace Parkour2D360.Screens.LevelScreens
         {
             _spriteBatch.Begin();
             DrawLevelName();
+            DrawCollectableTipMessage();
+            DrawRotateScreenTipMessage();
             DrawLevelPlatforms();
             _spriteBatch.End();
             DrawCollectables();
 
             base.Draw(gameTime);
+        }
+
+        private void UpdateCollectableTipMessage(GameTime gameTime)
+        {
+            if ( _currentCollectableTipMessageTime < MAX_COLLECTABLE_TIP_MESSAGE_TIME)
+            {
+                _currentCollectableTipMessageTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+        }
+
+        private void UpdateRotateScreenTipMessage(GameTime gameTime)
+        {
+            if (_ranIntoFirstBlock && _currentRotateScreenTipMessageTime < MAX_ROTATE_SCREEN_TIP_MESSAGE_TIME)
+            {
+                _currentRotateScreenTipMessageTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+        }
+
+        private void DrawCollectableTipMessage()
+        {
+            if (_currentCollectableTipMessageTime < MAX_COLLECTABLE_TIP_MESSAGE_TIME)
+                _spriteBatch.DrawString(
+                ScreenManager.Font,
+                "Collect all triangular prism sides to advance to the next level!",
+                new Vector2(250, 100),
+                Constants.COLLIDABLE_COLLECTABLE_COLOR
+            );
+        }
+
+        private void DrawRotateScreenTipMessage()
+        {
+            if (!_hasRotatedScreen && _ranIntoFirstBlock && _currentRotateScreenTipMessageTime < MAX_ROTATE_SCREEN_TIP_MESSAGE_TIME)
+            {
+                _spriteBatch.DrawString(
+                    ScreenManager.Font,
+                    "Use Left and Right Arrow keys or Left and Right on the D-Pad to rotate the screen!",
+                    new Vector2(40, 300),
+                    Color.DarkGreen
+                );
+            }
         }
 
         private void UpdateCollectables(GameTime gameTime)
