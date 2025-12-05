@@ -62,9 +62,9 @@ namespace Parkour2D360.Screens
                     Buttons.LeftStick,
                 ],
                 [Keys.Q, Keys.W, Keys.E, Keys.R, Keys.T, Keys.Y],
-                false
+                true
             );
-            _pauseGameSimpleVersion = new InputAction([Buttons.Back], [Keys.Escape], false);
+            _pauseGameSimpleVersion = new InputAction([Buttons.Back], [Keys.Escape], true);
         }
 
         public override void Activate()

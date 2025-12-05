@@ -66,7 +66,10 @@ namespace Parkour2D360.Screens
             _menuEntries[entryIndex].OnSelectEntry(playerIndex);
         }
 
-        protected void OnSettings(object sender, PlayerIndexEventArgs e) { }
+        protected void OnSettings(object sender, PlayerIndexEventArgs e)
+        {
+
+        }
 
         // Allows the screen the chance to position the menu entries. By default,
         // all menu entries are lined up in a vertical list, centered on the screen.
