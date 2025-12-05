@@ -19,6 +19,7 @@ namespace Parkour2D360.Screens
         protected List<BoundingRectangle> _nonPlatformHitboxes = [];
 
         protected List<RotatableGameScreenSide> _gamescreenSides = [];
+        protected int _previousGameScreenSide = 0;
         protected int _currentGameScreenSide = 0;
 
         protected List<BoundingRectangle> _allHitboxes =>
@@ -125,7 +126,7 @@ namespace Parkour2D360.Screens
             _inputState.Update();
             _currentInputIsKeyboard = _inputState.CurrentInputIsKeyboard[0];
 
-            _stickFigureSprite.Update(gameTime, _allHitboxes);
+            _previousGameScreenSide = _currentGameScreenSide;
 
             if (_rotateLeft.Occurred(_inputState, PlayerIndex.One, out PlayerIndex player))
             {
@@ -148,6 +149,8 @@ namespace Parkour2D360.Screens
                 LoadingScreen.Load(ScreenManager, true, null, new TitleScreen()); // switch to fail screen
             }
             UpdateLevelNameTimer((float)gameTime.ElapsedGameTime.TotalSeconds);
+
+            _stickFigureSprite.Update(gameTime, _allHitboxes, ShouldInvertPlayersXCoordinate());
         }
 
         public override void HandleInput(GameTime gameTime, InputState input)
@@ -181,6 +184,22 @@ namespace Parkour2D360.Screens
             );
             _stickFigureSprite.Draw(gameTime, _spriteBatch);
             _spriteBatch.End();
+        }
+
+        private bool ShouldInvertPlayersXCoordinate()
+        {
+            return 
+                (
+                    (_previousGameScreenSide == 0 || _previousGameScreenSide == 1)
+                    && 
+                    (_currentGameScreenSide == 2 || _currentGameScreenSide == 3)
+                )
+                || 
+                (
+                    (_previousGameScreenSide == 2 || _previousGameScreenSide == 3)
+                    && 
+                    (_currentGameScreenSide == 0 || _currentGameScreenSide == 1)
+                );
         }
 
         protected void DrawPlatform(BoundingRectangle platform, Color color)

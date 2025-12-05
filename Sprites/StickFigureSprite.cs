@@ -115,14 +115,14 @@ namespace Parkour2D360.Sprites
             _runningAnimationFrameSourceRectangles[7] = new Rectangle(330, 167, 109, 173);
         }
 
-        public void Update(GameTime gameTime, List<BoundingRectangle> hitboxes)
+        public void Update(GameTime gameTime, List<BoundingRectangle> hitboxes, bool flipScreenPosition = false)
         {
             _inputState.Update();
             _hitboxes = hitboxes;
 
             HandleRunningSoundEffect();
 
-            MoveSprite(gameTime);
+            MoveSprite(gameTime, flipScreenPosition);
         }
 
         #region Update Helper Methods
@@ -149,11 +149,13 @@ namespace Parkour2D360.Sprites
             }
         }
 
-        private void MoveSprite(GameTime gameTime)
+        private void MoveSprite(GameTime gameTime, bool flipScreenPosition)
         {
             Vector2 moveFromColliding = HowFarToMoveOutOfColliding();
 
             Vector2 controllerMovement = _inputState.HowMuchDidLeftStickMove(PlayerIndex.One);
+
+            if (flipScreenPosition) _position.X = Constants.SCREEN_WIDTH - 80 - _position.X;
 
             _position += controllerMovement * new Vector2(PLAYER_SPEED, 0);
             if (controllerMovement.X < 0)
@@ -200,7 +202,7 @@ namespace Parkour2D360.Sprites
                 _position.Y += FALLING_SPEED * (float)gameTime.ElapsedGameTime.TotalSeconds;
         }
 
-        private bool IsFalling() // fix so checks all hitboxes not just stops at false
+        private bool IsFalling()
         {
             foreach (BoundingRectangle hitbox in _hitboxes)
             {
