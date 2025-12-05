@@ -14,6 +14,7 @@ namespace Parkour2D360.Screens.LevelScreens
         public Level2Screen()
         {
             Initialize();
+            _levelName = "Level 2";
         }
 
         public override void Activate()
@@ -51,6 +52,7 @@ namespace Parkour2D360.Screens.LevelScreens
         public override void Draw(GameTime gameTime)
         {
             _spriteBatch.Begin();
+            DrawLevelName();
             DrawLevelPlatforms();
             _spriteBatch.End();
             base.Draw(gameTime);

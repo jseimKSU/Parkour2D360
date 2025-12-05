@@ -43,6 +43,10 @@ namespace Parkour2D360.Screens
 
         protected bool _currentInputIsKeyboard;
 
+        protected string _levelName = "";
+        protected float _levelNameDisplayTimer = 0;
+        protected const float LEVEL_NAME_DISPLAY_TIME = 3.0f;
+
         protected void Initialize()
         {
             _stickFigureSprite = new StickFigureSprite();
@@ -143,6 +147,7 @@ namespace Parkour2D360.Screens
             {
                 LoadingScreen.Load(ScreenManager, true, null, new TitleScreen()); // switch to fail screen
             }
+            UpdateLevelNameTimer((float)gameTime.ElapsedGameTime.TotalSeconds);
         }
 
         public override void HandleInput(GameTime gameTime, InputState input)
@@ -195,6 +200,27 @@ namespace Parkour2D360.Screens
                 SpriteEffects.None,
                 0
             );
+        }
+
+        protected void UpdateLevelNameTimer(float elapsedSeconds)
+        {
+            if (_levelNameDisplayTimer < LEVEL_NAME_DISPLAY_TIME)
+            {
+                _levelNameDisplayTimer += elapsedSeconds;
+            }
+        }
+
+        protected void DrawLevelName()
+        {
+            if (_levelNameDisplayTimer < LEVEL_NAME_DISPLAY_TIME)
+            {
+                _spriteBatch.DrawString(
+                    ScreenManager.Font,
+                    _levelName,
+                    new Vector2((Constants.SCREEN_WIDTH / 2) - 100, 200),
+                    Color.Black
+                );
+            }
         }
     }
 }

@@ -32,6 +32,7 @@ namespace Parkour2D360.Screens.LevelScreens
         public Level1Screen()
         {
             Initialize();
+            _levelName = "Level 1";
         }
 
         public override void Activate()
@@ -226,6 +227,7 @@ namespace Parkour2D360.Screens.LevelScreens
         )
         {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
+
             UpdateCollectables(gameTime);
             foreach (
                 CollectableTriangle collectable in _gamescreenSides[
@@ -257,6 +259,7 @@ namespace Parkour2D360.Screens.LevelScreens
         public override void Draw(GameTime gameTime)
         {
             _spriteBatch.Begin();
+            DrawLevelName();
             DrawLevelPlatforms();
             _spriteBatch.End();
             DrawCollectables();
