@@ -15,7 +15,7 @@ namespace Parkour2D360.Screens.LevelScreens
         );
 
         private float _currentCollectableTipMessageTime = 0;
-        private const float MAX_COLLECTABLE_TIP_MESSAGE_TIME = 3;
+        private const float MAX_COLLECTABLE_TIP_MESSAGE_TIME = 4;
 
         private float _currentRotateScreenTipMessageTime = 0;
         private const float MAX_ROTATE_SCREEN_TIP_MESSAGE_TIME = 5;
@@ -119,6 +119,16 @@ namespace Parkour2D360.Screens.LevelScreens
                         Constants.NON_COLLIDABLE_COLOR,
                         false
                     ),
+                    new Platform(
+                        new BoundingRectangle(
+                            (Constants.SCREEN_WIDTH/2) - 140,
+                            BASE_PLATFORM_Y - 140,
+                            140,
+                            140
+                        ),
+                        Constants.NON_COLLIDABLE_COLOR,
+                        false
+                    ),
                 ],
                 Collectables =
                 [
@@ -140,6 +150,16 @@ namespace Parkour2D360.Screens.LevelScreens
                         new BoundingRectangle(1000, BASE_PLATFORM_Y - 140, 210, 140),
                         Constants.COLLIDABLE_COLOR,
                         true
+                    ),
+                    new Platform(
+                        new BoundingRectangle(
+                            Constants.SCREEN_WIDTH - 140,
+                            BASE_PLATFORM_Y - 140,
+                            140,
+                            140
+                        ),
+                        Constants.NON_COLLIDABLE_COLOR,
+                        false
                     ),
                 ],
                 Collectables =
@@ -167,6 +187,16 @@ namespace Parkour2D360.Screens.LevelScreens
                         ),
                         Constants.NON_COLLIDABLE_COLOR,
                         false
+                    ),
+                    new Platform(
+                        new BoundingRectangle(
+                            Constants.SCREEN_WIDTH/2,
+                            BASE_PLATFORM_Y - 140,
+                            140,
+                            140
+                        ),
+                        Constants.COLLIDABLE_COLOR,
+                        true
                     ),
                 ],
                 Collectables =
@@ -199,6 +229,16 @@ namespace Parkour2D360.Screens.LevelScreens
                             Constants.SCREEN_WIDTH - 70,
                             BASE_PLATFORM_Y - 140,
                             70,
+                            140
+                        ),
+                        Constants.NON_COLLIDABLE_COLOR,
+                        false
+                    ),
+                    new Platform(
+                        new BoundingRectangle(
+                            0,
+                            BASE_PLATFORM_Y - 140,
+                            140,
                             140
                         ),
                         Constants.NON_COLLIDABLE_COLOR,
