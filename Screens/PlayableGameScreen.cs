@@ -45,6 +45,7 @@ namespace Parkour2D360.Screens
         protected bool _currentInputIsKeyboard;
 
         protected string _levelName = "";
+        protected int _levelNumber = -1;
         protected float _levelNameDisplayTimer = 0;
         protected const float LEVEL_NAME_DISPLAY_TIME = 3.0f;
 
@@ -146,7 +147,7 @@ namespace Parkour2D360.Screens
                 throw new System.IndexOutOfRangeException();
             if (_stickFigureSprite.Hitbox.Y > Constants.SCREEN_HEIGHT)
             {
-                LoadingScreen.Load(ScreenManager, true, null, new TitleScreen()); // switch to fail screen
+                LoadingScreen.Load(ScreenManager, true, null, new FailureScreen(_levelNumber));
             }
             UpdateLevelNameTimer((float)gameTime.ElapsedGameTime.TotalSeconds);
 

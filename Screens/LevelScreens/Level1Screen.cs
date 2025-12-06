@@ -41,6 +41,7 @@ namespace Parkour2D360.Screens.LevelScreens
         {
             Initialize();
             _levelName = "Level 1";
+            _levelNumber = 1;
         }
 
         public override void Activate()

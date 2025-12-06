@@ -11,10 +11,28 @@ namespace Parkour2D360.Screens.LevelScreens
             Color.Black,
             true
         );
+
+        private bool levelCompleted
+        {
+            get
+            {
+                foreach (RotatableGameScreenSide side in _gamescreenSides)
+                {
+                    foreach (CollectableTriangle collectable in side.Collectables)
+                    {
+                        if (!collectable.isCollected) return false;
+                    }
+                }
+                return true;
+            }
+        }
+
+
         public Level2Screen()
         {
             Initialize();
             _levelName = "Level 2";
+            _levelNumber = 2;
         }
 
         public override void Activate()
@@ -355,6 +373,10 @@ namespace Parkour2D360.Screens.LevelScreens
                 {
                     collectable.Collect();
                 }
+            }
+            if (levelCompleted)
+            {
+                LoadingScreen.Load(ScreenManager, true, ControllingPlayer, new Level3Screen());
             }
         }
 
