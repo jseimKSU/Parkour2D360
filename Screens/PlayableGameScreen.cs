@@ -241,5 +241,37 @@ namespace Parkour2D360.Screens
                 );
             }
         }
+
+
+
+        protected void UpdateCollectables(GameTime gameTime)
+        {
+            foreach (
+                CollectableTriangle collectable in _gamescreenSides[
+                    _currentGameScreenSide
+                ].Collectables
+            )
+            {
+                collectable.Update(gameTime);
+            }
+        }
+
+        protected void DrawCollectables()
+        {
+            ScreenManager.GraphicsDevice.RasterizerState = RasterizerState.CullNone;
+            ScreenManager.GraphicsDevice.DepthStencilState = DepthStencilState.None;
+
+
+            foreach (
+                CollectableTriangle collectable in _gamescreenSides[
+                    _currentGameScreenSide
+                ].Collectables
+            )
+            {
+                if (!collectable.isCollected) collectable.Draw();
+            }
+
+            ScreenManager.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+        }
     }
 }

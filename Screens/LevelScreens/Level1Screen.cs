@@ -210,14 +210,14 @@ namespace Parkour2D360.Screens.LevelScreens
                 Platforms =
                 [
                     new Platform(
-                        new BoundingRectangle(0, Constants.SCREEN_HEIGHT - 100, 900, 10),
+                        new BoundingRectangle(0, BASE_PLATFORM_Y, 900, 10),
                         Color.Black,
                         true
                     ),
                     new Platform(
                         new BoundingRectangle(
                             1350,
-                            Constants.SCREEN_HEIGHT - 100,
+                            BASE_PLATFORM_Y,
                             Constants.SCREEN_WIDTH - 1350,
                             10
                         ),
@@ -366,36 +366,6 @@ namespace Parkour2D360.Screens.LevelScreens
                     Color.DarkGreen
                 );
             }
-        }
-
-        private void UpdateCollectables(GameTime gameTime)
-        {
-            foreach (
-                CollectableTriangle collectable in _gamescreenSides[
-                    _currentGameScreenSide
-                ].Collectables
-            )
-            {
-                collectable.Update(gameTime);
-            }
-        }
-
-        private void DrawCollectables()
-        {
-            ScreenManager.GraphicsDevice.RasterizerState = RasterizerState.CullNone;
-            ScreenManager.GraphicsDevice.DepthStencilState = DepthStencilState.None;
-
-
-            foreach (
-                CollectableTriangle collectable in _gamescreenSides[
-                    _currentGameScreenSide
-                ].Collectables
-            )
-            {
-                if (!collectable.isCollected) collectable.Draw();
-            }
-
-            ScreenManager.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
         }
 
         private void DrawLevelPlatforms()
