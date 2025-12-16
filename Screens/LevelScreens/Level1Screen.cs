@@ -1,20 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Parkour2D360.Collisions;
 using Parkour2D360.StateManagment;
-using SharpDX.MediaFoundation;
 
 namespace Parkour2D360.Screens.LevelScreens
 {
-    public class Level1Screen : PlayableGameScreen
+    public class Level1Screen : LevelScreen
     {
-        private const int BASE_PLATFORM_Y = Constants.SCREEN_HEIGHT - 100;
-        private Platform BASE_PLATFORM = new Platform(
-            new BoundingRectangle(0, Constants.SCREEN_HEIGHT - 100, Constants.SCREEN_WIDTH, 10),
-            Color.Black,
-            true
-        );
-
         private float _currentCollectableTipMessageTime = 0;
         private const float MAX_COLLECTABLE_TIP_MESSAGE_TIME = 4;
 
@@ -22,22 +13,6 @@ namespace Parkour2D360.Screens.LevelScreens
         private const float MAX_ROTATE_SCREEN_TIP_MESSAGE_TIME = 5;
         private bool _hasRotatedScreen = false;
         private bool _ranIntoFirstBlock = false;
-
-        private bool levelCompleted
-        {
-            get
-            {
-                foreach (RotatableGameScreenSide side in _gamescreenSides)
-                {
-                    foreach (CollectableTriangle collectable in side.Collectables)
-                    {
-                        if (!collectable.isCollected)
-                            return false;
-                    }
-                }
-                return true;
-            }
-        }
 
         public Level1Screen()
         {
@@ -280,27 +255,10 @@ namespace Parkour2D360.Screens.LevelScreens
                 _ranIntoFirstBlock = true;
             }
 
-            UpdateCollectables(gameTime);
             UpdateCollectableTipMessage(gameTime);
             UpdateRotateScreenTipMessage(gameTime);
-            foreach (
-                CollectableTriangle collectable in _gamescreenSides[
-                    _currentGameScreenSide
-                ].Collectables
-            )
-            {
-                if (
-                    collectable.isCollideable
-                    && CollisionHelper.ItemsCollide(_stickFigureSprite.Hitbox, collectable.Hitbox)
-                )
-                {
-                    collectable.Collect();
-                }
-            }
-            if (levelCompleted)
-            {
-                LoadingScreen.Load(ScreenManager, true, ControllingPlayer, new Level2Screen());
-            }
+
+            UpdateLoadNextLevel(new Level2Screen());
         }
 
         public override void HandleInput(GameTime gameTime, InputState input)
@@ -310,46 +268,12 @@ namespace Parkour2D360.Screens.LevelScreens
 
         public override void Draw(GameTime gameTime)
         {
-            Vector2 offset = GetTransitionOffset();
-
-            if (_isSideSliding)
-            {
-                Vector2 offsetFrom =
-                    new Vector2(-_slideDirection * _slideProgress * Constants.SCREEN_WIDTH, 0f)
-                    + offset;
-                Vector2 offsetTo =
-                    new Vector2(
-                        _slideDirection * (1f - _slideProgress) * Constants.SCREEN_WIDTH,
-                        0f
-                    ) + offset;
-
-                _spriteBatch.Begin();
-
-                DrawLevelName();
-                DrawCollectableTipMessage();
-                DrawRotateScreenTipMessage();
-
-                DrawLevelPlatforms(_slideFromIndex, offsetFrom);
-                DrawLevelPlatforms(_slideToIndex, offsetTo);
-                _spriteBatch.End();
-
-                DrawCollectables();
-            }
-            else
-            {
-                _spriteBatch.Begin();
-
-                DrawLevelName();
-                DrawCollectableTipMessage();
-                DrawRotateScreenTipMessage();
-
-                DrawLevelPlatforms(_currentGameScreenSide, Vector2.Zero);
-                _spriteBatch.End();
-
-                DrawCollectables();
-            }
-
             base.Draw(gameTime);
+
+            _spriteBatch.Begin();
+            DrawCollectableTipMessage();
+            DrawRotateScreenTipMessage();
+            _spriteBatch.End();
         }
 
         private void UpdateCollectableTipMessage(GameTime gameTime)
@@ -395,51 +319,6 @@ namespace Parkour2D360.Screens.LevelScreens
                     "Use Left and Right Arrow keys or Left and Right on the D-Pad to rotate the screen!",
                     new Vector2(40, 300),
                     Color.DarkGreen
-                );
-            }
-        }
-
-        private void DrawLevelPlatforms(int sideIndex, Vector2 offset)
-        {
-            DrawCollidableLevelPlatforms(sideIndex, offset);
-            DrawNonCollidableLevelPlatforms(sideIndex, offset);
-        }
-
-        private void DrawCollidableLevelPlatforms(int sideIndex, Vector2 offset)
-        {
-            foreach (Platform platform in _gamescreenSides[sideIndex].CollidablePlatforms)
-            {
-                _spriteBatch.Draw(
-                    _platformTexture,
-                    new Rectangle(
-                        (int)(platform.Location.X + offset.X),
-                        (int)(platform.Location.Y + offset.Y),
-                        (int)platform.Location.Width,
-                        (int)platform.Location.Height
-                    ),
-                    platform.Color
-                );
-            }
-        }
-
-        private void DrawNonCollidableLevelPlatforms(int sideIndex, Vector2 offset)
-        {
-            Vector2 usedOffset = offset;
-            if (_isSideSliding)
-            {
-                usedOffset = new Vector2(-offset.X, offset.Y);
-            }
-            foreach (Platform platform in _gamescreenSides[sideIndex].NonCollidablePlatforms)
-            {
-                _spriteBatch.Draw(
-                    _platformTexture,
-                    new Rectangle(
-                        (int)(platform.Location.X + usedOffset.X),
-                        (int)(platform.Location.Y + usedOffset.Y),
-                        (int)platform.Location.Width,
-                        (int)platform.Location.Height
-                    ),
-                    platform.Color
                 );
             }
         }

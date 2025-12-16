@@ -6,7 +6,6 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Parkour2D360.Collisions;
-using Parkour2D360.Screens.LevelScreens;
 using Parkour2D360.SettingsFolder;
 using Parkour2D360.Sprites;
 using Parkour2D360.StateManagment;
@@ -45,18 +44,19 @@ namespace Parkour2D360.Screens
 
         protected bool _currentInputIsKeyboard;
 
-        protected string _levelName = "";
-        protected int _levelNumber = -1;
-        protected float _levelNameDisplayTimer = 0;
-        protected const float LEVEL_NAME_DISPLAY_TIME = 3.0f;
+        protected string _levelName = ""; //
+        protected int _levelNumber = -1; //
+        protected float _levelNameDisplayTimer = 0; //
+        protected const float LEVEL_NAME_DISPLAY_TIME = 3.0f; //
 
-        protected bool _isSideSliding = false;
-        protected int _slideFromIndex = -1;
-        protected int _slideToIndex = 0;
+        protected bool _isSideSliding = false; //
+        protected int _slideFromIndex = -1; //
+        protected int _slideToIndex = 0; //
         protected int _slideDirection = 1; // -1 for left, 1 for right
-        protected float _slideDuration = .5f;
-        protected float _slideTimer = 0f;
-        protected float _slideProgress => MathHelper.Clamp(_slideTimer / Math.Max(0.0001f, _slideDuration), 0f , 1f);
+        protected float _slideDuration = .5f; //
+        protected float _slideTimer = 0f; //
+        protected float _slideProgress =>
+            MathHelper.Clamp(_slideTimer / Math.Max(0.0001f, _slideDuration), 0f, 1f); //
 
         protected void Initialize()
         {
