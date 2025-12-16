@@ -115,7 +115,11 @@ namespace Parkour2D360.Sprites
             _runningAnimationFrameSourceRectangles[7] = new Rectangle(330, 167, 109, 173);
         }
 
-        public void Update(GameTime gameTime, List<BoundingRectangle> hitboxes, bool flipScreenPosition = false)
+        public void Update(
+            GameTime gameTime,
+            List<BoundingRectangle> hitboxes,
+            bool flipScreenPosition = false
+        )
         {
             _inputState.Update();
             _hitboxes = hitboxes;
@@ -155,7 +159,8 @@ namespace Parkour2D360.Sprites
 
             Vector2 controllerMovement = _inputState.HowMuchDidLeftStickMove(PlayerIndex.One);
 
-            if (flipScreenPosition) _position.X = Constants.SCREEN_WIDTH - 80 - _position.X;
+            if (flipScreenPosition)
+                _position.X = Constants.SCREEN_WIDTH - 80 - _position.X;
 
             _position += controllerMovement * new Vector2(PLAYER_SPEED, 0);
             if (controllerMovement.X < 0)

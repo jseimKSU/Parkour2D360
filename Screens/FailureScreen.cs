@@ -1,17 +1,19 @@
-﻿using Parkour2D360.Saving;
-using Parkour2D360.Screens.LevelScreens;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Parkour2D360.Saving;
+using Parkour2D360.Screens.LevelScreens;
 
 namespace Parkour2D360.Screens
 {
     public class FailureScreen : TextMenuScreen
     {
         private int levelFailed;
-        public FailureScreen(int levelFailed) : base("LMAO You died - Try Again?")
+
+        public FailureScreen(int levelFailed)
+            : base("LMAO You died - Try Again?")
         {
             this.levelFailed = levelFailed;
             MenuEntry tryAgainEntry = new MenuEntry("Try Level Again?");
@@ -29,7 +31,7 @@ namespace Parkour2D360.Screens
 
         private void OnTryAgain(object sender, PlayerIndexEventArgs e)
         {
-            switch(levelFailed)
+            switch (levelFailed)
             {
                 case 1:
                     LoadingScreen.Load(ScreenManager, true, ControllingPlayer, new Level1Screen());

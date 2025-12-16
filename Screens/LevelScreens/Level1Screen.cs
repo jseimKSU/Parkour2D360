@@ -407,7 +407,6 @@ namespace Parkour2D360.Screens.LevelScreens
 
         private void DrawCollidableLevelPlatforms(int sideIndex, Vector2 offset)
         {
-
             foreach (Platform platform in _gamescreenSides[sideIndex].CollidablePlatforms)
             {
                 _spriteBatch.Draw(
@@ -422,6 +421,7 @@ namespace Parkour2D360.Screens.LevelScreens
                 );
             }
         }
+
         private void DrawNonCollidableLevelPlatforms(int sideIndex, Vector2 offset)
         {
             Vector2 usedOffset = offset;
