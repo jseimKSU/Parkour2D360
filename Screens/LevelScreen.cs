@@ -1,6 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Parkour2D360.Collisions;
-using Parkour2D360.Screens.LevelScreens;
 using Parkour2D360.StateManagment;
 
 namespace Parkour2D360.Screens
@@ -29,6 +30,20 @@ namespace Parkour2D360.Screens
                 return true;
             }
         }
+
+        protected string _levelName = "";
+        protected int _levelNumber = -1;
+        protected float _levelNameDisplayTimer = 0;
+        protected const float LEVEL_NAME_DISPLAY_TIME = 3.0f;
+
+        protected bool _isSideSliding = false;
+        protected int _slideFromIndex = -1;
+        protected int _slideToIndex = 0;
+        protected int _slideDirection = 1; // -1 for left, 1 for right
+        protected float _slideDuration = .5f;
+        protected float _slideTimer = 0f;
+        protected float _slideProgress =>
+            MathHelper.Clamp(_slideTimer / Math.Max(0.0001f, _slideDuration), 0f, 1f);
 
         public LevelScreen()
         {
@@ -60,20 +75,47 @@ namespace Parkour2D360.Screens
 
             UpdateCollectables(gameTime);
 
-            foreach (
-                CollectableTriangle collectable in _gamescreenSides[
-                    _currentGameScreenSide
-                ].Collectables
-            )
+            CheckCollidingWithCollectables();
+
+            PlayerIndex player;
+            if (!_isSideSliding)
             {
-                if (
-                    collectable.isCollideable
-                    && CollisionHelper.ItemsCollide(_stickFigureSprite.Hitbox, collectable.Hitbox)
-                )
+                if (_rotateLeft.Occurred(_inputState, PlayerIndex.One, out player))
                 {
-                    collectable.Collect();
+                    int targetSide =
+                        (_currentGameScreenSide > 0)
+                            ? _currentGameScreenSide - 1
+                            : _gamescreenSides.Count - 1;
+                    StartSideSlide(targetSide);
+                }
+                else if (_rotateRight.Occurred(_inputState, PlayerIndex.One, out player))
+                {
+                    int targetSide =
+                        (_currentGameScreenSide < _gamescreenSides.Count - 1)
+                            ? _currentGameScreenSide + 1
+                            : 0;
+                    StartSideSlide(targetSide);
                 }
             }
+            else
+            {
+                _slideTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (_slideTimer >= _slideDuration)
+                {
+                    _isSideSliding = false;
+                    _currentGameScreenSide = _slideToIndex;
+                    _slideTimer = 0f;
+                }
+            }
+
+            _previousGameScreenSide = _currentGameScreenSide;
+            if (_currentGameScreenSide < 0 || _currentGameScreenSide >= _gamescreenSides.Count)
+                throw new System.IndexOutOfRangeException();
+            if (_stickFigureSprite.Hitbox.Y > Constants.SCREEN_HEIGHT)
+            {
+                LoadingScreen.Load(ScreenManager, true, null, new FailureScreen(_levelNumber));
+            }
+            UpdateLevelNameTimer((float)gameTime.ElapsedGameTime.TotalSeconds);
         }
 
         public override void HandleInput(GameTime gameTime, InputState input)
@@ -177,6 +219,104 @@ namespace Parkour2D360.Screens
             {
                 LoadingScreen.Load(ScreenManager, true, ControllingPlayer, nextLevel);
             }
+        }
+
+        protected void UpdateLevelNameTimer(float elapsedSeconds)
+        {
+            if (_levelNameDisplayTimer < LEVEL_NAME_DISPLAY_TIME)
+            {
+                _levelNameDisplayTimer += elapsedSeconds;
+            }
+        }
+
+        protected void DrawLevelName()
+        {
+            if (_levelNameDisplayTimer < LEVEL_NAME_DISPLAY_TIME)
+            {
+                _spriteBatch.DrawString(
+                    ScreenManager.Font,
+                    _levelName,
+                    new Vector2((Constants.SCREEN_WIDTH / 2) - 100, 200),
+                    Color.Black
+                );
+            }
+        }
+
+        protected void CheckCollidingWithCollectables()
+        {
+            foreach (
+                CollectableTriangle collectable in _gamescreenSides[
+                    _currentGameScreenSide
+                ].Collectables
+            )
+            {
+                if (
+                    collectable.isCollideable
+                    && CollisionHelper.ItemsCollide(_stickFigureSprite.Hitbox, collectable.Hitbox)
+                )
+                {
+                    collectable.Collect();
+                }
+            }
+        }
+
+        protected void UpdateCollectables(GameTime gameTime)
+        {
+            foreach (
+                CollectableTriangle collectable in _gamescreenSides[
+                    _currentGameScreenSide
+                ].Collectables
+            )
+            {
+                collectable.Update(gameTime);
+            }
+        }
+
+        protected void DrawCollectables()
+        {
+            ScreenManager.GraphicsDevice.RasterizerState = RasterizerState.CullNone;
+            ScreenManager.GraphicsDevice.DepthStencilState = DepthStencilState.None;
+
+            foreach (
+                CollectableTriangle collectable in _gamescreenSides[
+                    _currentGameScreenSide
+                ].Collectables
+            )
+            {
+                if (!collectable.isCollected)
+                    collectable.Draw();
+            }
+
+            ScreenManager.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+        }
+
+        protected void StartSideSlide(int targetSide, float duration = .5f)
+        {
+            if (_gamescreenSides.Count == 0)
+                return;
+            if (_isSideSliding)
+                return;
+            if (targetSide < 0 || targetSide >= _gamescreenSides.Count)
+                return;
+
+            _isSideSliding = true;
+            _slideFromIndex = _currentGameScreenSide;
+            _slideToIndex = targetSide;
+            _slideTimer = 0f;
+            _slideDuration = Math.Max(0.01f, duration);
+
+            int count = _gamescreenSides.Count;
+            int difference = (_slideToIndex - _slideFromIndex + count) % count;
+            if (difference == 1)
+                _slideDirection = 1;
+            else if (difference == count - 1)
+                _slideDirection = -1;
+            else
+            {
+                _slideDirection = (targetSide > _slideFromIndex) ? 1 : -1;
+            }
+
+            _previousGameScreenSide = _currentGameScreenSide;
         }
     }
 }
