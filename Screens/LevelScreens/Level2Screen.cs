@@ -107,7 +107,7 @@ namespace Parkour2D360.Screens.LevelScreens
 
             RotatableGameScreenSide _first = new()
             {
-                Platforms =
+                CollidablePlatforms =
                 [
                     BASE_PLATFORM,
                     new Platform(
@@ -171,7 +171,7 @@ namespace Parkour2D360.Screens.LevelScreens
             };
             RotatableGameScreenSide _second = new()
             {
-                Platforms =
+                CollidablePlatforms =
                 [
                     BASE_PLATFORM,
                     new Platform(
@@ -213,7 +213,7 @@ namespace Parkour2D360.Screens.LevelScreens
             };
             RotatableGameScreenSide _third = new()
             {
-                Platforms =
+                CollidablePlatforms =
                 [
                     BASE_PLATFORM,
                     new Platform(
@@ -287,7 +287,7 @@ namespace Parkour2D360.Screens.LevelScreens
             };
             RotatableGameScreenSide _fourth = new()
             {
-                Platforms =
+                CollidablePlatforms =
                 [
                     new Platform(
                         new BoundingRectangle(0, BASE_PLATFORM_Y, 140, 10),

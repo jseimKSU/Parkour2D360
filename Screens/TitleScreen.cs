@@ -52,7 +52,7 @@ namespace Parkour2D360.Screens
         {
             RotatableGameScreenSide _first = new()
             {
-                Platforms =
+                CollidablePlatforms =
                 [
                     new Platform(
                         new BoundingRectangle(
@@ -95,6 +95,7 @@ namespace Parkour2D360.Screens
                         true
                     ),
                 ],
+                NonCollidablePlatforms = []
             };
             _gamescreenSides.Add(_first);
 

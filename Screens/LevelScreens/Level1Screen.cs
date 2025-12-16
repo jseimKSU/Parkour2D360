@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Parkour2D360.Collisions;
 using Parkour2D360.StateManagment;
+using SharpDX.MediaFoundation;
 
 namespace Parkour2D360.Screens.LevelScreens
 {
@@ -22,20 +23,21 @@ namespace Parkour2D360.Screens.LevelScreens
         private bool _hasRotatedScreen = false;
         private bool _ranIntoFirstBlock = false;
 
-        private bool levelCompleted 
+        private bool levelCompleted
         {
             get
             {
                 foreach (RotatableGameScreenSide side in _gamescreenSides)
                 {
-                    foreach(CollectableTriangle collectable in side.Collectables)
+                    foreach (CollectableTriangle collectable in side.Collectables)
                     {
-                        if (!collectable.isCollected) return false;
+                        if (!collectable.isCollected)
+                            return false;
                     }
                 }
                 return true;
             }
-            }
+        }
 
         public Level1Screen()
         {
@@ -48,47 +50,47 @@ namespace Parkour2D360.Screens.LevelScreens
         {
             #region collectables
             CollectableTriangle collectable1_1 = new CollectableTriangle(
-                        ScreenManager.Game,
-                        new Vector2(50, BASE_PLATFORM_Y - 100),
-                        1f,
-                        false
-                    );
+                ScreenManager.Game,
+                new Vector2(50, BASE_PLATFORM_Y - 100),
+                1f,
+                false
+            );
             CollectableTriangle collectable1_2 = new CollectableTriangle(
-                        ScreenManager.Game,
-                        new Vector2(Constants.SCREEN_WIDTH - 50, BASE_PLATFORM_Y - 100),
-                        1f,
-                        true
-                    );
+                ScreenManager.Game,
+                new Vector2(Constants.SCREEN_WIDTH - 50, BASE_PLATFORM_Y - 100),
+                1f,
+                true
+            );
             CollectableTriangle collectable2_1 = new CollectableTriangle(
-                        ScreenManager.Game,
-                        new Vector2(50, BASE_PLATFORM_Y - 100),
-                        1f,
-                        true
-                    );
+                ScreenManager.Game,
+                new Vector2(50, BASE_PLATFORM_Y - 100),
+                1f,
+                true
+            );
             CollectableTriangle collectable2_2 = new CollectableTriangle(
-                        ScreenManager.Game,
-                        new Vector2(Constants.SCREEN_WIDTH - 50, BASE_PLATFORM_Y - 100),
-                        1f,
-                        true
-                    );
+                ScreenManager.Game,
+                new Vector2(Constants.SCREEN_WIDTH - 50, BASE_PLATFORM_Y - 100),
+                1f,
+                true
+            );
             CollectableTriangle collectable3_1 = new CollectableTriangle(
-                        ScreenManager.Game,
-                        new Vector2(50, BASE_PLATFORM_Y - 100),
-                        1f,
-                        true
-                    );
+                ScreenManager.Game,
+                new Vector2(50, BASE_PLATFORM_Y - 100),
+                1f,
+                true
+            );
             CollectableTriangle collectable3_2 = new CollectableTriangle(
-                        ScreenManager.Game,
-                        new Vector2(Constants.SCREEN_WIDTH - 50, BASE_PLATFORM_Y - 100),
-                        1f,
-                        true
-                    );
+                ScreenManager.Game,
+                new Vector2(Constants.SCREEN_WIDTH - 50, BASE_PLATFORM_Y - 100),
+                1f,
+                true
+            );
             CollectableTriangle collectable4_1 = new CollectableTriangle(
-                        ScreenManager.Game,
-                        new Vector2(50, BASE_PLATFORM_Y - 100),
-                        1f,
-                        true
-                    );
+                ScreenManager.Game,
+                new Vector2(50, BASE_PLATFORM_Y - 100),
+                1f,
+                true
+            );
 
             collectable1_1.relatedCollectables = [collectable3_2, collectable4_1];
             collectable1_2.relatedCollectables = [collectable2_1];
@@ -102,7 +104,7 @@ namespace Parkour2D360.Screens.LevelScreens
 
             RotatableGameScreenSide _first = new()
             {
-                Platforms =
+                CollidablePlatforms =
                 [
                     BASE_PLATFORM,
                     new Platform(
@@ -110,6 +112,9 @@ namespace Parkour2D360.Screens.LevelScreens
                         Constants.COLLIDABLE_COLOR,
                         true
                     ),
+                ],
+                NonCollidablePlatforms =
+                [
                     new Platform(
                         new BoundingRectangle(
                             Constants.SCREEN_WIDTH - 210,
@@ -122,7 +127,7 @@ namespace Parkour2D360.Screens.LevelScreens
                     ),
                     new Platform(
                         new BoundingRectangle(
-                            (Constants.SCREEN_WIDTH/2) - 140,
+                            (Constants.SCREEN_WIDTH / 2) - 140,
                             BASE_PLATFORM_Y - 140,
                             140,
                             140
@@ -131,26 +136,25 @@ namespace Parkour2D360.Screens.LevelScreens
                         false
                     ),
                 ],
-                Collectables =
-                [
-                    collectable1_1,
-                    collectable1_2,
-                ],
+                Collectables = [collectable1_1, collectable1_2],
             };
             RotatableGameScreenSide _second = new()
             {
-                Platforms =
+                CollidablePlatforms =
                 [
                     BASE_PLATFORM,
-                    new Platform(
-                        new BoundingRectangle(0, BASE_PLATFORM_Y - 140, 140, 140),
-                        Constants.NON_COLLIDABLE_COLOR,
-                        false
-                    ),
                     new Platform(
                         new BoundingRectangle(1000, BASE_PLATFORM_Y - 140, 210, 140),
                         Constants.COLLIDABLE_COLOR,
                         true
+                    ),
+                ],
+                NonCollidablePlatforms =
+                [
+                    new Platform(
+                        new BoundingRectangle(0, BASE_PLATFORM_Y - 140, 140, 140),
+                        Constants.NON_COLLIDABLE_COLOR,
+                        false
                     ),
                     new Platform(
                         new BoundingRectangle(
@@ -163,17 +167,26 @@ namespace Parkour2D360.Screens.LevelScreens
                         false
                     ),
                 ],
-                Collectables =
-                [
-                    collectable2_1,
-                    collectable2_2,
-                ],
+                Collectables = [collectable2_1, collectable2_2],
             };
             RotatableGameScreenSide _third = new()
             {
-                Platforms =
+                CollidablePlatforms =
                 [
                     BASE_PLATFORM,
+                    new Platform(
+                        new BoundingRectangle(
+                            Constants.SCREEN_WIDTH / 2,
+                            BASE_PLATFORM_Y - 140,
+                            140,
+                            140
+                        ),
+                        Constants.COLLIDABLE_COLOR,
+                        true
+                    ),
+                ],
+                NonCollidablePlatforms =
+                [
                     new Platform(
                         new BoundingRectangle(0, BASE_PLATFORM_Y - 140, 140, 140),
                         Constants.NON_COLLIDABLE_COLOR,
@@ -189,26 +202,12 @@ namespace Parkour2D360.Screens.LevelScreens
                         Constants.NON_COLLIDABLE_COLOR,
                         false
                     ),
-                    new Platform(
-                        new BoundingRectangle(
-                            Constants.SCREEN_WIDTH/2,
-                            BASE_PLATFORM_Y - 140,
-                            140,
-                            140
-                        ),
-                        Constants.COLLIDABLE_COLOR,
-                        true
-                    ),
                 ],
-                Collectables =
-                [
-                    collectable3_1,
-                    collectable3_2,
-                ],
+                Collectables = [collectable3_1, collectable3_2],
             };
             RotatableGameScreenSide _fourth = new()
             {
-                Platforms =
+                CollidablePlatforms =
                 [
                     new Platform(
                         new BoundingRectangle(0, BASE_PLATFORM_Y, 900, 10),
@@ -225,6 +224,9 @@ namespace Parkour2D360.Screens.LevelScreens
                         Color.Black,
                         true
                     ),
+                ],
+                NonCollidablePlatforms =
+                [
                     new Platform(
                         new BoundingRectangle(
                             Constants.SCREEN_WIDTH - 70,
@@ -236,20 +238,12 @@ namespace Parkour2D360.Screens.LevelScreens
                         false
                     ),
                     new Platform(
-                        new BoundingRectangle(
-                            0,
-                            BASE_PLATFORM_Y - 140,
-                            140,
-                            140
-                        ),
+                        new BoundingRectangle(0, BASE_PLATFORM_Y - 140, 140, 140),
                         Constants.NON_COLLIDABLE_COLOR,
                         false
                     ),
                 ],
-                Collectables =
-                [
-                    collectable4_1,
-                ],
+                Collectables = [collectable4_1],
             };
             _gamescreenSides.Add(_first);
             _gamescreenSides.Add(_second);
@@ -296,10 +290,8 @@ namespace Parkour2D360.Screens.LevelScreens
             )
             {
                 if (
-                    collectable.isCollideable && CollisionHelper.ItemsCollide(
-                        _stickFigureSprite.Hitbox,
-                        collectable.Hitbox
-                    )
+                    collectable.isCollideable
+                    && CollisionHelper.ItemsCollide(_stickFigureSprite.Hitbox, collectable.Hitbox)
                 )
                 {
                     collectable.Collect();
@@ -318,20 +310,51 @@ namespace Parkour2D360.Screens.LevelScreens
 
         public override void Draw(GameTime gameTime)
         {
-            _spriteBatch.Begin();
-            DrawLevelName();
-            DrawCollectableTipMessage();
-            DrawRotateScreenTipMessage();
-            DrawLevelPlatforms();
-            _spriteBatch.End();
-            DrawCollectables();
+            Vector2 offset = GetTransitionOffset();
+
+            if (_isSideSliding)
+            {
+                Vector2 offsetFrom =
+                    new Vector2(-_slideDirection * _slideProgress * Constants.SCREEN_WIDTH, 0f)
+                    + offset;
+                Vector2 offsetTo =
+                    new Vector2(
+                        _slideDirection * (1f - _slideProgress) * Constants.SCREEN_WIDTH,
+                        0f
+                    ) + offset;
+
+                _spriteBatch.Begin();
+
+                DrawLevelName();
+                DrawCollectableTipMessage();
+                DrawRotateScreenTipMessage();
+
+                DrawLevelPlatforms(_slideFromIndex, offsetFrom);
+                DrawLevelPlatforms(_slideToIndex, offsetTo);
+                _spriteBatch.End();
+
+                DrawCollectables();
+            }
+            else
+            {
+                _spriteBatch.Begin();
+
+                DrawLevelName();
+                DrawCollectableTipMessage();
+                DrawRotateScreenTipMessage();
+
+                DrawLevelPlatforms(_currentGameScreenSide, Vector2.Zero);
+                _spriteBatch.End();
+
+                DrawCollectables();
+            }
 
             base.Draw(gameTime);
         }
 
         private void UpdateCollectableTipMessage(GameTime gameTime)
         {
-            if ( _currentCollectableTipMessageTime < MAX_COLLECTABLE_TIP_MESSAGE_TIME)
+            if (_currentCollectableTipMessageTime < MAX_COLLECTABLE_TIP_MESSAGE_TIME)
             {
                 _currentCollectableTipMessageTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
@@ -339,7 +362,10 @@ namespace Parkour2D360.Screens.LevelScreens
 
         private void UpdateRotateScreenTipMessage(GameTime gameTime)
         {
-            if (_ranIntoFirstBlock && _currentRotateScreenTipMessageTime < MAX_ROTATE_SCREEN_TIP_MESSAGE_TIME)
+            if (
+                _ranIntoFirstBlock
+                && _currentRotateScreenTipMessageTime < MAX_ROTATE_SCREEN_TIP_MESSAGE_TIME
+            )
             {
                 _currentRotateScreenTipMessageTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
@@ -349,16 +375,20 @@ namespace Parkour2D360.Screens.LevelScreens
         {
             if (_currentCollectableTipMessageTime < MAX_COLLECTABLE_TIP_MESSAGE_TIME)
                 _spriteBatch.DrawString(
-                ScreenManager.Font,
-                "Collect all triangular prism sides to advance to the next level!",
-                new Vector2(250, 100),
-                Constants.COLLIDABLE_COLLECTABLE_COLOR
-            );
+                    ScreenManager.Font,
+                    "Collect all triangular prism sides to advance to the next level!",
+                    new Vector2(250, 100),
+                    Constants.COLLIDABLE_COLLECTABLE_COLOR
+                );
         }
 
         private void DrawRotateScreenTipMessage()
         {
-            if (!_hasRotatedScreen && _ranIntoFirstBlock && _currentRotateScreenTipMessageTime < MAX_ROTATE_SCREEN_TIP_MESSAGE_TIME)
+            if (
+                !_hasRotatedScreen
+                && _ranIntoFirstBlock
+                && _currentRotateScreenTipMessageTime < MAX_ROTATE_SCREEN_TIP_MESSAGE_TIME
+            )
             {
                 _spriteBatch.DrawString(
                     ScreenManager.Font,
@@ -369,15 +399,43 @@ namespace Parkour2D360.Screens.LevelScreens
             }
         }
 
-        private void DrawLevelPlatforms()
+        private void DrawLevelPlatforms(int sideIndex, Vector2 offset)
         {
-            foreach (Platform platform in _gamescreenSides[_currentGameScreenSide].Platforms)
+            DrawCollidableLevelPlatforms(sideIndex, offset);
+            DrawNonCollidableLevelPlatforms(sideIndex, offset);
+        }
+
+        private void DrawCollidableLevelPlatforms(int sideIndex, Vector2 offset)
+        {
+
+            foreach (Platform platform in _gamescreenSides[sideIndex].CollidablePlatforms)
             {
                 _spriteBatch.Draw(
                     _platformTexture,
                     new Rectangle(
-                        (int)platform.Location.X,
-                        (int)platform.Location.Y,
+                        (int)(platform.Location.X + offset.X),
+                        (int)(platform.Location.Y + offset.Y),
+                        (int)platform.Location.Width,
+                        (int)platform.Location.Height
+                    ),
+                    platform.Color
+                );
+            }
+        }
+        private void DrawNonCollidableLevelPlatforms(int sideIndex, Vector2 offset)
+        {
+            Vector2 usedOffset = offset;
+            if (_isSideSliding)
+            {
+                usedOffset = new Vector2(-offset.X, offset.Y);
+            }
+            foreach (Platform platform in _gamescreenSides[sideIndex].NonCollidablePlatforms)
+            {
+                _spriteBatch.Draw(
+                    _platformTexture,
+                    new Rectangle(
+                        (int)(platform.Location.X + usedOffset.X),
+                        (int)(platform.Location.Y + usedOffset.Y),
                         (int)platform.Location.Width,
                         (int)platform.Location.Height
                     ),

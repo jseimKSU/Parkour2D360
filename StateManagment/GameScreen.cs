@@ -98,5 +98,14 @@ namespace Parkour2D360.StateManagment
             else
                 IsExiting = true;
         }
+
+        public virtual Vector2 GetTransitionOffset()
+        {
+            if (ScreenManager == null) return Vector2.Zero;
+
+            var vp = ScreenManager.GraphicsDevice.Viewport;
+            float offsetX = TransitionPosition * vp.Width;
+            return new Vector2(offsetX, 0f);
+        }
     }
 }

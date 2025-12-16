@@ -28,10 +28,11 @@ namespace Parkour2D360.Screens.LevelScreens
 
             RotatableGameScreenSide _first = new()
             {
-                Platforms =
+                CollidablePlatforms =
                 [
                     BASE_PLATFORM,
                 ],
+                NonCollidablePlatforms = []
             };
             _gamescreenSides.Add(_first);
 

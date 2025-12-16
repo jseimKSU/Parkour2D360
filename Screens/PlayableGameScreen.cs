@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Parkour2D360.Collisions;
+using Parkour2D360.Screens.LevelScreens;
 using Parkour2D360.SettingsFolder;
 using Parkour2D360.Sprites;
 using Parkour2D360.StateManagment;
@@ -48,6 +49,14 @@ namespace Parkour2D360.Screens
         protected int _levelNumber = -1;
         protected float _levelNameDisplayTimer = 0;
         protected const float LEVEL_NAME_DISPLAY_TIME = 3.0f;
+
+        protected bool _isSideSliding = false;
+        protected int _slideFromIndex = -1;
+        protected int _slideToIndex = 0;
+        protected int _slideDirection = 1; // -1 for left, 1 for right
+        protected float _slideDuration = .5f;
+        protected float _slideTimer = 0f;
+        protected float _slideProgress => MathHelper.Clamp(_slideTimer / Math.Max(0.0001f, _slideDuration), 0f , 1f);
 
         protected void Initialize()
         {
@@ -123,26 +132,41 @@ namespace Parkour2D360.Screens
         )
         {
             base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
-
+            PlayerIndex player;
             _inputState.Update();
             _currentInputIsKeyboard = _inputState.CurrentInputIsKeyboard[0];
 
-            _previousGameScreenSide = _currentGameScreenSide;
+            if (!_isSideSliding)
+            {
+                if (_rotateLeft.Occurred(_inputState, PlayerIndex.One, out player))
+                {
+                    int targetSide =
+                        (_currentGameScreenSide > 0)
+                            ? _currentGameScreenSide - 1
+                            : _gamescreenSides.Count - 1;
+                    StartSideSlide(targetSide);
+                }
+                else if (_rotateRight.Occurred(_inputState, PlayerIndex.One, out player))
+                {
+                    int targetSide =
+                        (_currentGameScreenSide < _gamescreenSides.Count - 1)
+                            ? _currentGameScreenSide + 1
+                            : 0;
+                    StartSideSlide(targetSide);
+                }
+            }
+            else
+            {
+                _slideTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (_slideTimer >= _slideDuration)
+                {
+                    _isSideSliding = false;
+                    _currentGameScreenSide = _slideToIndex;
+                    _slideTimer = 0f;
+                }
+            }
 
-            if (_rotateLeft.Occurred(_inputState, PlayerIndex.One, out PlayerIndex player))
-            {
-                if (_currentGameScreenSide > 0)
-                    _currentGameScreenSide--;
-                else if (_currentGameScreenSide == 0)
-                    _currentGameScreenSide = _gamescreenSides.Count - 1;
-            }
-            if (_rotateRight.Occurred(_inputState, PlayerIndex.One, out player))
-            {
-                if (_currentGameScreenSide < _gamescreenSides.Count - 1)
-                    _currentGameScreenSide++;
-                else if (_currentGameScreenSide == _gamescreenSides.Count - 1)
-                    _currentGameScreenSide = 0;
-            }
+            _previousGameScreenSide = _currentGameScreenSide;
             if (_currentGameScreenSide < 0 || _currentGameScreenSide >= _gamescreenSides.Count)
                 throw new System.IndexOutOfRangeException();
             if (_stickFigureSprite.Hitbox.Y > Constants.SCREEN_HEIGHT)
@@ -189,17 +213,13 @@ namespace Parkour2D360.Screens
 
         private bool ShouldInvertPlayersXCoordinate()
         {
-            return 
-                (
+            return (
                     (_previousGameScreenSide == 0 || _previousGameScreenSide == 1)
-                    && 
-                    (_currentGameScreenSide == 2 || _currentGameScreenSide == 3)
+                    && (_currentGameScreenSide == 2 || _currentGameScreenSide == 3)
                 )
-                || 
-                (
+                || (
                     (_previousGameScreenSide == 2 || _previousGameScreenSide == 3)
-                    && 
-                    (_currentGameScreenSide == 0 || _currentGameScreenSide == 1)
+                    && (_currentGameScreenSide == 0 || _currentGameScreenSide == 1)
                 );
         }
 
@@ -243,8 +263,6 @@ namespace Parkour2D360.Screens
             }
         }
 
-
-
         protected void UpdateCollectables(GameTime gameTime)
         {
             foreach (
@@ -262,17 +280,46 @@ namespace Parkour2D360.Screens
             ScreenManager.GraphicsDevice.RasterizerState = RasterizerState.CullNone;
             ScreenManager.GraphicsDevice.DepthStencilState = DepthStencilState.None;
 
-
             foreach (
                 CollectableTriangle collectable in _gamescreenSides[
                     _currentGameScreenSide
                 ].Collectables
             )
             {
-                if (!collectable.isCollected) collectable.Draw();
+                if (!collectable.isCollected)
+                    collectable.Draw();
             }
 
             ScreenManager.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+        }
+
+        protected void StartSideSlide(int targetSide, float duration = .5f)
+        {
+            if (_gamescreenSides.Count == 0)
+                return;
+            if (_isSideSliding)
+                return;
+            if (targetSide < 0 || targetSide >= _gamescreenSides.Count)
+                return;
+
+            _isSideSliding = true;
+            _slideFromIndex = _currentGameScreenSide;
+            _slideToIndex = targetSide;
+            _slideTimer = 0f;
+            _slideDuration = Math.Max(0.01f, duration);
+
+            int count = _gamescreenSides.Count;
+            int difference = (_slideToIndex - _slideFromIndex + count) % count;
+            if (difference == 1)
+                _slideDirection = 1;
+            else if (difference == count - 1)
+                _slideDirection = -1;
+            else
+            {
+                _slideDirection = (targetSide > _slideFromIndex) ? 1 : -1;
+            }
+
+            _previousGameScreenSide = _currentGameScreenSide;
         }
     }
 }
