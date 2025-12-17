@@ -34,18 +34,19 @@ namespace Parkour2D360.Screens
             switch (levelFailed)
             {
                 case 1:
-                    LoadingScreen.Load(ScreenManager, true, ControllingPlayer, new Level1Screen());
+                    ScreenManager.AddScreen(new Level1Screen(), ControllingPlayer);
                     break;
                 case 2:
-                    LoadingScreen.Load(ScreenManager, true, ControllingPlayer, new Level2Screen());
+                    ScreenManager.AddScreen(new Level2Screen(), ControllingPlayer);
                     break;
                 case 3:
-                    LoadingScreen.Load(ScreenManager, true, ControllingPlayer, new Level3Screen());
+                    ScreenManager.AddScreen(new Level3Screen(), ControllingPlayer);
                     break;
                 default:
-                    LoadingScreen.Load(ScreenManager, false, e.PlayerIndex, new TitleScreen());
+                    ScreenManager.AddScreen(new Level1Screen(), ControllingPlayer);
                     break;
             }
+            ScreenManager.RemoveScreen(this);
         }
 
         private void OnExitToMainMenu(object sender, PlayerIndexEventArgs e)

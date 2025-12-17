@@ -95,7 +95,7 @@ namespace Parkour2D360.Screens
                         true
                     ),
                 ],
-                NonCollidablePlatforms = []
+                NonCollidablePlatforms = [],
             };
             _gamescreenSides.Add(_first);
 
@@ -150,7 +150,9 @@ namespace Parkour2D360.Screens
                 )
             )
             {
-                LoadingScreen.Load(ScreenManager, true, ControllingPlayer, new Level1Screen());
+                _stickFigureSprite.StopSoundEffects();
+                ScreenManager.AddScreen(new Level1Screen(), ControllingPlayer);
+                ScreenManager.RemoveScreen(this);
             }
 
             _levelSelectSprite.Update(gameTime);
@@ -162,11 +164,15 @@ namespace Parkour2D360.Screens
 
             if (_level1.Occurred(_inputState, PlayerIndex.One, out PlayerIndex player))
             {
-                LoadingScreen.Load(ScreenManager, true, ControllingPlayer, new Level1Screen());
+                ScreenManager.AddScreen(new Level1Screen(), ControllingPlayer);
+                ScreenManager.RemoveScreen(this);
+                _stickFigureSprite.StopSoundEffects();
             }
             if (_level2.Occurred(_inputState, PlayerIndex.One, out player))
             {
-                LoadingScreen.Load(ScreenManager, true, ControllingPlayer, new Level2Screen());
+                ScreenManager.AddScreen(new Level2Screen(), ControllingPlayer);
+                ScreenManager.RemoveScreen(this);
+                _stickFigureSprite.StopSoundEffects();
             }
         }
 

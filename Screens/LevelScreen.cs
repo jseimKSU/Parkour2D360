@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Parkour2D360.Collisions;
+using Parkour2D360.Screens.LevelScreens;
 using Parkour2D360.StateManagment;
 
 namespace Parkour2D360.Screens
@@ -171,7 +172,9 @@ namespace Parkour2D360.Screens
         {
             if (_stickFigureSprite.Hitbox.Y > Constants.SCREEN_HEIGHT)
             {
-                LoadingScreen.Load(ScreenManager, true, null, new FailureScreen(_levelNumber));
+                ScreenManager.AddScreen(new FailureScreen(_levelNumber), ControllingPlayer);
+                ScreenManager.RemoveScreen(this);
+                _stickFigureSprite.StopSoundEffects();
             }
         }
 
@@ -229,7 +232,9 @@ namespace Parkour2D360.Screens
         {
             if (levelCompleted)
             {
-                LoadingScreen.Load(ScreenManager, true, ControllingPlayer, nextLevel);
+                ScreenManager.AddScreen(nextLevel, ControllingPlayer);
+                ScreenManager.RemoveScreen(this);
+                _stickFigureSprite.StopSoundEffects();
             }
         }
 

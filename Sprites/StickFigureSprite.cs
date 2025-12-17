@@ -311,5 +311,10 @@ namespace Parkour2D360.Sprites
                 );
             }
         }
+
+        public void StopSoundEffects()
+        {
+            _runningSoundEffectInstance.Stop();
+        }
     }
 }
