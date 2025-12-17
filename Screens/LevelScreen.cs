@@ -77,44 +77,14 @@ namespace Parkour2D360.Screens
 
             CheckCollidingWithCollectables();
 
-            PlayerIndex player;
-            if (!_isSideSliding)
-            {
-                if (_rotateLeft.Occurred(_inputState, PlayerIndex.One, out player))
-                {
-                    int targetSide =
-                        (_currentGameScreenSide > 0)
-                            ? _currentGameScreenSide - 1
-                            : _gamescreenSides.Count - 1;
-                    StartSideSlide(targetSide);
-                }
-                else if (_rotateRight.Occurred(_inputState, PlayerIndex.One, out player))
-                {
-                    int targetSide =
-                        (_currentGameScreenSide < _gamescreenSides.Count - 1)
-                            ? _currentGameScreenSide + 1
-                            : 0;
-                    StartSideSlide(targetSide);
-                }
-            }
-            else
-            {
-                _slideTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (_slideTimer >= _slideDuration)
-                {
-                    _isSideSliding = false;
-                    _currentGameScreenSide = _slideToIndex;
-                    _slideTimer = 0f;
-                }
-            }
+            HandleRotatingSides((float)gameTime.ElapsedGameTime.TotalSeconds);
 
             _previousGameScreenSide = _currentGameScreenSide;
             if (_currentGameScreenSide < 0 || _currentGameScreenSide >= _gamescreenSides.Count)
                 throw new System.IndexOutOfRangeException();
-            if (_stickFigureSprite.Hitbox.Y > Constants.SCREEN_HEIGHT)
-            {
-                LoadingScreen.Load(ScreenManager, true, null, new FailureScreen(_levelNumber));
-            }
+
+            HandleFallingOffScreen();
+
             UpdateLevelNameTimer((float)gameTime.ElapsedGameTime.TotalSeconds);
         }
 
@@ -161,6 +131,48 @@ namespace Parkour2D360.Screens
             }
 
             base.Draw(gameTime);
+        }
+
+        private void HandleRotatingSides(float elapsedGameTime)
+        {
+            PlayerIndex player;
+            if (!_isSideSliding)
+            {
+                if (_rotateLeft.Occurred(_inputState, PlayerIndex.One, out player))
+                {
+                    int targetSide =
+                        (_currentGameScreenSide > 0)
+                            ? _currentGameScreenSide - 1
+                            : _gamescreenSides.Count - 1;
+                    StartSideSlide(targetSide);
+                }
+                else if (_rotateRight.Occurred(_inputState, PlayerIndex.One, out player))
+                {
+                    int targetSide =
+                        (_currentGameScreenSide < _gamescreenSides.Count - 1)
+                            ? _currentGameScreenSide + 1
+                            : 0;
+                    StartSideSlide(targetSide);
+                }
+            }
+            else
+            {
+                _slideTimer += elapsedGameTime;
+                if (_slideTimer >= _slideDuration)
+                {
+                    _isSideSliding = false;
+                    _currentGameScreenSide = _slideToIndex;
+                    _slideTimer = 0f;
+                }
+            }
+        }
+
+        private void HandleFallingOffScreen()
+        {
+            if (_stickFigureSprite.Hitbox.Y > Constants.SCREEN_HEIGHT)
+            {
+                LoadingScreen.Load(ScreenManager, true, null, new FailureScreen(_levelNumber));
+            }
         }
 
         protected void DrawLevelPlatforms(int sideIndex, Vector2 offset)
