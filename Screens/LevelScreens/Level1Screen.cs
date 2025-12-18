@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using Parkour2D360.Collisions;
 using Parkour2D360.StateManagment;
 

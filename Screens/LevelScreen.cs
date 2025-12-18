@@ -78,9 +78,10 @@ namespace Parkour2D360.Screens
 
             CheckCollidingWithCollectables();
 
+            _previousGameScreenSide = _currentGameScreenSide;
+
             HandleRotatingSides((float)gameTime.ElapsedGameTime.TotalSeconds);
 
-            _previousGameScreenSide = _currentGameScreenSide;
             if (_currentGameScreenSide < 0 || _currentGameScreenSide >= _gamescreenSides.Count)
                 throw new System.IndexOutOfRangeException();
 
