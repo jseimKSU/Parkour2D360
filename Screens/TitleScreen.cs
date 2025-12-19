@@ -31,6 +31,7 @@ namespace Parkour2D360.Screens
 
         private InputAction _level1;
         private InputAction _level2;
+        private InputAction _level3;
 
         public TitleScreen()
         {
@@ -46,6 +47,7 @@ namespace Parkour2D360.Screens
 
             _level1 = new InputAction([Buttons.DPadUp], [Keys.D1], false);
             _level2 = new InputAction([Buttons.DPadRight], [Keys.D2], false);
+            _level3 = new InputAction([Buttons.DPadDown], [Keys.D3], false);
         }
 
         public override void Activate()
@@ -162,18 +164,24 @@ namespace Parkour2D360.Screens
         {
             base.HandleInput(gameTime, input);
 
-            if (_level1.Occurred(_inputState, PlayerIndex.One, out PlayerIndex player))
-            {
-                ScreenManager.AddScreen(new Level1Screen(), ControllingPlayer);
-                ScreenManager.RemoveScreen(this);
-                _stickFigureSprite.StopSoundEffects();
-            }
-            if (_level2.Occurred(_inputState, PlayerIndex.One, out player))
-            {
-                ScreenManager.AddScreen(new Level2Screen(), ControllingPlayer);
-                ScreenManager.RemoveScreen(this);
-                _stickFigureSprite.StopSoundEffects();
-            }
+            //if (_level1.Occurred(_inputState, PlayerIndex.One, out PlayerIndex player))
+            //{
+            //    ScreenManager.AddScreen(new Level1Screen(), ControllingPlayer);
+            //    ScreenManager.RemoveScreen(this);
+            //    _stickFigureSprite.StopSoundEffects();
+            //}
+            //if (_level2.Occurred(_inputState, PlayerIndex.One, out player))
+            //{
+            //    ScreenManager.AddScreen(new Level2Screen(), ControllingPlayer);
+            //    ScreenManager.RemoveScreen(this);
+            //    _stickFigureSprite.StopSoundEffects();
+            //}
+            //if (_level3.Occurred(_inputState, PlayerIndex.One, out player))
+            //{
+            //    ScreenManager.AddScreen(new Level3Screen(), ControllingPlayer);
+            //    ScreenManager.RemoveScreen(this);
+            //    _stickFigureSprite.StopSoundEffects();
+            //}
         }
 
         public override void Draw(GameTime gameTime)

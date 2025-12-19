@@ -86,7 +86,7 @@ namespace Parkour2D360.Screens.LevelScreens
                     BASE_PLATFORM,
                     new Platform(
                         new BoundingRectangle(300, BASE_PLATFORM_Y - 140, 70, 140),
-                        Constants.COLLIDABLE_COLOR,
+                        Constants.NON_JUMPABLE_COLLIDABLE_COLOR,
                         true
                     ),
                 ],
@@ -99,7 +99,7 @@ namespace Parkour2D360.Screens.LevelScreens
                             210,
                             140
                         ),
-                        Constants.NON_COLLIDABLE_COLOR,
+                        Constants.NON_JUMPABLE_NON_COLLIDABLE_COLOR,
                         false
                     ),
                     new Platform(
@@ -109,7 +109,7 @@ namespace Parkour2D360.Screens.LevelScreens
                             140,
                             140
                         ),
-                        Constants.NON_COLLIDABLE_COLOR,
+                        Constants.NON_JUMPABLE_NON_COLLIDABLE_COLOR,
                         false
                     ),
                 ],
@@ -122,7 +122,7 @@ namespace Parkour2D360.Screens.LevelScreens
                     BASE_PLATFORM,
                     new Platform(
                         new BoundingRectangle(1000, BASE_PLATFORM_Y - 140, 210, 140),
-                        Constants.COLLIDABLE_COLOR,
+                        Constants.NON_JUMPABLE_COLLIDABLE_COLOR,
                         true
                     ),
                 ],
@@ -130,7 +130,7 @@ namespace Parkour2D360.Screens.LevelScreens
                 [
                     new Platform(
                         new BoundingRectangle(0, BASE_PLATFORM_Y - 140, 140, 140),
-                        Constants.NON_COLLIDABLE_COLOR,
+                        Constants.NON_JUMPABLE_NON_COLLIDABLE_COLOR,
                         false
                     ),
                     new Platform(
@@ -140,7 +140,7 @@ namespace Parkour2D360.Screens.LevelScreens
                             140,
                             140
                         ),
-                        Constants.NON_COLLIDABLE_COLOR,
+                        Constants.NON_JUMPABLE_NON_COLLIDABLE_COLOR,
                         false
                     ),
                 ],
@@ -158,7 +158,7 @@ namespace Parkour2D360.Screens.LevelScreens
                             140,
                             140
                         ),
-                        Constants.COLLIDABLE_COLOR,
+                        Constants.NON_JUMPABLE_COLLIDABLE_COLOR,
                         true
                     ),
                 ],
@@ -166,7 +166,7 @@ namespace Parkour2D360.Screens.LevelScreens
                 [
                     new Platform(
                         new BoundingRectangle(0, BASE_PLATFORM_Y - 140, 140, 140),
-                        Constants.NON_COLLIDABLE_COLOR,
+                        Constants.NON_JUMPABLE_NON_COLLIDABLE_COLOR,
                         false
                     ),
                     new Platform(
@@ -176,7 +176,7 @@ namespace Parkour2D360.Screens.LevelScreens
                             70,
                             140
                         ),
-                        Constants.NON_COLLIDABLE_COLOR,
+                        Constants.NON_JUMPABLE_NON_COLLIDABLE_COLOR,
                         false
                     ),
                 ],
@@ -211,12 +211,12 @@ namespace Parkour2D360.Screens.LevelScreens
                             70,
                             140
                         ),
-                        Constants.NON_COLLIDABLE_COLOR,
+                        Constants.NON_JUMPABLE_NON_COLLIDABLE_COLOR,
                         false
                     ),
                     new Platform(
                         new BoundingRectangle(0, BASE_PLATFORM_Y - 140, 140, 140),
-                        Constants.NON_COLLIDABLE_COLOR,
+                        Constants.NON_JUMPABLE_NON_COLLIDABLE_COLOR,
                         false
                     ),
                 ],

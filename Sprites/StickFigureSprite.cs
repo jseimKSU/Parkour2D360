@@ -316,5 +316,11 @@ namespace Parkour2D360.Sprites
         {
             _runningSoundEffectInstance.Stop();
         }
+
+        public void AddToPosition(Vector2 amount)
+        {
+            _position += amount;
+            _hitbox.ChangePositionTo(_position);
+        }
     }
 }

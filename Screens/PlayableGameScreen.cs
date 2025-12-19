@@ -158,7 +158,7 @@ namespace Parkour2D360.Screens
             _spriteBatch.End();
         }
 
-        private bool ShouldInvertPlayersXCoordinate()
+        protected bool ShouldInvertPlayersXCoordinate()
         {
             return (
                     (_previousGameScreenSide == 0 || _previousGameScreenSide == 1)

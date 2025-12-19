@@ -88,12 +88,12 @@ namespace Parkour2D360.Screens.LevelScreens
                     BASE_PLATFORM,
                     new Platform(
                         new BoundingRectangle(650, BASE_PLATFORM_Y - 140, 35, 140),
-                        Constants.COLLIDABLE_COLOR,
+                        Constants.NON_JUMPABLE_COLLIDABLE_COLOR,
                         true
                     ),
                     new Platform(
                         new BoundingRectangle(965, BASE_PLATFORM_Y - 140, 35, 140),
-                        Constants.COLLIDABLE_COLOR,
+                        Constants.NON_JUMPABLE_COLLIDABLE_COLOR,
                         true
                     ),
                 ],
@@ -101,12 +101,12 @@ namespace Parkour2D360.Screens.LevelScreens
                 [
                     new Platform(
                         new BoundingRectangle(210, BASE_PLATFORM_Y - 140, 35, 140),
-                        Constants.NON_COLLIDABLE_COLOR,
+                        Constants.NON_JUMPABLE_NON_COLLIDABLE_COLOR,
                         false
                     ),
                     new Platform(
                         new BoundingRectangle(685, BASE_PLATFORM_Y - 140, 280, 140),
-                        Constants.NON_COLLIDABLE_COLOR,
+                        Constants.NON_JUMPABLE_NON_COLLIDABLE_COLOR,
                         false
                     ),
                     new Platform(
@@ -116,7 +116,7 @@ namespace Parkour2D360.Screens.LevelScreens
                             140,
                             140
                         ),
-                        Constants.NON_COLLIDABLE_COLOR,
+                        Constants.NON_JUMPABLE_NON_COLLIDABLE_COLOR,
                         false
                     ),
                 ],
@@ -134,7 +134,7 @@ namespace Parkour2D360.Screens.LevelScreens
                             70,
                             140
                         ),
-                        Constants.COLLIDABLE_COLOR,
+                        Constants.NON_JUMPABLE_COLLIDABLE_COLOR,
                         true
                     ),
                 ],
@@ -142,7 +142,7 @@ namespace Parkour2D360.Screens.LevelScreens
                 [
                     new Platform(
                         new BoundingRectangle(0, BASE_PLATFORM_Y - 140, 140, 140),
-                        Constants.NON_COLLIDABLE_COLOR,
+                        Constants.NON_JUMPABLE_NON_COLLIDABLE_COLOR,
                         false
                     ),
                     new Platform(
@@ -152,7 +152,7 @@ namespace Parkour2D360.Screens.LevelScreens
                             280,
                             140
                         ),
-                        Constants.NON_COLLIDABLE_COLOR,
+                        Constants.NON_JUMPABLE_NON_COLLIDABLE_COLOR,
                         false
                     ),
                 ],
@@ -170,7 +170,7 @@ namespace Parkour2D360.Screens.LevelScreens
                             140,
                             140
                         ),
-                        Constants.COLLIDABLE_COLOR,
+                        Constants.NON_JUMPABLE_COLLIDABLE_COLOR,
                         true
                     ),
                     new Platform(
@@ -180,7 +180,7 @@ namespace Parkour2D360.Screens.LevelScreens
                             35,
                             140
                         ),
-                        Constants.COLLIDABLE_COLOR,
+                        Constants.NON_JUMPABLE_COLLIDABLE_COLOR,
                         true
                     ),
                 ],
@@ -188,7 +188,7 @@ namespace Parkour2D360.Screens.LevelScreens
                 [
                     new Platform(
                         new BoundingRectangle(0, BASE_PLATFORM_Y - 140, 140, 140),
-                        Constants.NON_COLLIDABLE_COLOR,
+                        Constants.NON_JUMPABLE_NON_COLLIDABLE_COLOR,
                         false
                     ),
                     new Platform(
@@ -198,7 +198,7 @@ namespace Parkour2D360.Screens.LevelScreens
                             35,
                             140
                         ),
-                        Constants.NON_COLLIDABLE_COLOR,
+                        Constants.NON_JUMPABLE_NON_COLLIDABLE_COLOR,
                         false
                     ),
                     new Platform(
@@ -208,7 +208,7 @@ namespace Parkour2D360.Screens.LevelScreens
                             140,
                             140
                         ),
-                        Constants.NON_COLLIDABLE_COLOR,
+                        Constants.NON_JUMPABLE_NON_COLLIDABLE_COLOR,
                         false
                     ),
                     new Platform(
@@ -218,7 +218,7 @@ namespace Parkour2D360.Screens.LevelScreens
                             35,
                             140
                         ),
-                        Constants.NON_COLLIDABLE_COLOR,
+                        Constants.NON_JUMPABLE_NON_COLLIDABLE_COLOR,
                         false
                     ),
                 ],
@@ -248,7 +248,7 @@ namespace Parkour2D360.Screens.LevelScreens
                 [
                     new Platform(
                         new BoundingRectangle(0, BASE_PLATFORM_Y - 140, 350, 140),
-                        Constants.NON_COLLIDABLE_COLOR,
+                        Constants.NON_JUMPABLE_NON_COLLIDABLE_COLOR,
                         false
                     ),
                     new Platform(
@@ -258,7 +258,7 @@ namespace Parkour2D360.Screens.LevelScreens
                             140,
                             140
                         ),
-                        Constants.NON_COLLIDABLE_COLOR,
+                        Constants.NON_JUMPABLE_NON_COLLIDABLE_COLOR,
                         false
                     ),
                 ],

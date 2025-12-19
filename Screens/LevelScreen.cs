@@ -131,7 +131,8 @@ namespace Parkour2D360.Screens
 
                 DrawCollectables();
             }
-
+            //if (ShouldInvertPlayersXCoordinate())
+            //_stickFigureSprite.AddToPosition(new Vector2(offset.X, 0));
             base.Draw(gameTime);
         }
 
@@ -181,8 +182,8 @@ namespace Parkour2D360.Screens
 
         protected void DrawLevelPlatforms(int sideIndex, Vector2 offset)
         {
-            DrawCollidableLevelPlatforms(sideIndex, offset);
             DrawNonCollidableLevelPlatforms(sideIndex, offset);
+            DrawCollidableLevelPlatforms(sideIndex, offset);
         }
 
         protected void DrawCollidableLevelPlatforms(int sideIndex, Vector2 offset)
